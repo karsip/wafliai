@@ -1,0 +1,12 @@
+C:\Users\tomas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\bin\Debug\netcoreapp3.1\BattleShipPlayer.exe
+C:\Users\tomas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\bin\Debug\netcoreapp3.1\BattleShipPlayer.deps.json
+C:\Users\tomas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\bin\Debug\netcoreapp3.1\BattleShipPlayer.runtimeconfig.json
+C:\Users\tomas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\bin\Debug\netcoreapp3.1\BattleShipPlayer.runtimeconfig.dev.json
+C:\Users\tomas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\bin\Debug\netcoreapp3.1\BattleShipPlayer.dll
+C:\Users\tomas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\bin\Debug\netcoreapp3.1\BattleShipPlayer.pdb
+C:\Users\tomas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.AssemblyInfoInputs.cache
+C:\Users\tomas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.AssemblyInfo.cs
+C:\Users\tomas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.csproj.CoreCompileInputs.cache
+C:\Users\tomas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.dll
+C:\Users\tomas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.pdb
+C:\Users\tomas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.genruntimeconfig.cache
