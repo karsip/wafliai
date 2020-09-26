@@ -11,3 +11,16 @@ C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\
 C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.dll
 C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.pdb
 C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.genruntimeconfig.cache
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Server.exe
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Server.deps.json
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Server.runtimeconfig.json
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Server.runtimeconfig.dev.json
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Server.dll
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Server.pdb
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.csprojAssemblyReference.cache
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.csproj.CoreCompileInputs.cache
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.AssemblyInfoInputs.cache
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.AssemblyInfo.cs
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.dll
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.pdb
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.genruntimeconfig.cache
