@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Modestas\\Desktop\\BattleShip\\backend\\Server\\Server\\Server.csproj": {}
+    "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\Server\\Server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Modestas\\Desktop\\BattleShip\\backend\\Server\\Server\\Server.csproj": {
+    "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\Server\\Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Modestas\\Desktop\\BattleShip\\backend\\Server\\Server\\Server.csproj",
+        "projectUniqueName": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\Server\\Server.csproj",
         "projectName": "Server",
-        "projectPath": "C:\\Users\\Modestas\\Desktop\\BattleShip\\backend\\Server\\Server\\Server.csproj",
-        "packagesPath": "C:\\Users\\Modestas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Modestas\\Desktop\\BattleShip\\backend\\Server\\Server\\obj\\",
+        "projectPath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\Server\\Server.csproj",
+        "packagesPath": "C:\\Users\\tomas\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\Server\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Modestas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\tomas\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -52,7 +52,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

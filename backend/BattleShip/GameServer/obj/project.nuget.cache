@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "ae8S2nbk/tty3quu2K6O4YO9lkwJDfvuwHYsHnbxw+ue5kJ9AtrensSFF1SY2keDw50I1hJDuiRbCr9Iy/61tg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\BattleShip\\GameServer\\GameServer.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\tomas\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\system.drawing.common\\4.7.0\\system.drawing.common.4.7.0.nupkg.sha512"
+  ],
+  "logs": []
+}

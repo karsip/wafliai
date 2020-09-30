@@ -23,3 +23,4 @@ C:\Users\Modestas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\o
 C:\Users\Modestas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.dll
 C:\Users\Modestas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.pdb
 C:\Users\Modestas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.genruntimeconfig.cache
+C:\Users\tomas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.csprojAssemblyReference.cache

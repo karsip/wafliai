@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "65wVcmSL3kuh6LtbsSL1VG1xvI3sZLUna2UOkIi9esDAt8PxJ4B/GSkpgaTG6m4F3rjFPSsAGIgoGSQ8NCl7VA==",
+  "dgSpecHash": "te1t8VyDTSMZOi4kojFOFySxuMSoRETxMNuK3bmQ6uw3w3SwQJQA0gteFQ1iex/GwVHADHRvxYOwb2EKbFE/5w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Modestas\\Desktop\\BattleShip\\backend\\Server\\Server\\Server.csproj",
+  "projectFilePath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\Server\\Server.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

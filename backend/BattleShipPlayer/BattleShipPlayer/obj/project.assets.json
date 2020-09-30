@@ -8,19 +8,19 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\Modestas\\.nuget\\packages\\": {}
+    "C:\\Users\\tomas\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Modestas\\Desktop\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\BattleShipPlayer.csproj",
+      "projectUniqueName": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\BattleShipPlayer.csproj",
       "projectName": "BattleShipPlayer",
-      "projectPath": "C:\\Users\\Modestas\\Desktop\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\BattleShipPlayer.csproj",
-      "packagesPath": "C:\\Users\\Modestas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Modestas\\Desktop\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\obj\\",
+      "projectPath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\BattleShipPlayer.csproj",
+      "packagesPath": "C:\\Users\\tomas\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Modestas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\tomas\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -58,7 +58,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
       }
     }
   }
