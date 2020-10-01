@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "F/tfamEFh0DaF99emnhD6vQw0w/dqluc1m+ZqC0851sg5odlpiHKzz3TYam+JHy1Xq9Mpskd7eb0uzkUfoE9dw==",
+  "dgSpecHash": "rQ5BwFDg0C+jy5HdHKwGpw/nHVmAiZ8mJkhx7mSHDSOoTYp1gF+R2fFtM0h97DfNmtea9QGkGSYyADB2miHaUw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\BattleShip\\BattleShipModels\\BattleShipModels.csproj",
+  "projectFilePath": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\BattleShip\\BattleShipModels\\BattleShipModels.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\tomas\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "C:\\Users\\tomas\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
-    "C:\\Users\\tomas\\.nuget\\packages\\system.drawing.common\\4.7.0\\system.drawing.common.4.7.0.nupkg.sha512"
+    "C:\\Users\\ignbar1\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\ignbar1\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
+    "C:\\Users\\ignbar1\\.nuget\\packages\\system.drawing.common\\4.7.0\\system.drawing.common.4.7.0.nupkg.sha512"
   ],
   "logs": []
 }
