@@ -51,22 +51,22 @@
             this.textBox1.Size = new System.Drawing.Size(118, 23);
             this.textBox1.TabIndex = 1;
             this.textBox1.Text = "My Map";
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // screen
             // 
-            this.screen.Location = new System.Drawing.Point(22, 62);
+            this.screen.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.screen.Location = new System.Drawing.Point(12, 76);
+            this.screen.Margin = new System.Windows.Forms.Padding(2);
             this.screen.Name = "screen";
-            this.screen.Size = new System.Drawing.Size(776, 376);
-            this.screen.TabIndex = 2;
+            this.screen.Size = new System.Drawing.Size(1000, 692);
+            this.screen.TabIndex = 0;
             this.screen.TabStop = false;
-            this.screen.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // Map1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1152, 825);
             this.Controls.Add(this.screen);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);

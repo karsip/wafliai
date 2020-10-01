@@ -1,9 +1,9 @@
 C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\BattleShipModels\bin\Debug\netstandard2.0\BattleShipModels.deps.json
 C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\BattleShipModels\bin\Debug\netstandard2.0\BattleShipModels.dll
+C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\BattleShipModels\bin\Debug\netstandard2.0\BattleShipModels.pdb
 C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\BattleShipModels\obj\Debug\netstandard2.0\BattleShipModels.csprojAssemblyReference.cache
 C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\BattleShipModels\obj\Debug\netstandard2.0\BattleShipModels.AssemblyInfoInputs.cache
 C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\BattleShipModels\obj\Debug\netstandard2.0\BattleShipModels.AssemblyInfo.cs
-C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\BattleShipModels\bin\Debug\netstandard2.0\BattleShipModels.pdb
 C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\BattleShipModels\obj\Debug\netstandard2.0\BattleShipModels.csproj.CoreCompileInputs.cache
 C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\BattleShipModels\obj\Debug\netstandard2.0\BattleShipModels.dll
 C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\BattleShipModels\obj\Debug\netstandard2.0\BattleShipModels.pdb

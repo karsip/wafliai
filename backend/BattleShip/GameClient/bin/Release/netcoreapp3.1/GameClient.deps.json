@@ -9,13 +9,16 @@
       "GameClient/1.0.0": {
         "dependencies": {
           "BattleShipModels": "1.0.0",
-          "Microsoft.AspNetCore.SignalR.Client.Core": "3.1.8",
+          "GameServer": "1.0.0",
+          "Microsoft.AspNet.SignalR": "2.4.1",
+          "Microsoft.AspNetCore.SignalR.Client": "3.1.8",
           "Newtonsoft.Json": "12.0.3"
         },
         "runtime": {
           "GameClient.dll": {}
         }
       },
+      "Microsoft.AspNet.SignalR/2.4.1": {},
       "Microsoft.AspNetCore.Connections.Abstractions/3.1.8": {
         "dependencies": {
           "Microsoft.AspNetCore.Http.Features": "3.1.8",
@@ -28,6 +31,30 @@
           }
         }
       },
+      "Microsoft.AspNetCore.Http.Connections.Client/3.1.8": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Http.Connections.Common": "3.1.8",
+          "Microsoft.Extensions.Logging.Abstractions": "3.1.8",
+          "Microsoft.Extensions.Options": "3.1.8"
+        },
+        "runtime": {
+          "lib/netstandard2.1/Microsoft.AspNetCore.Http.Connections.Client.dll": {
+            "assemblyVersion": "3.1.8.0",
+            "fileVersion": "3.100.820.42106"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.Http.Connections.Common/3.1.8": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Connections.Abstractions": "3.1.8"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/Microsoft.AspNetCore.Http.Connections.Common.dll": {
+            "assemblyVersion": "3.1.8.0",
+            "fileVersion": "3.100.820.42106"
+          }
+        }
+      },
       "Microsoft.AspNetCore.Http.Features/3.1.8": {
         "dependencies": {
           "Microsoft.Extensions.Primitives": "3.1.8",
@@ -35,6 +62,18 @@
         },
         "runtime": {
           "lib/netcoreapp3.1/Microsoft.AspNetCore.Http.Features.dll": {
+            "assemblyVersion": "3.1.8.0",
+            "fileVersion": "3.100.820.42106"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.SignalR.Client/3.1.8": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Http.Connections.Client": "3.1.8",
+          "Microsoft.AspNetCore.SignalR.Client.Core": "3.1.8"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.AspNetCore.SignalR.Client.dll": {
             "assemblyVersion": "3.1.8.0",
             "fileVersion": "3.100.820.42106"
           }
@@ -215,6 +254,15 @@
         "runtime": {
           "BattleShipModels.dll": {}
         }
+      },
+      "GameServer/1.0.0": {
+        "dependencies": {
+          "BattleShipModels": "1.0.0",
+          "Newtonsoft.Json": "12.0.3"
+        },
+        "runtime": {
+          "GameServer.dll": {}
+        }
       }
     }
   },
@@ -224,6 +272,13 @@
       "serviceable": false,
       "sha512": ""
     },
+    "Microsoft.AspNet.SignalR/2.4.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-aYbLVE5toZwv/qaQ0BiIZRRwN/00WKYzGjaYUWIQuI91xZ50nnAymWD1sxCZFN9XXDRq8bevM5ET9GmAeOI/Nw==",
+      "path": "microsoft.aspnet.signalr/2.4.1",
+      "hashPath": "microsoft.aspnet.signalr.2.4.1.nupkg.sha512"
+    },
     "Microsoft.AspNetCore.Connections.Abstractions/3.1.8": {
       "type": "package",
       "serviceable": true,
@@ -231,12 +286,33 @@
       "path": "microsoft.aspnetcore.connections.abstractions/3.1.8",
       "hashPath": "microsoft.aspnetcore.connections.abstractions.3.1.8.nupkg.sha512"
     },
+    "Microsoft.AspNetCore.Http.Connections.Client/3.1.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VIv/an0f4HJBgHQkVPZGGZldSPLeNpl6JGe8y+cRboWTgGuEeVxXgkEjBW79R1IQirgVLdKWz3o/+n8KMB02og==",
+      "path": "microsoft.aspnetcore.http.connections.client/3.1.8",
+      "hashPath": "microsoft.aspnetcore.http.connections.client.3.1.8.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Http.Connections.Common/3.1.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-q2HYSJ1zZ8mEdSiFrWKvQC5RqVPrr8SMM4dmld1Vc+69ZKYL2vuk4jVoIsULagZk1l3dbYQaRleR3kLCavFOig==",
+      "path": "microsoft.aspnetcore.http.connections.common/3.1.8",
+      "hashPath": "microsoft.aspnetcore.http.connections.common.3.1.8.nupkg.sha512"
+    },
     "Microsoft.AspNetCore.Http.Features/3.1.8": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-hPBe3ATzZxUqA6QaIKf9IVQa//Eake3jeqfwHyq95n0fe7j7v6hWc9QGGWQquA3psN7epz029jjTS4zvFLC32g==",
       "path": "microsoft.aspnetcore.http.features/3.1.8",
       "hashPath": "microsoft.aspnetcore.http.features.3.1.8.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.SignalR.Client/3.1.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-42vRtvHhEJjSPXNiBWPq7V08L5k/p+Jb+JhrJudKfUscKXYdqytGzbmSad9/rQpyO0k42zr/Dep/k/LUHcMhwA==",
+      "path": "microsoft.aspnetcore.signalr.client/3.1.8",
+      "hashPath": "microsoft.aspnetcore.signalr.client.3.1.8.nupkg.sha512"
     },
     "Microsoft.AspNetCore.SignalR.Client.Core/3.1.8": {
       "type": "package",
@@ -365,6 +441,11 @@
       "hashPath": "system.threading.channels.4.7.1.nupkg.sha512"
     },
     "BattleShipModels/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "GameServer/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

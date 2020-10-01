@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using BattleShipModels;
+using System.Diagnostics;
 
 namespace GameServer
 {
@@ -11,7 +12,7 @@ namespace GameServer
 
         public async Task UpdateClients()
         {
-           await Clients.All.SendAsync("StateUpdate",
+           await Clients.All.SendAsync("MapUpdate",
                                         JsonConvert.SerializeObject(Map.MapInstance.GetMapObjects(),
                                         typeof(MapCell), new JsonSerializerSettings
                                         { TypeNameHandling = TypeNameHandling.Auto }));
@@ -19,7 +20,6 @@ namespace GameServer
         public async Task HandleMapClick(string mapCoordinate)
         {
             Console.WriteLine("Key press " + mapCoordinate + " user " + Context.ConnectionId);
-            // Map.Instance.MovePlayer(Context.ConnectionId, KeyPress);
             await UpdateClients();
         }
         public async override Task OnConnectedAsync()

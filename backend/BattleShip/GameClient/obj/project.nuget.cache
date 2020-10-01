@@ -1,11 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "CuBED8VENwC1TGAPgBCL/iudCdG+dBlxoKYaza6JIGhsfzVFhaOX0CtV9/LbPI1khDBMwf6J36yP8Tt/CbnbNw==",
+  "dgSpecHash": "ZuG4WDwuMJt4gnvhrcPlBL2pmlIO/jZZtu12DmFV1qWTl8Ktc0qusHjNvfIT2wbouRATaDphT9CRSBjeshSTAQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\BattleShip\\GameClient\\GameClient.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\tomas\\.nuget\\packages\\microsoft.aspnet.signalr\\2.4.1\\microsoft.aspnet.signalr.2.4.1.nupkg.sha512",
     "C:\\Users\\tomas\\.nuget\\packages\\microsoft.aspnetcore.connections.abstractions\\3.1.8\\microsoft.aspnetcore.connections.abstractions.3.1.8.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\microsoft.aspnetcore.http.connections.client\\3.1.8\\microsoft.aspnetcore.http.connections.client.3.1.8.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\microsoft.aspnetcore.http.connections.common\\3.1.8\\microsoft.aspnetcore.http.connections.common.3.1.8.nupkg.sha512",
     "C:\\Users\\tomas\\.nuget\\packages\\microsoft.aspnetcore.http.features\\3.1.8\\microsoft.aspnetcore.http.features.3.1.8.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\microsoft.aspnetcore.signalr.client\\3.1.8\\microsoft.aspnetcore.signalr.client.3.1.8.nupkg.sha512",
     "C:\\Users\\tomas\\.nuget\\packages\\microsoft.aspnetcore.signalr.client.core\\3.1.8\\microsoft.aspnetcore.signalr.client.core.3.1.8.nupkg.sha512",
     "C:\\Users\\tomas\\.nuget\\packages\\microsoft.aspnetcore.signalr.common\\3.1.8\\microsoft.aspnetcore.signalr.common.3.1.8.nupkg.sha512",
     "C:\\Users\\tomas\\.nuget\\packages\\microsoft.aspnetcore.signalr.protocols.json\\3.1.8\\microsoft.aspnetcore.signalr.protocols.json.3.1.8.nupkg.sha512",
