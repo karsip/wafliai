@@ -32,7 +32,7 @@ namespace GameServer
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Battle Ship");
+                    await context.Response.WriteAsync("Battle Ship games");
                 });
                 endpoints.MapHub<BattleShipHub>("/hub");
             });

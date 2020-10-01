@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BattleShipModels;
@@ -17,52 +11,87 @@ namespace GameClient
 {
     public partial class Map1 : Form
     {
-        Int32 gridColNum = 64;
-        Int32 gridRowNum = 64;
-        int gridSquareSize = 25;
+        readonly Int32 gridColNum = 64;
+        readonly Int32 gridRowNum = 64;
+        readonly int gridSquareSize = 25;
+        bool IsGameOver = true;
+        private HubConnection hubConnection;
 
         Image img = null;
         Graphics imgGraph = null;
         Graphics graph = null;
 
         private MapCell[][] map;
+        private MapCell[][] generatedmap;
 
-        private HubConnection hubConnection;
+        private void generateMap()
+        {
+            var groundFactory = new GroundFactory();
+
+            Random rnd = new Random();
+            generatedmap = new MapCell[64][];
+            for (int i = 0; i < 64; i++)
+            {
+                generatedmap[i] = new MapCell[64];
+                for (int j = 0; j < 64; j++)
+                {
+                    generatedmap[i][j] = new MapCell();
+                }            
+            }
+
+            for (int i = 0; i < 64; i++)
+            {
+                for (int j = 0; j < 64; j++)
+                {
+                    int groundType = rnd.Next(1, 4);
+                    generatedmap[i][j].mapObject = groundFactory.CreateGround(groundType);
+                }
+            }
+    }
         public Map1()
         {
             InitializeComponent();
-
-            _ = InitConnection();
+            button1.Enabled = true;
+            // InitializeConnection();
+            this.screen.Visible = false;
 
             img = new Bitmap(25 * 64, 25 * 64);
             imgGraph = Graphics.FromImage(img);
             graph = screen.CreateGraphics();
+
+            generateMap();
         }
-        public void StateUpdated(string serializedWordFromServer)
+        public void MapUpdate(string serializedWordFromServer)
         {
-            var worldFromServer = JsonConvert.DeserializeObject<MapCell[][]>(serializedWordFromServer, new JsonSerializerSettings()
+            var mapFromServer = JsonConvert.DeserializeObject<MapCell[][]>(serializedWordFromServer, new JsonSerializerSettings()
             {
                 TypeNameHandling = TypeNameHandling.Auto
             });
-            map = worldFromServer;
+            map = mapFromServer;
+            Console.WriteLine("Map object", map[5][5].mapObject);
             Draw();
         }
 
         private void Draw()
         {
-            imgGraph.FillRectangle(new SolidBrush(Color.White), 0, 0, gridSquareSize * gridColNum, gridSquareSize * gridRowNum);
+            Console.WriteLine("Painting map " + generatedmap[1][63].mapObject + " length " + generatedmap.GetLength(0));
+            imgGraph.FillRectangle(new SolidBrush(Color.White), 0, 0, 25 * 64, 25 * 64);
 
-            var gridBrush = new SolidBrush(Color.LightGray);
+            var gridBrush = new SolidBrush(Color.Blue);
             var gridPen = new Pen(gridBrush);
 
-            for (int i = 1; i < gridColNum; ++i)
-                imgGraph.DrawLine(gridPen, 0, i * gridSquareSize, gridSquareSize * gridColNum, i * gridSquareSize);
+            for (int i = 1; i < 64; ++i)
+            {
+                imgGraph.DrawLine(gridPen, 0, i * 25, 25 * 64, i * 25);
+            }
+                
+            for (int i = 1; i < 64; ++i)
+            {
+                imgGraph.DrawLine(gridPen, i * 25, 0, i * 25, 25 * 64);
+            }
 
-            for (int i = 1; i < gridColNum; ++i)
-                imgGraph.DrawLine(gridPen, i * gridSquareSize, 0, i * gridSquareSize, gridSquareSize * gridRowNum);
 
-            if (map == null) return;
-
+            if (generatedmap == null) return;
 
             Random rnd = new Random();
 
@@ -71,40 +100,44 @@ namespace GameClient
             var obstacleColor = new SolidBrush(Color.Gray);
             var grassColor = new SolidBrush(Color.Green);
 
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < generatedmap.GetLength(0); i++)
             {
-                for (int j = 0; j < 64; j++)
+                for (int j = 0; j < generatedmap[i].Length; j++)
                 {
-                    if (map[i][j].mapObject is Water)
+                    if (generatedmap[i][j].mapObject is Water)
                     {
-                        imgGraph.FillRectangle(waterColor, i * gridSquareSize, j * gridSquareSize, gridSquareSize - 1, gridSquareSize - 1);
+                        generatedmap[i][j].mapObject.Draw(waterColor, i * gridSquareSize, j * gridSquareSize, gridSquareSize - 1, gridSquareSize - 1, imgGraph);
                     }
-                    else if (map[i][j].mapObject is Grass)
+                    else if (generatedmap[i][j].mapObject is Grass)
                     {
-                        imgGraph.FillRectangle(grassColor, i * gridSquareSize, j * gridSquareSize, gridSquareSize - 1, gridSquareSize - 1);
+                        generatedmap[i][j].mapObject.Draw(grassColor, i * gridSquareSize, j * gridSquareSize, gridSquareSize - 1, gridSquareSize - 1, imgGraph);
                     }
-                    else if (map[i][j].mapObject is Earth)
+                    else if (generatedmap[i][j].mapObject is Earth)
                     {
-                        imgGraph.FillRectangle(earthColor, i * gridSquareSize, j * gridSquareSize, gridSquareSize - 1, gridSquareSize - 1);
-                    }
-                    else
-                    {
+                        generatedmap[i][j].mapObject.Draw(earthColor, i * gridSquareSize, j * gridSquareSize, gridSquareSize - 1, gridSquareSize - 1, imgGraph);
+                    } else
                         imgGraph.FillRectangle(obstacleColor, i * gridSquareSize, j * gridSquareSize, gridSquareSize - 1, gridSquareSize - 1);
-                    }
-
                 }
             }
-
             graph.DrawImage(img, 0, 0);
         }
-        private async Task InitConnection()
+        private void ChangeGameState()
         {
-            //WithUrl not working
+            IsGameOver = !IsGameOver;
+
+            this.screen.Visible = !IsGameOver;
+            this.button1.Visible = IsGameOver;
+            Draw();
+        }
+        private async Task InitializeConnection()
+        {
             hubConnection = new HubConnectionBuilder()
-                .Build();
-            hubConnection.On<string>("StateUpdate", StateUpdated);
+                            .WithUrl("https://localhost:5000/hub/")
+                            .Build();
+            hubConnection.On<string>("MapUpdate", MapUpdate);
 
             await hubConnection.StartAsync();
+            button1.Enabled = true;
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -113,12 +146,7 @@ namespace GameClient
             {
                 if (keyData == Keys.A || keyData == Keys.S || keyData == Keys.D || keyData == Keys.W)
                 {
-                    hubConnection.SendAsync("HandleClick", keyData.ToString());
-                    return true;
-                }
-                else if (keyData == Keys.Space)
-                {
-                    //put a bomb
+                    hubConnection.SendAsync("HandleMapClick", keyData.ToString());
                     return true;
                 }
             }
@@ -127,23 +155,11 @@ namespace GameClient
 
         private void Map1_Load(object sender, EventArgs e)
         {
-
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.screen.Visible = true;
-            Draw();
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
+            ChangeGameState();
         }
     }
 }

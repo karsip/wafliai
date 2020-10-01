@@ -1,11 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "T0hqQd0x84mmr8WXCCdcV2vYlJ10NEN4ZyTza6H0Y2j4xdggO2uBUnlQVITQtIGaOIJ6TbbbjCnbwMB3L2v71A==",
+  "dgSpecHash": "/h1ETurHi5+/APJPaL8dSeolzegZuz17Bh+B5nvCoSijXa1l/TaUGto5CuVdh4k9JIJORaHQptARl2aJPIyWjQ==",
   "success": true,
   "projectFilePath": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\BattleShip\\GameClient\\GameClient.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\ignbar1\\.nuget\\packages\\microsoft.aspnet.signalr\\2.4.1\\microsoft.aspnet.signalr.2.4.1.nupkg.sha512",
     "C:\\Users\\ignbar1\\.nuget\\packages\\microsoft.aspnetcore.connections.abstractions\\3.1.8\\microsoft.aspnetcore.connections.abstractions.3.1.8.nupkg.sha512",
+    "C:\\Users\\ignbar1\\.nuget\\packages\\microsoft.aspnetcore.http.connections.client\\3.1.8\\microsoft.aspnetcore.http.connections.client.3.1.8.nupkg.sha512",
+    "C:\\Users\\ignbar1\\.nuget\\packages\\microsoft.aspnetcore.http.connections.common\\3.1.8\\microsoft.aspnetcore.http.connections.common.3.1.8.nupkg.sha512",
     "C:\\Users\\ignbar1\\.nuget\\packages\\microsoft.aspnetcore.http.features\\3.1.8\\microsoft.aspnetcore.http.features.3.1.8.nupkg.sha512",
+    "C:\\Users\\ignbar1\\.nuget\\packages\\microsoft.aspnetcore.signalr.client\\3.1.8\\microsoft.aspnetcore.signalr.client.3.1.8.nupkg.sha512",
     "C:\\Users\\ignbar1\\.nuget\\packages\\microsoft.aspnetcore.signalr.client.core\\3.1.8\\microsoft.aspnetcore.signalr.client.core.3.1.8.nupkg.sha512",
     "C:\\Users\\ignbar1\\.nuget\\packages\\microsoft.aspnetcore.signalr.common\\3.1.8\\microsoft.aspnetcore.signalr.common.3.1.8.nupkg.sha512",
     "C:\\Users\\ignbar1\\.nuget\\packages\\microsoft.aspnetcore.signalr.protocols.json\\3.1.8\\microsoft.aspnetcore.signalr.protocols.json.3.1.8.nupkg.sha512",

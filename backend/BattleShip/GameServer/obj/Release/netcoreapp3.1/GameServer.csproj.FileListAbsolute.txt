@@ -1,7 +1,3 @@
-C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameServer\obj\Release\netcoreapp3.1\GameServer.AssemblyInfoInputs.cache
-C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameServer\obj\Release\netcoreapp3.1\GameServer.AssemblyInfo.cs
-C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameServer\obj\Release\netcoreapp3.1\GameServer.csproj.CoreCompileInputs.cache
-C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameServer\obj\Release\netcoreapp3.1\GameServer.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameServer\bin\Release\netcoreapp3.1\appsettings.Development.json
 C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameServer\bin\Release\netcoreapp3.1\appsettings.json
 C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameServer\bin\Release\netcoreapp3.1\Properties\launchSettings.json
@@ -15,6 +11,10 @@ C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameServer\bin\Release\netc
 C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameServer\bin\Release\netcoreapp3.1\BattleShipModels.dll
 C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameServer\bin\Release\netcoreapp3.1\BattleShipModels.pdb
 C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameServer\obj\Release\netcoreapp3.1\GameServer.csprojAssemblyReference.cache
+C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameServer\obj\Release\netcoreapp3.1\GameServer.AssemblyInfoInputs.cache
+C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameServer\obj\Release\netcoreapp3.1\GameServer.AssemblyInfo.cs
+C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameServer\obj\Release\netcoreapp3.1\GameServer.csproj.CoreCompileInputs.cache
+C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameServer\obj\Release\netcoreapp3.1\GameServer.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameServer\obj\Release\netcoreapp3.1\GameServer.RazorTargetAssemblyInfo.cache
 C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameServer\obj\Release\netcoreapp3.1\GameServer.csproj.CopyComplete
 C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameServer\obj\Release\netcoreapp3.1\staticwebassets\GameServer.StaticWebAssets.Manifest.cache
