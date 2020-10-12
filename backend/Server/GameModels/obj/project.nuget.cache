@@ -1,19 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "AeL7WaUlzBVeeqIQgdDZoQXsEhmgYhK9mr39L+s328Ib6MQhpZ9sVan0NmCzFeFKe0ICaGJZnGJ6fbnpVOD6tg==",
+  "dgSpecHash": "ODNAmh72xaiCOVMbvzMq5yE839rx59KdmOr4sdmxOKIW0MGmOF5IMSZfvS9Go6zQB9jzBCmIWVrRY6IkNML+FA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj",
+  "projectFilePath": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\tomas\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "C:\\Users\\tomas\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
-    "C:\\Users\\tomas\\.nuget\\packages\\system.drawing.common\\4.7.0\\system.drawing.common.4.7.0.nupkg.sha512"
+    "C:\\Users\\ignbar1\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\ignbar1\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
+    "C:\\Users\\ignbar1\\.nuget\\packages\\system.drawing.common\\4.7.0\\system.drawing.common.4.7.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  "logs": []
 }

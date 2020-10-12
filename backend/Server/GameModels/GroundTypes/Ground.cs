@@ -8,7 +8,7 @@ namespace GameModels.GroundTypes
     [Serializable]
     public abstract class Ground : MapObjectInterface
     {
-        public void Draw(SolidBrush color, int x, int y, int width, int height, Graphics graphics)
+        public void Draw(TextureBrush color, int x, int y, int width, int height, Graphics graphics)
         {
             graphics.FillRectangle(color, x, y, width, height);
         }

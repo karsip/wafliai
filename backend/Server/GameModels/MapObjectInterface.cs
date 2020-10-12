@@ -7,6 +7,6 @@ namespace GameModels
 {
     public interface MapObjectInterface
     {
-        void Draw(SolidBrush color, int x, int y, int width, int height, Graphics graphics);
+        void Draw(TextureBrush color, int x, int y, int width, int height, Graphics graphics);
     }
 }

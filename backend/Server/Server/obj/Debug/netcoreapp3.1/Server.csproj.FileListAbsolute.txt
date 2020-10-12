@@ -53,3 +53,16 @@ F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\obj\Deb
 F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.pdb
 F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.genruntimeconfig.cache
 >>>>>>> 01c0c82f45611392a1ed0f7a092db66c945b3a66
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Microsoft.DotNet.PlatformAbstractions.dll
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyModel.dll
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Microsoft.Extensions.PlatformAbstractions.dll
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Nancy.dll
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\System.Drawing.Common.dll
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\GameModels.dll
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\GameModels.pdb
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.csproj.CopyComplete

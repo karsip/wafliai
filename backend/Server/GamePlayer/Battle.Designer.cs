@@ -45,10 +45,13 @@
             // 
             // grid
             // 
+            this.grid.AutoScroll = true;
+            this.grid.CausesValidation = false;
             this.grid.Location = new System.Drawing.Point(12, 56);
             this.grid.Name = "grid";
-            this.grid.Size = new System.Drawing.Size(1702, 820);
+            this.grid.Size = new System.Drawing.Size(1702, 1702);
             this.grid.TabIndex = 1;
+            this.grid.Paint += new System.Windows.Forms.PaintEventHandler(this.grid_Paint);
             // 
             // button1
             // 
@@ -75,7 +78,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1726, 888);
+            this.ClientSize = new System.Drawing.Size(1726, 987);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.grid);

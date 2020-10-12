@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -113,25 +115,27 @@ namespace GamePlayer
             if (map == null) return;
 
             //Draw
-            var desertColor = new SolidBrush(Color.SandyBrown);
-            var grassColor = new SolidBrush(Color.Green);
-            var waterColor = new SolidBrush(Color.Blue);
-
+            var desertTexture = new Bitmap("../../../GameModels/Textures/sandTile.png");
+            TextureBrush desertBrush = new TextureBrush(desertTexture);
+            var grassTexture = new Bitmap("../../../GameModels/Textures/grassTile.png");
+            TextureBrush grassBrush = new TextureBrush(grassTexture);
+            var waterTexture = new Bitmap("../../../GameModels/Textures/waterTile.png");
+            TextureBrush watertBrush = new TextureBrush(waterTexture);
             for (int i = 0; i < map.GetLength(0); i++)
             {
                 for (int j = 0; j < map[i].Length; j++)
                 {
                     if(map[i][j].mapObject is Sand)
                     {
-                        map[i][j].mapObject.Draw(desertColor, i * squareSize, j * squareSize, squareSize - 1, squareSize - 1, imgGraph);
+                        map[i][j].mapObject.Draw(desertBrush, i * squareSize, j * squareSize, squareSize - 1, squareSize - 1, imgGraph);
                     }
                     else if(map[i][j].mapObject is Grass)
                     {
-                        map[i][j].mapObject.Draw(grassColor, i * squareSize, j * squareSize, squareSize - 1, squareSize - 1, imgGraph);
+                        map[i][j].mapObject.Draw(grassBrush, i * squareSize, j * squareSize, squareSize - 1, squareSize - 1, imgGraph);
                     }
                     else
                     {
-                        map[i][j].mapObject.Draw(waterColor, i * squareSize, j * squareSize, squareSize - 1, squareSize - 1, imgGraph);
+                        map[i][j].mapObject.Draw(watertBrush, i * squareSize, j * squareSize, squareSize - 1, squareSize - 1, imgGraph);
                     }
                 }
             }
@@ -153,6 +157,11 @@ namespace GamePlayer
         private void button2_Click(object sender, EventArgs e)
         {
             handleRequest("map");
+        }
+
+        private void grid_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
