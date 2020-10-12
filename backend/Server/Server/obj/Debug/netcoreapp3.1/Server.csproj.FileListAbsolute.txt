@@ -7,7 +7,6 @@ C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\
 C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.csprojAssemblyReference.cache
 C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.AssemblyInfoInputs.cache
 C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.AssemblyInfo.cs
-C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.csproj.CoreCompileInputs.cache
 C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.dll
 C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.pdb
 C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.genruntimeconfig.cache
@@ -24,3 +23,17 @@ C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3
 C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.dll
 C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.pdb
 C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.genruntimeconfig.cache
+C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\System.Drawing.Common.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\GameModels.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\GameModels.pdb
+C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.csproj.CopyComplete
+C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyModel.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Microsoft.Extensions.PlatformAbstractions.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Nancy.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.csproj.CoreCompileInputs.cache

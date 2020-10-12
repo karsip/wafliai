@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "AeL7WaUlzBVeeqIQgdDZoQXsEhmgYhK9mr39L+s328Ib6MQhpZ9sVan0NmCzFeFKe0ICaGJZnGJ6fbnpVOD6tg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\tomas\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\system.drawing.common\\4.7.0\\system.drawing.common.4.7.0.nupkg.sha512"
+  ],
+  "logs": []
+}

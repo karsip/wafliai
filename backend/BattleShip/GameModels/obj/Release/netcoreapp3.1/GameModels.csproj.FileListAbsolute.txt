@@ -1,4 +1,0 @@
-C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameModels\obj\Release\netcoreapp3.1\GameModels.csprojAssemblyReference.cache
-C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameModels\obj\Release\netcoreapp3.1\GameModels.AssemblyInfoInputs.cache
-C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameModels\obj\Release\netcoreapp3.1\GameModels.AssemblyInfo.cs
-C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameModels\obj\Release\netcoreapp3.1\GameModels.csproj.CoreCompileInputs.cache

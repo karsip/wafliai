@@ -1,5 +1,9 @@
-﻿using System;
+﻿using GameModels;
+using Nancy.Json;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -14,11 +18,20 @@ namespace Server
         private static List<Socket> _clientSockets = new List<Socket>();
         private static List<Player> _gamePlayerList = new List<Player>();
         private static byte[] _buffer = new byte[1024];
+        private static MapCell[][] gameCells;
+        
         static void Main(string[] args)
         {
+            Map gameMap = new Map();
+            gameCells = gameMap.GetMapObjects();
+
             Console.Title = "BattleShip Server";
             SetupServer();
+            // var jsonMap = Newtonsoft.Json.JsonConvert.SerializeObject(gameCells,
+            //                            typeof(MapCell), new JsonSerializerSettings
+            //                            { TypeNameHandling = TypeNameHandling.Auto });
             Console.ReadLine();
+
         }
 
         private static void SetupServer()
@@ -88,7 +101,14 @@ namespace Server
                 if (wordCount == 1)
                 {
                     switch (text.ToLower())
-                    {
+                    {                       
+                        case "map":
+                            Map gameMap = new Map();
+                            string val = JsonConvert.SerializeObject(gameMap.GetMapObjects(),
+                                        typeof(MapCell), new JsonSerializerSettings
+                                        { TypeNameHandling = TypeNameHandling.Auto });
+                            data = Encoding.ASCII.GetBytes(val);
+                            break;
                         case "surrender":
                             data = Encoding.ASCII.GetBytes(ConfigureReport(text, userNameToShow));
 

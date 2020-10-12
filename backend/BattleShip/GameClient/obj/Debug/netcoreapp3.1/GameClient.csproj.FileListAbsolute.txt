@@ -1,7 +1,0 @@
-C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameClient\bin\Debug\netcoreapp3.1\GameClient.exe
-C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameClient\obj\Debug\netcoreapp3.1\GameClient.AssemblyInfoInputs.cache
-C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameClient\obj\Debug\netcoreapp3.1\GameClient.AssemblyInfo.cs
-C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameClient\bin\Debug\netcoreapp3.1\Microsoft.AspNet.SignalR.Client.dll
-C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameClient\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
-C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameClient\obj\Debug\netcoreapp3.1\GameClient.csprojAssemblyReference.cache
-C:\Users\tomas\Desktop\BattleShip\backend\BattleShip\GameClient\obj\Debug\netcoreapp3.1\GameClient.csproj.CopyComplete

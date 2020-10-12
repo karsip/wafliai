@@ -1,0 +1,17 @@
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\bin\Debug\GamePlayer.exe.config
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\bin\Debug\GamePlayer.exe
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\bin\Debug\GamePlayer.pdb
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.csprojAssemblyReference.cache
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.Form1.resources
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.Properties.Resources.resources
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.csproj.GenerateResource.cache
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.csproj.CoreCompileInputs.cache
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.exe
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.pdb
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.Battle.resources
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\bin\Debug\GameModels.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\bin\Debug\GameModels.pdb
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.csproj.CopyComplete
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\bin\Debug\Newtonsoft.Json.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\bin\Debug\System.Drawing.Common.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\bin\Debug\Newtonsoft.Json.xml
