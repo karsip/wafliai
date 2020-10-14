@@ -19,13 +19,17 @@ namespace GamePlayer
     public partial class Battle : Form
     {
         private static Socket _clientSocket;
-        Int32 rows = 64;
-        Int32 columns = 64;
-        int squareSize = 25;
         private int clickedObject = 2;
 
-        private MapCell[][] map;
+        int ship1 = 1;
+        int ship2 = 2;
+        int ship3 = 3;
+        int plane = 2;
+        int soldier = 3;
+        int mine = 2;
 
+        private MapCell[][] map;
+        private PlayerData playerDataOnStart;
 
         private void renderLabels()
         {
@@ -62,7 +66,7 @@ namespace GamePlayer
                         label_to_add.BackColor = Color.DarkCyan;
                         label_to_add.Image = Image.FromFile("../../../GameModels/Textures/waterTile.png");
                     }
-                    flowLayoutPanel1.Controls.Add(label_to_add);
+                    flowLayoutPanel2.Controls.Add(label_to_add);
                 }
             }
         }
@@ -108,7 +112,7 @@ namespace GamePlayer
                 for (int j = 0; j < columnNumber; j++)
                 {
                     Point myPoint = new Point((column + (25 * j)), (row + 25 * i));
-                    Label update_label = flowLayoutPanel1.GetChildAtPoint(myPoint) as Label;
+                    Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
                     switch (object_id)
                     {
                         // aircrafts 2, ships - 3, mine - 1, soldier: 1
@@ -198,8 +202,14 @@ namespace GamePlayer
         public Battle(string username, Socket socket)
         {
             InitializeComponent();
+            label1.Text = "Left: " + ship1.ToString();
+            label2.Text = "Left: " + ship2.ToString();
+            label3.Text = "Left: " + ship3.ToString();
+            label4.Text = "Left: " + plane.ToString();
+            label5.Text = "Left: " + soldier.ToString();
+            label6.Text = "Left: " + mine.ToString();
             this.AutoScroll = true;
-            flowLayoutPanel1.Size = new Size(25 * 64, 25 * 64);
+            flowLayoutPanel2.Size = new Size(25 * 64, 25 * 64);
 
 
 
@@ -216,17 +226,32 @@ namespace GamePlayer
 
             byte[] data = new byte[rec];
             Array.Copy(responseBuffer, data, rec);
-            
-            Console.WriteLine("Full encoded data", Encoding.ASCII.GetString(data));
-            var mapString = System.Text.Encoding.Default.GetString(data);
-            Console.WriteLine(mapString);
-            map = JsonConvert.DeserializeObject<MapCell[][]>(mapString, new JsonSerializerSettings()
-            {
-                TypeNameHandling = TypeNameHandling.Auto
-            });
-            
-        }
 
+            Console.WriteLine("Full encoded data", Encoding.ASCII.GetString(data));
+            switch (request)
+            {
+                case "map":
+                    var mapString = System.Text.Encoding.Default.GetString(data);
+                    Console.WriteLine("MapString:    " + mapString);
+                    map = JsonConvert.DeserializeObject<MapCell[][]>(mapString, new JsonSerializerSettings()
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
+                    Array.Clear(responseBuffer, 0, responseBuffer.Length);
+                    Array.Clear(data, 0, data.Length); ;
+                    break;
+                case "playerData":
+                    var playerDataString = System.Text.Encoding.Default.GetString(data);
+                    Console.WriteLine("Player String" + playerDataString);
+                    playerDataOnStart = JsonConvert.DeserializeObject<PlayerData>(playerDataString, new JsonSerializerSettings()
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
+                    break;
+
+            }
+
+        }
         private void Battle_Load(object sender, EventArgs e)
         {
 
@@ -244,6 +269,82 @@ namespace GamePlayer
         }
 
         private void grid_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ship1--;
+            label1.Text = "Left: " + ship1.ToString();
+            handleRequest("playerData");
+            if (ship1 <= 0)
+            {
+                button3.Enabled = false;
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            ship2--;
+            label2.Text = "Left: " + ship2.ToString();
+            handleRequest("playerData");
+            if (ship2 <= 0)
+            {
+                button4.Enabled = false;
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            ship3--;
+            label3.Text = "Left: " + ship3.ToString();
+            handleRequest("playerData");
+            if (ship3 <= 0)
+            {
+                button5.Enabled = false;
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            plane--;
+            label4.Text = "Left: " + plane.ToString();
+            handleRequest("playerData");
+            if (plane <= 0)
+            {
+                button6.Enabled = false;
+            }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            soldier--;
+            label5.Text = "Left: " + soldier.ToString();
+            handleRequest("playerData");
+            if (soldier <= 0) 
+            {
+                button7.Enabled = false;
+            }
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            mine--;
+            label6.Text = "Left: " + mine.ToString();
+            handleRequest("playerData");
+            if (mine <= 0)
+            {
+                button8.Enabled = false;
+            }
+        }
+
+        private void flowLayoutPanel2_Paint(object sender, PaintEventArgs e)
         {
 
         }

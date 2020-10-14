@@ -117,9 +117,15 @@ namespace Server
                             data = Encoding.ASCII.GetBytes(ConfigureReport(text, userNameToShow));
 
                             break;
+                        case "playerData":
+                            var playerData = new PlayerData();
+                            string val1 = JsonConvert.SerializeObject(playerData,
+                                        typeof(PlayerData), new JsonSerializerSettings
+                                        { TypeNameHandling = TypeNameHandling.Auto });
+                            data = Encoding.ASCII.GetBytes(val1);
+                            break;
                         default:
                             data = Encoding.ASCII.GetBytes(WrongQuery());
-
                             break;
                     }
                 }
