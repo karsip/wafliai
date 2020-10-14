@@ -19,7 +19,7 @@ namespace GamePlayer
     public partial class Battle : Form
     {
         private static Socket _clientSocket;
-        private int clickedObject = 2;
+        private int clickedObject = 0;
 
         int ship1 = 1;
         int ship2 = 2;
@@ -77,6 +77,7 @@ namespace GamePlayer
             int row = button.Top;
             int column = button.Left;
             UpdateMap(row, column);
+            clickedObject = 0;
         }
         private void UpdateMap(int row, int column)
         {
@@ -87,20 +88,22 @@ namespace GamePlayer
                     renderObject(column, row, 3, 2, clickedObject);
                     break;
                 case 2:
-                    renderObject(column, row, 2, 4, 2);
+                    renderObject(column, row, 2, 4, clickedObject);
                     break;
                 case 3:
-                    renderObject(column, row, 1, 4, 3);
+                    renderObject(column, row, 1, 4, clickedObject);
                     break;
                 case 4:
-                    renderObject(column, row, 1, 5, 4);
+                    renderObject(column, row, 1, 5, clickedObject);
                     break;
                 case 5:
-                    renderObject(column, row, 1, 2, 5);
+                    renderObject(column, row, 1, 2, clickedObject);
+                    break;
+                case 6:
+                    renderObject(column, row, 1, 1, clickedObject);
                     break;
                 default:
                     break;
-
             }
         }
         private void renderObject(int column, int row, int columnNumber, int rowNumber, int object_id)
@@ -129,9 +132,7 @@ namespace GamePlayer
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/shipcarrier/shipcarrier" + counter.ToString() + ".png");
                             } else
                             {
-                                MessageBox.Show("You can place this ship where the water is!", "Warning",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                break;
+                                badPosition = true;
                             }
                             break;
                         case 3:
@@ -140,13 +141,12 @@ namespace GamePlayer
                             {
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/shipdestroyer/shipdestroyer" + counter.ToString() + ".png");
-                            }else
-                            {
-                                MessageBox.Show("You can place this ship where the water is!", "Warning",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                break;
                             }
-                            
+                            else
+                            {
+                                badPosition = true;
+                            }
+
                             break;
                         case 4:
                             // submarine
@@ -154,11 +154,10 @@ namespace GamePlayer
                             {
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/submarine/submarine" + counter.ToString() + ".png");
-                            } else
+                            }
+                            else
                             {
-                                MessageBox.Show("You can place this ship where the water is!", "Warning",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                break;
+                                badPosition = true;
                             }
                             break;
                         case 5:
@@ -167,16 +166,34 @@ namespace GamePlayer
                             {
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/soldier/soldier" + counter.ToString() + ".png");
-                            } else {
-                                MessageBox.Show("Soldiers cannot be placed in the water. They Will drawn!", "Warning",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                break;
+                            }
+                            else
+                            {
+                                badPosition = true;
                             }
                             break;
-                             
+                        case 6:
+                            if (row / 25 < 20 || row / 25 >= 42)
+                            {
+                                update_label.BorderStyle = BorderStyle.None;
+                                update_label.Image = Image.FromFile("../../../GameModels/Textures/mine.png");
+                            }
+                            else
+                            {
+                                badPosition = true;
+                            }
+                            break;
+                        default:
+                            break;
+
                     }
                     counter++;
                 }
+            }
+            if (badPosition)
+            {
+                MessageBox.Show("You can't place object here", "Game error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void SendData(string request)
@@ -208,11 +225,9 @@ namespace GamePlayer
             label4.Text = "Left: " + plane.ToString();
             label5.Text = "Left: " + soldier.ToString();
             label6.Text = "Left: " + mine.ToString();
+
+            // flowLayoutPanel2.Size = new Size(1239, 64 * 25);
             this.AutoScroll = true;
-            flowLayoutPanel2.Size = new Size(25 * 64, 25 * 64);
-
-
-
             this.username.Text = username;
             _clientSocket = socket;
         }
@@ -238,17 +253,19 @@ namespace GamePlayer
                         TypeNameHandling = TypeNameHandling.Auto
                     });
                     Array.Clear(responseBuffer, 0, responseBuffer.Length);
-                    Array.Clear(data, 0, data.Length); ;
+                    Array.Clear(data, 0, data.Length);
                     break;
-                case "playerData":
+                case "start":
                     var playerDataString = System.Text.Encoding.Default.GetString(data);
-                    Console.WriteLine("Player String" + playerDataString);
+                    Console.WriteLine("Player String " + playerDataString);
                     playerDataOnStart = JsonConvert.DeserializeObject<PlayerData>(playerDataString, new JsonSerializerSettings()
                     {
                         TypeNameHandling = TypeNameHandling.Auto
                     });
                     break;
-
+                default:
+                    Console.WriteLine("Wrong request.");
+                    break;
             }
 
         }
@@ -281,8 +298,9 @@ namespace GamePlayer
         private void button3_Click(object sender, EventArgs e)
         {
             ship1--;
+            clickedObject = 2;
             label1.Text = "Left: " + ship1.ToString();
-            handleRequest("playerData");
+            handleRequest("start");
             if (ship1 <= 0)
             {
                 button3.Enabled = false;
@@ -293,7 +311,8 @@ namespace GamePlayer
         {
             ship2--;
             label2.Text = "Left: " + ship2.ToString();
-            handleRequest("playerData");
+            clickedObject = 3;
+            handleRequest("start");
             if (ship2 <= 0)
             {
                 button4.Enabled = false;
@@ -303,8 +322,9 @@ namespace GamePlayer
         private void button5_Click(object sender, EventArgs e)
         {
             ship3--;
+            clickedObject = 4;
             label3.Text = "Left: " + ship3.ToString();
-            handleRequest("playerData");
+            handleRequest("start");
             if (ship3 <= 0)
             {
                 button5.Enabled = false;
@@ -314,8 +334,9 @@ namespace GamePlayer
         private void button6_Click(object sender, EventArgs e)
         {
             plane--;
+            clickedObject = 1;
             label4.Text = "Left: " + plane.ToString();
-            handleRequest("playerData");
+            handleRequest("start");
             if (plane <= 0)
             {
                 button6.Enabled = false;
@@ -325,8 +346,9 @@ namespace GamePlayer
         private void button7_Click(object sender, EventArgs e)
         {
             soldier--;
+            clickedObject = 5;
             label5.Text = "Left: " + soldier.ToString();
-            handleRequest("playerData");
+            handleRequest("start");
             if (soldier <= 0) 
             {
                 button7.Enabled = false;
@@ -336,8 +358,9 @@ namespace GamePlayer
         private void button8_Click(object sender, EventArgs e)
         {
             mine--;
+            clickedObject = 6;
             label6.Text = "Left: " + mine.ToString();
-            handleRequest("playerData");
+            handleRequest("start");
             if (mine <= 0)
             {
                 button8.Enabled = false;

@@ -9,6 +9,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Server
 {
@@ -27,9 +29,6 @@ namespace Server
 
             Console.Title = "BattleShip Server";
             SetupServer();
-            // var jsonMap = Newtonsoft.Json.JsonConvert.SerializeObject(gameCells,
-            //                            typeof(MapCell), new JsonSerializerSettings
-            //                            { TypeNameHandling = TypeNameHandling.Auto });
             Console.ReadLine();
 
         }
@@ -117,12 +116,15 @@ namespace Server
                             data = Encoding.ASCII.GetBytes(ConfigureReport(text, userNameToShow));
 
                             break;
-                        case "playerData":
-                            var playerData = new PlayerData();
-                            string val1 = JsonConvert.SerializeObject(playerData,
+                        case "start":
+                            PlayerData player = new PlayerData();
+                            string str_player = System.Text.Json.JsonSerializer.Serialize(player);
+                            // Console.WriteLine(" System.Text.Json.JsonSerializer.Serialize(player)   " + str_player);
+                            string player_string = JsonConvert.SerializeObject(player,
                                         typeof(PlayerData), new JsonSerializerSettings
                                         { TypeNameHandling = TypeNameHandling.Auto });
-                            data = Encoding.ASCII.GetBytes(val1);
+                            Console.WriteLine("player to string " + player_string);
+                            data = Encoding.ASCII.GetBytes(player_string);
                             break;
                         default:
                             data = Encoding.ASCII.GetBytes(WrongQuery());

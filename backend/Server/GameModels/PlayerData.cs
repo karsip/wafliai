@@ -7,7 +7,7 @@ namespace GameModels
 {
      public class PlayerData
     {
-        private int[] unitCount { get; set; }
+        private int[] unitCount;
         private int livePoints { get; set; }
         private bool isYourTurn { get; set; }
         private int[][] shipsLocation { get; set; }
@@ -15,6 +15,7 @@ namespace GameModels
 
         public PlayerData()
         {
+            unitCount = new int[6];
             for (int i = 0; i < 6; i++) 
             {
                 unitCount[i] = 0;
@@ -36,5 +37,9 @@ namespace GameModels
         public bool GetIsYourTurn() { return (isYourTurn); }
         public int[][] GetShipsLocation() { return (shipsLocation); }
         public bool GetIsLost() { return (isLost); }
+        public override string ToString()
+        {
+            return "Life points: " + livePoints.ToString() + "  and is he lost: " + isLost.ToString();
+        }
     }
 }

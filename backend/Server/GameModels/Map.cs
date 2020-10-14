@@ -1,9 +1,10 @@
 ﻿using GameModels.GroundTypes;
+using GameModels.ObjectObserver;
 using System;
 
 namespace GameModels
 {
-    public class Map
+    public class Map : Subject
     {
         private Int32 colNumber = 64;
         private Int32 rowNumber = 64;
