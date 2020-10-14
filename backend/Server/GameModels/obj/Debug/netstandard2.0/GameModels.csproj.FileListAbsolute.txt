@@ -16,3 +16,12 @@ F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GameModels\obj
 F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GameModels\obj\Debug\netstandard2.0\GameModels.csproj.CoreCompileInputs.cache
 F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GameModels\obj\Debug\netstandard2.0\GameModels.dll
 F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GameModels\obj\Debug\netstandard2.0\GameModels.pdb
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\GameModels\bin\Debug\netstandard2.0\GameModels.deps.json
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\GameModels\bin\Debug\netstandard2.0\GameModels.dll
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\GameModels\bin\Debug\netstandard2.0\GameModels.pdb
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\GameModels\obj\Debug\netstandard2.0\GameModels.csprojAssemblyReference.cache
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\GameModels\obj\Debug\netstandard2.0\GameModels.csproj.CoreCompileInputs.cache
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\GameModels\obj\Debug\netstandard2.0\GameModels.AssemblyInfoInputs.cache
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\GameModels\obj\Debug\netstandard2.0\GameModels.AssemblyInfo.cs
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\GameModels\obj\Debug\netstandard2.0\GameModels.dll
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\GameModels\obj\Debug\netstandard2.0\GameModels.pdb

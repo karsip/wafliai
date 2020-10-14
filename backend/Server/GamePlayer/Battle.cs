@@ -22,23 +22,156 @@ namespace GamePlayer
         Int32 rows = 64;
         Int32 columns = 64;
         int squareSize = 25;
-        private int[,,] gameArr = new int[64,64,3];
+        private int clickedObject = 2;
 
         private MapCell[][] map;
 
-        Image img = null;
-        Graphics imgGraph = null;
-        Graphics graph = null;
 
-        private void FillArr()
+        private void renderLabels()
         {
-            for (var i = 0; i < rows; i++)
+            Random rnd = new Random();
+            var lableArray = new Label[64, 64];
+            for (int i = 0; i < lableArray.GetLength(0); i++)
             {
-                for (var j = 0; j < columns; j++)
+                for (int j = 0; j < lableArray.GetLength(1); j++)
                 {
-                    gameArr[i, j, 0] = i;
-                    gameArr[i, j, 1] = j;
-                    gameArr[i, j, 2] = 0;
+
+                    var label_to_add = new Label();
+                    label_to_add.Size = new Size(25, 25);
+                    label_to_add.Top = i * 25;
+                    label_to_add.Left = j * 25;
+                    label_to_add.Margin = new Padding(0);
+                    label_to_add.BorderStyle = BorderStyle.FixedSingle;
+
+                    label_to_add.AutoSize = false;
+
+                    label_to_add.Click += new EventHandler(HandleClickLabel);
+
+                    if (map[i][j].mapObject is Sand)
+                    {
+                        label_to_add.BackColor = Color.SandyBrown;
+                        label_to_add.Image = Image.FromFile("../../../GameModels/Textures/sandTile.png");
+                    }
+                    else if (map[i][j].mapObject is Grass)
+                    {
+                        label_to_add.BackColor = Color.LawnGreen;
+                        label_to_add.Image = Image.FromFile("../../../GameModels/Textures/grassTile.png");
+                    }
+                    else
+                    {
+                        label_to_add.BackColor = Color.DarkCyan;
+                        label_to_add.Image = Image.FromFile("../../../GameModels/Textures/waterTile.png");
+                    }
+                    flowLayoutPanel1.Controls.Add(label_to_add);
+                }
+            }
+        }
+        protected void HandleClickLabel(object sender, EventArgs e)
+        {
+            Label button = sender as Label;
+
+            int row = button.Top;
+            int column = button.Left;
+            UpdateMap(row, column);
+        }
+        private void UpdateMap(int row, int column)
+        {
+            switch (clickedObject)
+            {
+                case 1:
+                    // render plane
+                    renderObject(column, row, 3, 2, clickedObject);
+                    break;
+                case 2:
+                    renderObject(column, row, 2, 4, 2);
+                    break;
+                case 3:
+                    renderObject(column, row, 1, 4, 3);
+                    break;
+                case 4:
+                    renderObject(column, row, 1, 5, 4);
+                    break;
+                case 5:
+                    renderObject(column, row, 1, 2, 5);
+                    break;
+                default:
+                    break;
+
+            }
+        }
+        private void renderObject(int column, int row, int columnNumber, int rowNumber, int object_id)
+        {
+            int counter = 1;
+            bool badPosition = false;
+            for (int i = 0; i < rowNumber; i++)
+            {
+                for (int j = 0; j < columnNumber; j++)
+                {
+                    Point myPoint = new Point((column + (25 * j)), (row + 25 * i));
+                    Label update_label = flowLayoutPanel1.GetChildAtPoint(myPoint) as Label;
+                    switch (object_id)
+                    {
+                        // aircrafts 2, ships - 3, mine - 1, soldier: 1
+                        case 1:
+                            // plane
+                            update_label.BorderStyle = BorderStyle.None;
+                            update_label.Image = Image.FromFile("../../../GameModels/Textures/plane/plane" + counter.ToString() + ".png");
+                            break;
+                        case 2:
+                            // shipcarrier
+                            if (row / 25 >= 20 && row / 25 < 42)
+                            {
+                                update_label.BorderStyle = BorderStyle.None;
+                                update_label.Image = Image.FromFile("../../../GameModels/Textures/shipcarrier/shipcarrier" + counter.ToString() + ".png");
+                            } else
+                            {
+                                MessageBox.Show("You can place this ship where the water is!", "Warning",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                break;
+                            }
+                            break;
+                        case 3:
+                            // shipdestroyer
+                            if (row / 25 >= 20 && row / 25 < 42)
+                            {
+                                update_label.BorderStyle = BorderStyle.None;
+                                update_label.Image = Image.FromFile("../../../GameModels/Textures/shipdestroyer/shipdestroyer" + counter.ToString() + ".png");
+                            }else
+                            {
+                                MessageBox.Show("You can place this ship where the water is!", "Warning",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                break;
+                            }
+                            
+                            break;
+                        case 4:
+                            // submarine
+                            if (row / 25 >= 20 && row / 25 < 42)
+                            {
+                                update_label.BorderStyle = BorderStyle.None;
+                                update_label.Image = Image.FromFile("../../../GameModels/Textures/submarine/submarine" + counter.ToString() + ".png");
+                            } else
+                            {
+                                MessageBox.Show("You can place this ship where the water is!", "Warning",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                break;
+                            }
+                            break;
+                        case 5:
+                            // soldier
+                            if (row / 25 < 20 || row / 25 >= 42)
+                            {
+                                update_label.BorderStyle = BorderStyle.None;
+                                update_label.Image = Image.FromFile("../../../GameModels/Textures/soldier/soldier" + counter.ToString() + ".png");
+                            } else {
+                                MessageBox.Show("Soldiers cannot be placed in the water. They Will drawn!", "Warning",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                break;
+                            }
+                            break;
+                             
+                    }
+                    counter++;
                 }
             }
         }
@@ -66,14 +199,10 @@ namespace GamePlayer
         {
             InitializeComponent();
             this.AutoScroll = true;
-            grid.BorderStyle = BorderStyle.FixedSingle;
+            flowLayoutPanel1.Size = new Size(25 * 64, 25 * 64);
 
-            img = new Bitmap(squareSize * rows, squareSize * columns);
-            imgGraph = Graphics.FromImage(img);
-            graph = grid.CreateGraphics();
 
-            FillArr();
-            
+
             this.username.Text = username;
             _clientSocket = socket;
         }
@@ -95,53 +224,7 @@ namespace GamePlayer
             {
                 TypeNameHandling = TypeNameHandling.Auto
             });
-            DrawMap();
-        }
-       private void DrawMap()
-       {
-            var gridBrush = new SolidBrush(Color.Blue);
-            Pen gridPen = new Pen(gridBrush);
-
-            // vertical Lines 
-            for (int i = 0; i < rows; i++)
-            {
-                graph.DrawLine(gridPen, 0, i * squareSize, squareSize * rows, i * squareSize);
-            }
-            for (int j = 0; j < columns; j++)
-            {
-                graph.DrawLine(gridPen, j * squareSize, 0, j * squareSize, squareSize * columns);
-            }
-
-            if (map == null) return;
-
-            //Draw
-            var desertTexture = new Bitmap("../../../GameModels/Textures/sandTile.png");
-            TextureBrush desertBrush = new TextureBrush(desertTexture);
-            var grassTexture = new Bitmap("../../../GameModels/Textures/grassTile.png");
-            TextureBrush grassBrush = new TextureBrush(grassTexture);
-            var waterTexture = new Bitmap("../../../GameModels/Textures/waterTile.png");
-            TextureBrush watertBrush = new TextureBrush(waterTexture);
-            for (int i = 0; i < map.GetLength(0); i++)
-            {
-                for (int j = 0; j < map[i].Length; j++)
-                {
-                    if(map[i][j].mapObject is Sand)
-                    {
-                        map[i][j].mapObject.Draw(desertBrush, i * squareSize, j * squareSize, squareSize - 1, squareSize - 1, imgGraph);
-                    }
-                    else if(map[i][j].mapObject is Grass)
-                    {
-                        map[i][j].mapObject.Draw(grassBrush, i * squareSize, j * squareSize, squareSize - 1, squareSize - 1, imgGraph);
-                    }
-                    else
-                    {
-                        map[i][j].mapObject.Draw(watertBrush, i * squareSize, j * squareSize, squareSize - 1, squareSize - 1, imgGraph);
-                    }
-                }
-            }
-
-            graph.DrawImage(img, 0, 0);
-
+            
         }
 
         private void Battle_Load(object sender, EventArgs e)
@@ -151,12 +234,13 @@ namespace GamePlayer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            DrawMap();
+            // renderLabels();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             handleRequest("map");
+            renderLabels();
         }
 
         private void grid_Paint(object sender, PaintEventArgs e)

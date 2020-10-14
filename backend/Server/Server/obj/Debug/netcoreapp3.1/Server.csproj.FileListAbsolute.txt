@@ -66,3 +66,16 @@ F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\bin\Deb
 F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\GameModels.dll
 F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\GameModels.pdb
 F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.csproj.CopyComplete
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyModel.dll
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Microsoft.Extensions.PlatformAbstractions.dll
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Nancy.dll
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\System.Drawing.Common.dll
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\GameModels.dll
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\bin\Debug\netcoreapp3.1\GameModels.pdb
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\Server\obj\Debug\netcoreapp3.1\Server.csproj.CopyComplete
