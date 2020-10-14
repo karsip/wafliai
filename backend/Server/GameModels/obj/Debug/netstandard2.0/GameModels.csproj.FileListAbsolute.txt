@@ -13,6 +13,6 @@ F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GameModels\bin
 F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GameModels\obj\Debug\netstandard2.0\GameModels.csprojAssemblyReference.cache
 F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GameModels\obj\Debug\netstandard2.0\GameModels.AssemblyInfoInputs.cache
 F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GameModels\obj\Debug\netstandard2.0\GameModels.AssemblyInfo.cs
-F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GameModels\obj\Debug\netstandard2.0\GameModels.csproj.CoreCompileInputs.cache
 F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GameModels\obj\Debug\netstandard2.0\GameModels.dll
 F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GameModels\obj\Debug\netstandard2.0\GameModels.pdb
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GameModels\obj\Debug\netstandard2.0\GameModels.csproj.CoreCompileInputs.cache

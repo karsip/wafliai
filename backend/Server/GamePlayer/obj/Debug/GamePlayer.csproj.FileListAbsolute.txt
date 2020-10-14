@@ -32,3 +32,4 @@ F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\obj
 F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.csproj.CopyComplete
 F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.exe
 F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.pdb
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.Form2.resources

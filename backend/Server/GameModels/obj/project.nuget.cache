@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "ODNAmh72xaiCOVMbvzMq5yE839rx59KdmOr4sdmxOKIW0MGmOF5IMSZfvS9Go6zQB9jzBCmIWVrRY6IkNML+FA==",
+  "dgSpecHash": "iGMBD7aD5qBA6O2+1pn9A/NE+9cZVnrEQYGsk3/BbkWumo4tiVMKtk6cuRG54opc2HfdmdhDgsm/7f/E9L9CFA==",
   "success": true,
   "projectFilePath": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ignbar1\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\ignbar1\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
+    "C:\\Users\\ignbar1\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Users\\ignbar1\\.nuget\\packages\\system.drawing.common\\4.7.0\\system.drawing.common.4.7.0.nupkg.sha512"
   ],
   "logs": []

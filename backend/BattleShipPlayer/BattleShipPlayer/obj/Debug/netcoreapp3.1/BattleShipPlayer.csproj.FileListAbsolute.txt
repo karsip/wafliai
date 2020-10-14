@@ -24,3 +24,16 @@ C:\Users\Modestas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\o
 C:\Users\Modestas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.pdb
 C:\Users\Modestas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.genruntimeconfig.cache
 C:\Users\tomas\Desktop\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.csprojAssemblyReference.cache
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\bin\Debug\netcoreapp3.1\BattleShipPlayer.exe
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\bin\Debug\netcoreapp3.1\BattleShipPlayer.deps.json
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\bin\Debug\netcoreapp3.1\BattleShipPlayer.runtimeconfig.json
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\bin\Debug\netcoreapp3.1\BattleShipPlayer.runtimeconfig.dev.json
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\bin\Debug\netcoreapp3.1\BattleShipPlayer.dll
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\bin\Debug\netcoreapp3.1\BattleShipPlayer.pdb
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.csprojAssemblyReference.cache
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.AssemblyInfoInputs.cache
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.AssemblyInfo.cs
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.csproj.CoreCompileInputs.cache
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.dll
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.pdb
+F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\BattleShipPlayer\BattleShipPlayer\obj\Debug\netcoreapp3.1\BattleShipPlayer.genruntimeconfig.cache
