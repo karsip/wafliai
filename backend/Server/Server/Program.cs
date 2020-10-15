@@ -18,7 +18,7 @@ namespace Server
     {
         private static Socket _serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         private static List<Socket> _clientSockets = new List<Socket>();
-        private static List<Player> _gamePlayerList = new List<Player>();
+        private static List<PlayerData> _gamePlayerList = new List<PlayerData>();
         private static byte[] _buffer = new byte[1024];
         private static MapCell[][] gameCells;
         
@@ -47,7 +47,9 @@ namespace Server
             // Accepted connection
             Socket socket = _serverSocket.EndAccept(AR);
             _clientSockets.Add(socket);
-            _gamePlayerList.Add(new Player(socket));
+            PlayerData playerToAdd = new PlayerData(socket);
+            Console.WriteLine("Player to add " + playerToAdd.ToString());
+            _gamePlayerList.Add(playerToAdd);
 
 
             // begin recieve data for each client socket
@@ -60,16 +62,18 @@ namespace Server
             try
             {
                 Socket socket = (Socket)AR.AsyncState;
+                Console.WriteLine("Sockettt  " + socket.ToString());
                 int received = socket.EndReceive(AR);
                 byte[] dataBuf = new byte[received];
                 Array.Copy(_buffer, dataBuf, received);
-
+                PlayerData player = _gamePlayerList.First(x => x.getSocket() == socket);
                 string text = Encoding.ASCII.GetString(dataBuf);
+                Console.WriteLine("text  " + text);
                 if (text.Contains("username: "))
                 {
+                    Console.WriteLine("We are note here");
                     try
                     {
-                        Player player = _gamePlayerList.First(x => x.getSocket() == socket);
                         string username = text.Replace("username: ", "");
                         if (player == null)
                         {
@@ -88,10 +92,11 @@ namespace Server
                     }
                 }
                 string userNameToShow = "undefined";
-                Player playerToShow = _gamePlayerList.First(x => x.getSocket() == socket);
-                if(playerToShow != null)
+                // PlayerData playerToShow = _gamePlayerList.First(x => x.getSocket() == socket);
+                Console.WriteLine("PLayer data toString()  " + player.ToString());
+                if(player != null)
                 {
-                    userNameToShow = playerToShow.getUsername();
+                    userNameToShow = player.getUsername();
                 }
                 char[] delimiters = new char[] { ' ', '\r' };
                 string output;
@@ -114,12 +119,12 @@ namespace Server
                             break;
                         case "back":
                             data = Encoding.ASCII.GetBytes(ConfigureReport(text, userNameToShow));
-
                             break;
                         case "start":
-                            PlayerData player = new PlayerData();
-                            string str_player = System.Text.Json.JsonSerializer.Serialize(player);
                             // Console.WriteLine(" System.Text.Json.JsonSerializer.Serialize(player)   " + str_player);
+                            Console.WriteLine("player object to String ---" + player.ToString());
+                            string player_json = new JavaScriptSerializer().Serialize(player);
+                            Console.WriteLine("player to json ---" + player_json);
                             string player_string = JsonConvert.SerializeObject(player,
                                         typeof(PlayerData), new JsonSerializerSettings
                                         { TypeNameHandling = TypeNameHandling.Auto });
@@ -195,39 +200,6 @@ namespace Server
         private static string ConfigureReport(string text, string username)
         {
             return username + "asked to " + text;
-        }
-    }
-
-    public class Player
-    {
-        private string username;
-        private Socket socket;
-
-        public Player(string username, Socket socket)
-        {
-            this.username = username;
-            this.socket = socket;
-        }
-
-        public Player(string username)
-        {
-            this.username = username;
-        }
-        public Player(Socket socket)
-        {
-            this.socket = socket;
-        }
-        public string getUsername()
-        {
-            return this.username;
-        }
-        public Socket getSocket()
-        {
-            return this.socket;
-        }
-        public void SetUsername(string username)
-        {
-            this.username = username;
         }
     }
 }

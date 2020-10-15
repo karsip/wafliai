@@ -33,8 +33,7 @@ namespace GamePlayer
                 }
                 catch (SocketException)
                 {
-                    MessageBox.Show("Connection attempts: " + attempts.ToString(), "Connection tracer",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Console.WriteLine("Connection attempts: " + attempts.ToString());
                 }
             }
         } 

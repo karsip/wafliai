@@ -130,7 +130,8 @@ namespace GamePlayer
                             {
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/shipcarrier/shipcarrier" + counter.ToString() + ".png");
-                            } else
+                            }
+                            else
                             {
                                 badPosition = true;
                             }
@@ -206,7 +207,7 @@ namespace GamePlayer
             byte[] buffer = Encoding.ASCII.GetBytes(request);
 
 
-             _clientSocket.Send(buffer);
+            _clientSocket.Send(buffer);
             byte[] responseBuffer = new byte[1024];
             int rec = _clientSocket.Receive(responseBuffer);
 
@@ -230,6 +231,7 @@ namespace GamePlayer
             this.AutoScroll = true;
             this.username.Text = username;
             _clientSocket = socket;
+            handleRequest("username: " + username);
         }
         private void handleRequest(string request)
         {
@@ -243,31 +245,38 @@ namespace GamePlayer
             Array.Copy(responseBuffer, data, rec);
 
             Console.WriteLine("Full encoded data", Encoding.ASCII.GetString(data));
-            switch (request)
+            if(request.Length < 10)
             {
-                case "map":
-                    var mapString = System.Text.Encoding.Default.GetString(data);
-                    Console.WriteLine("MapString:    " + mapString);
-                    map = JsonConvert.DeserializeObject<MapCell[][]>(mapString, new JsonSerializerSettings()
-                    {
-                        TypeNameHandling = TypeNameHandling.Auto
-                    });
-                    Array.Clear(responseBuffer, 0, responseBuffer.Length);
-                    Array.Clear(data, 0, data.Length);
-                    break;
-                case "start":
-                    var playerDataString = System.Text.Encoding.Default.GetString(data);
-                    Console.WriteLine("Player String " + playerDataString);
-                    playerDataOnStart = JsonConvert.DeserializeObject<PlayerData>(playerDataString, new JsonSerializerSettings()
-                    {
-                        TypeNameHandling = TypeNameHandling.Auto
-                    });
-                    break;
-                default:
-                    Console.WriteLine("Wrong request.");
-                    break;
+                switch (request)
+                {
+                    case "map":
+                        var mapString = System.Text.Encoding.Default.GetString(data);
+                        Console.WriteLine("MapString:    " + mapString);
+                        map = JsonConvert.DeserializeObject<MapCell[][]>(mapString, new JsonSerializerSettings()
+                        {
+                            TypeNameHandling = TypeNameHandling.Auto
+                        });
+                        Array.Clear(responseBuffer, 0, responseBuffer.Length);
+                        Array.Clear(data, 0, data.Length);
+                        break;
+                    case "start":
+                        var playerDataString = System.Text.Encoding.Default.GetString(data);
+                        Console.WriteLine("Player String " + playerDataString);
+                        playerDataOnStart = JsonConvert.DeserializeObject<PlayerData>(playerDataString, new JsonSerializerSettings()
+                        {
+                            TypeNameHandling = TypeNameHandling.Auto
+                        });
+                        Console.WriteLine("player data  " + playerDataOnStart.ToString());
+                        break;
+                    default:
+                        Console.WriteLine("Wrong request.");
+                        break;
+                }
             }
-
+            else
+            {
+                Console.WriteLine(System.Text.Encoding.Default.GetString(data));
+            }       
         }
         private void Battle_Load(object sender, EventArgs e)
         {
@@ -349,7 +358,7 @@ namespace GamePlayer
             clickedObject = 5;
             label5.Text = "Left: " + soldier.ToString();
             handleRequest("start");
-            if (soldier <= 0) 
+            if (soldier <= 0)
             {
                 button7.Enabled = false;
             }

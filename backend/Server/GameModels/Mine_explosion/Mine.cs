@@ -32,7 +32,7 @@ namespace GameModels.Bomb_explosion
 
         public int[] expliotionDamageArea(int size, int damage)
         {
-            return strategy.calculateArea(size, damage);
+            return strategy.CalculateArea(size, damage);
         }
 
         public async Task Update()
@@ -43,6 +43,7 @@ namespace GameModels.Bomb_explosion
                 // need to detach
                 gameMap.Detach(this);
                 // do something with mine effects
+                // await doAction();
             }
         }
     }

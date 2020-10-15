@@ -6,6 +6,6 @@ namespace GameModels.Mine_explosion
 {
     public interface IMineStrategy
     {
-        public int[] calculateArea(int size, int damage);
+        public int[] CalculateArea(int size, int damage);
     }
 }
