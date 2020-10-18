@@ -23,8 +23,12 @@ namespace Server
         private static List<Socket> _clientSockets = new List<Socket>();
         private static List<PlayerData> _gamePlayerList = new List<PlayerData>();
         private static byte[] _buffer = new byte[1024];
+        // array to update after each object is placed in map.
+        private static int[,] unitArray = new int[64, 64];
+        private static bool unitMapSendFirst = false;
         private static MapCell[][] gameCells;
-        
+
+
         static void Main(string[] args)
         {
             Map gameMap = new Map();
@@ -33,7 +37,29 @@ namespace Server
             Console.Title = "BattleShip Server";
             SetupServer();
             Console.ReadLine();
+        }
 
+        private static void updateUnitArray(int row, int column, int object_id, int rows, int columns)
+        {
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    unitArray[i, j] = object_id;
+                }
+            }
+            PrintArray();
+        }
+        private static void PrintArray()
+        {
+            for (var i = 0; i < unitArray.GetLength(0); i++)
+            {
+                for (var j = 0; j < unitArray.GetLength(1); j++)
+                {
+                    Console.Write(unitArray[i, j]);
+                }
+                Console.WriteLine();
+            }
         }
         private static void SetupServer()
         {
@@ -52,11 +78,20 @@ namespace Server
             Socket socket = _serverSocket.EndAccept(AR);
             _clientSockets.Add(socket);
             PlayerData playerToAdd = new PlayerData(socket);
-            Console.WriteLine("Player to add " + playerToAdd.ToString());
+            Console.WriteLine("Player to add " + playerToAdd);
             _gamePlayerList.Add(playerToAdd);
 
-
-            // begin recieve data for each client socket
+            if (!unitMapSendFirst)
+            {
+                string arrayToString = string.Join(',', unitArray.Cast<int>());
+                var data = Encoding.ASCII.GetBytes(arrayToString);
+                Console.WriteLine("array to string " + arrayToString);
+                socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
+                socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReveiveCallback), socket);
+                _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
+                unitMapSendFirst = true;
+            }
+                // begin recieve data for each client socket
             socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReveiveCallback), socket);
             _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
@@ -66,27 +101,25 @@ namespace Server
             try
             {
                 Socket socket = (Socket)AR.AsyncState;
-                Console.WriteLine("Sockettt  " + socket.ToString());
                 int received = socket.EndReceive(AR);
                 byte[] dataBuf = new byte[received];
                 Array.Copy(_buffer, dataBuf, received);
-                PlayerData player = _gamePlayerList.First(x => x.getSocket() == socket);
+                Func<PlayerData, bool> predicate = x => x.socket == socket;
+                PlayerData player = _gamePlayerList.First(predicate);
                 string text = Encoding.ASCII.GetString(dataBuf);
-                Console.WriteLine("text  " + text);
                 if (text.Contains("username: "))
                 {
-                    Console.WriteLine("We are note here");
                     try
                     {
                         string username = text.Replace("username: ", "");
                         if (player == null)
                         {
-                            Console.WriteLine("Couldn t find player with socket that matches username - " + username);
+                            Console.WriteLine("Couldn't find player with socket that matches username - " + username);
                         }
                         else
                         {
                             Console.WriteLine(username + " connected...");
-                            player.SetUsername(username);
+                            player.username = username;
                         }
 
                     }
@@ -96,11 +129,13 @@ namespace Server
                     }
                 }
                 string userNameToShow = "undefined";
-                // PlayerData playerToShow = _gamePlayerList.First(x => x.getSocket() == socket);
-                Console.WriteLine("PLayer data toString()  " + player.ToString());
-                if(player != null)
+                for (int i = 0; i < player.unitCount.Length; i++)
                 {
-                    userNameToShow = player.getUsername();
+                    Console.WriteLine("Unit count objects " + player.unitCount[i].ToString());
+                }
+                if (player != null)
+                {
+                    userNameToShow = player.username;
                 }
                 char[] delimiters = new char[] { ' ', '\r' };
                 string output;
@@ -109,7 +144,7 @@ namespace Server
                 if (wordCount == 1)
                 {
                     switch (text.ToLower())
-                    {                       
+                    {
                         case "map":
                             Map gameMap = new Map();
                             string val = JsonConvert.SerializeObject(gameMap.GetMapObjects(),
@@ -125,14 +160,10 @@ namespace Server
                             data = Encoding.ASCII.GetBytes(ConfigureReport(text, userNameToShow));
                             break;
                         case "start":
-                            // Console.WriteLine(" System.Text.Json.JsonSerializer.Serialize(player)   " + str_player);
-                            Console.WriteLine("player object to String ---" + player.ToString());
-                            string player_json = new JavaScriptSerializer().Serialize(player);
-                            Console.WriteLine("player to json ---" + player_json);
-                            string player_string = JsonConvert.SerializeObject(player,
+                            var playerData = new PlayerData(player.unitCount, player.livePoints, player.isYourTurn, player.objectLocations, player.isLost, player.username);
+                            string player_string = JsonConvert.SerializeObject(playerData,
                                         typeof(PlayerData), new JsonSerializerSettings
                                         { TypeNameHandling = TypeNameHandling.Auto });
-                            Console.WriteLine("player to string " + player_string);
                             data = Encoding.ASCII.GetBytes(player_string);
                             break;
                         default:
@@ -171,13 +202,15 @@ namespace Server
                 {
                     data = Encoding.ASCII.GetBytes(WrongQuery() + " and does not contain any supported input format");
                 }
+
                 socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
                 socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReveiveCallback), socket);
                 _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
             }
             catch (Exception e)
             {
-                _logger.LogException(e.Message);
+                String message = String.Format("Exception occurred while receiving callback -  {0}", e.Message);
+                _logger.LogException(message);
             }
 
         }

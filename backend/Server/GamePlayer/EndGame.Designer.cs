@@ -1,6 +1,6 @@
 ﻿namespace GamePlayer
 {
-    partial class Form2
+    partial class EndGame
     {
         /// <summary>
         /// Required designer variable.
@@ -28,35 +28,48 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.Color.LightYellow;
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.textBox1.Location = new System.Drawing.Point(422, 179);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(438, 62);
+            this.textBox1.TabIndex = 0;
+            this.textBox1.Text = "Game over";
+            // 
             // button1
             // 
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button1.Location = new System.Drawing.Point(218, 161);
+            this.button1.Location = new System.Drawing.Point(492, 280);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(134, 130);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
+            this.button1.Size = new System.Drawing.Size(293, 59);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Exit";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // Form2
+            // EndGame
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.BackColor = System.Drawing.Color.LightSkyBlue;
+            this.ClientSize = new System.Drawing.Size(1296, 611);
             this.Controls.Add(this.button1);
-            this.Name = "Form2";
-            this.Text = "Form2";
-            this.Load += new System.EventHandler(this.Form2_Load);
+            this.Controls.Add(this.textBox1);
+            this.Name = "EndGame";
+            this.Text = "EndGame";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
+        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button1;
     }
 }

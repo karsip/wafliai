@@ -23,6 +23,8 @@ namespace GamePlayer
         private static Socket _clientSocket;
         private int clickedObject = 0;
 
+        private static int[,] unitMap = new int[64, 64];
+
         int ship1 = 1;
         int ship2 = 2;
         int ship3 = 3;
@@ -32,6 +34,7 @@ namespace GamePlayer
 
         private MapCell[][] map;
         private PlayerData playerDataOnStart;
+        
 
         private void renderLabels()
         {
@@ -72,10 +75,10 @@ namespace GamePlayer
                 }
             }
         }
+
         protected void HandleClickLabel(object sender, EventArgs e)
         {
             Label button = sender as Label;
-
             int row = button.Top;
             int column = button.Left;
             UpdateMap(row, column);
@@ -199,14 +202,18 @@ namespace GamePlayer
                 _logger.LogException(err_Message);
                 MessageBox.Show("You can't place object here", "Game error",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
+            } else
+            {
+                // send request to server to update unitArray
             }
         }
         private void SendData(string request)
         {
             if (request.ToLower() == "end game")
             {
-                MessageBox.Show("You ended the game", "Game status",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Hide();
+                EndGame endForm = new EndGame();
+                endForm.ShowDialog();
             }
             byte[] buffer = Encoding.ASCII.GetBytes(request);
 
@@ -256,7 +263,6 @@ namespace GamePlayer
                 {
                     case "map":
                         var mapString = System.Text.Encoding.Default.GetString(data);
-                        Console.WriteLine("MapString:    " + mapString);
                         map = JsonConvert.DeserializeObject<MapCell[][]>(mapString, new JsonSerializerSettings()
                         {
                             TypeNameHandling = TypeNameHandling.Auto
@@ -383,7 +389,12 @@ namespace GamePlayer
 
         private void flowLayoutPanel2_Paint(object sender, PaintEventArgs e)
         {
+            
+        }
 
+        private void button9_Click(object sender, EventArgs e)
+        {
+            SendData("end game");
         }
     }
 }

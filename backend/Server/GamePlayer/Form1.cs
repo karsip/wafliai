@@ -16,6 +16,7 @@ namespace GamePlayer
     {
         private static Socket _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         private static bool connected = false;
+        private static int[,] unitArr = new int[64, 64];
         private static void StartConnect(string username)
         {
             int attempts = 0;
@@ -28,6 +29,7 @@ namespace GamePlayer
 
                     if (_clientSocket.Connected)
                     {
+                        Console.WriteLine("Connected");
                         connected = true;
                     }
                 }
@@ -46,6 +48,21 @@ namespace GamePlayer
         {
 
         }
+        public static byte[] ReceiveCallback()
+        {
+            var buffer = new List<byte>();
+            while(_clientSocket.Available > 0)
+            {
+                var currByte = new Byte[1];
+                var byteCounter = _clientSocket.Receive(currByte, currByte.Length, SocketFlags.None);
+
+                if (byteCounter.Equals(1))
+                {
+                    buffer.Add(currByte[0]);
+                }
+            }
+            return buffer.ToArray();
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -53,6 +70,8 @@ namespace GamePlayer
             if (username.Text.Length > 0)
             {
                 StartConnect(username.Text);
+                byte[] someArr = ReceiveCallback();
+                Console.WriteLine("sOME ABYTE ARR " + someArr.Length);
                 if (connected)
                 {
                     this.Hide();

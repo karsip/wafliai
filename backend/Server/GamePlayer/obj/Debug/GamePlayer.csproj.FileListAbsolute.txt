@@ -51,5 +51,4 @@ C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePla
 C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.exe
 C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.pdb
 C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.Form2.resources
-C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.optional.resources
-C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.Form2.resources
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.EndGame.resources
