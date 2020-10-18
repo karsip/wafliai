@@ -46,6 +46,8 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.button9 = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -83,6 +85,8 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.label7);
+            this.panel1.Controls.Add(this.button9);
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.label4);
@@ -97,7 +101,7 @@
             this.panel1.Controls.Add(this.button3);
             this.panel1.Location = new System.Drawing.Point(1674, 61);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(241, 662);
+            this.panel1.Size = new System.Drawing.Size(241, 852);
             this.panel1.TabIndex = 4;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -105,7 +109,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label6.Location = new System.Drawing.Point(158, 600);
+            this.label6.Location = new System.Drawing.Point(158, 629);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(64, 25);
             this.label6.TabIndex = 11;
@@ -125,7 +129,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label4.Location = new System.Drawing.Point(158, 439);
+            this.label4.Location = new System.Drawing.Point(158, 432);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(64, 25);
             this.label4.TabIndex = 9;
@@ -135,7 +139,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label3.Location = new System.Drawing.Point(158, 330);
+            this.label3.Location = new System.Drawing.Point(158, 323);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(64, 25);
             this.label3.TabIndex = 8;
@@ -145,7 +149,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label2.Location = new System.Drawing.Point(158, 191);
+            this.label2.Location = new System.Drawing.Point(158, 184);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(64, 25);
             this.label2.TabIndex = 7;
@@ -155,7 +159,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label1.Location = new System.Drawing.Point(158, 65);
+            this.label1.Location = new System.Drawing.Point(158, 58);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(64, 25);
             this.label1.TabIndex = 6;
@@ -165,29 +169,27 @@
             // 
             this.button8.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button8.BackgroundImage")));
             this.button8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button8.Location = new System.Drawing.Point(41, 582);
+            this.button8.Location = new System.Drawing.Point(41, 609);
             this.button8.Margin = new System.Windows.Forms.Padding(0);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(40, 52);
+            this.button8.Size = new System.Drawing.Size(50, 70);
             this.button8.TabIndex = 5;
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // button7
             // 
-            this.button7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button7.BackgroundImage")));
             this.button7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button7.Location = new System.Drawing.Point(41, 491);
+            this.button7.Location = new System.Drawing.Point(41, 503);
             this.button7.Margin = new System.Windows.Forms.Padding(0);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(50, 70);
+            this.button7.Size = new System.Drawing.Size(62, 61);
             this.button7.TabIndex = 4;
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // button6
             // 
-            this.button6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button6.BackgroundImage")));
             this.button6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button6.Location = new System.Drawing.Point(41, 417);
             this.button6.Margin = new System.Windows.Forms.Padding(0);
@@ -243,6 +245,28 @@
             this.flowLayoutPanel2.TabIndex = 0;
             this.flowLayoutPanel2.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel2_Paint);
             // 
+            // button9
+            // 
+            this.button9.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button9.BackgroundImage")));
+            this.button9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button9.Location = new System.Drawing.Point(41, 719);
+            this.button9.Margin = new System.Windows.Forms.Padding(0);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(40, 40);
+            this.button9.TabIndex = 12;
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(158, 734);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(64, 25);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "label7";
+            // 
             // Battle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -285,5 +309,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button button9;
     }
 }

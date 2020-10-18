@@ -48,5 +48,27 @@ namespace GameModels.AirCraftTypes
                 return bmp;
             }
         }
+        public Image[] ForMap()
+        {
+            Image[] unit = new Image[6];
+            if (_airCraftType == "Plane")
+            {
+                unit[0] = _parts["tailL"];
+                unit[1] = _parts["wingL"];
+                unit[2] = _parts["noseL"];
+                unit[3] = _parts["tailR"];
+                unit[4] = _parts["wingR"];
+                unit[5] = _parts["noseR"];
+                return unit;
+            }
+            else
+            {
+                unit[0] = _parts["wingL"];
+                unit[1] = _parts["noseL"];
+                unit[2] = _parts["wingR"];
+                unit[3] = _parts["noseR"];
+                return unit;
+            }
+        }
     }
 }
