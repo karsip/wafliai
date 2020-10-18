@@ -1,9 +1,11 @@
 ﻿using GameModels;
+using GameModels.Singleton;
 using Nancy.Json;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -16,6 +18,7 @@ namespace Server
 {
     class Program
     {
+        private static ILogger _logger;
         private static Socket _serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         private static List<Socket> _clientSockets = new List<Socket>();
         private static List<PlayerData> _gamePlayerList = new List<PlayerData>();
@@ -32,14 +35,15 @@ namespace Server
             Console.ReadLine();
 
         }
-
         private static void SetupServer()
         {
+            _logger = Logger.GetInstance;
             Console.WriteLine("Setting up server...");
             _serverSocket.Bind(new IPEndPoint(IPAddress.Any, 100));
             // backlog
             _serverSocket.Listen(10);
             _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
+            //Console.WriteLine("File path " + Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName));
         }
 
         private static void AcceptCallback(IAsyncResult AR)
@@ -88,7 +92,7 @@ namespace Server
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.Message);
+                        _logger.LogException(e.Message);
                     }
                 }
                 string userNameToShow = "undefined";
@@ -173,7 +177,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                _logger.LogException(e.Message);
             }
 
         }

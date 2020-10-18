@@ -1,5 +1,6 @@
 ﻿using GameModels;
 using GameModels.GroundTypes;
+using GameModels.Singleton;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace GamePlayer
 {
     public partial class Battle : Form
     {
+        private static ILogger _logger;
         private static Socket _clientSocket;
         private int clickedObject = 0;
 
@@ -193,6 +195,8 @@ namespace GamePlayer
             }
             if (badPosition)
             {
+                String err_Message = String.Format("User tried to place object which id is {0} in location x: {1} and y: {2}, which is not available", object_id, row, column);
+                _logger.LogException(err_Message);
                 MessageBox.Show("You can't place object here", "Game error",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -219,6 +223,7 @@ namespace GamePlayer
         }
         public Battle(string username, Socket socket)
         {
+            _logger = Logger.GetInstance;
             InitializeComponent();
             label1.Text = "Left: " + ship1.ToString();
             label2.Text = "Left: " + ship2.ToString();
