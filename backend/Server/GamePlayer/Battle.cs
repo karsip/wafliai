@@ -14,6 +14,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GameModels.AirCraftTypes;
+using GameModels.Checker;
+using System.CodeDom;
 
 namespace GamePlayer
 {
@@ -21,6 +23,7 @@ namespace GamePlayer
     {
         private static Socket _clientSocket;
         private int clickedObject = 0;
+        int[,] unitMap = new int[64, 64];
 
         int shipCarrier = 2;
         int shipDestroyer = 2;
@@ -121,121 +124,82 @@ namespace GamePlayer
             builder = new PlaneBuilder();
             airCraftDirector.Construct(builder);
             Image[] planeImg = builder.AirCraft.ForMap();
+            CanBePlaced canBePlaced = new CanBePlaced();
+            bool eligible = canBePlaced.IsEligible(unitMap, (column / 25), (row / 25), rowNumber, columnNumber, object_id);
             int counter = 1;
-            bool badPosition = false;
-            for (int i = 0; i < rowNumber; i++)
+            if (eligible)
             {
-                for (int j = 0; j < columnNumber; j++)
+                for (int i = 0; i < rowNumber; i++)
                 {
-                    Point myPoint = new Point((column + (25 * j)), (row + 25 * i));
-                    Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
-                    switch (object_id)
+                    for (int j = 0; j < columnNumber; j++)
                     {
-                        // aircrafts 2, ships - 3, mine - 1, soldier: 1
-                        case 1:
-                            // shipcarrier
-                            if (row / 25 >= 20 && row / 25 < 42)
-                            {
+                        Point myPoint = new Point((column + (25 * j)), (row + 25 * i));
+                        Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
+                        switch (object_id)
+                        {
+                            // aircrafts 2, ships - 3, mine - 1, soldier: 1
+                            case 1:
+                                // shipcarrier
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/shipcarrier/shipcarrier" + counter.ToString() + ".png");
-                            }
-                            else
-                            {
-                                badPosition = true;
-                            }
-                            break;
-                        case 2:
-                            // shipdestroyer
-                            if (row / 25 >= 20 && row / 25 < 42)
-                            {
+                                unitMap[myPoint.Y / 25, myPoint.X / 25] = 1;
+                                if(i+j ==0)shipCarrier--;
+                                break;
+                            case 2:
+                                // shipdestroyer
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/shipdestroyer/shipdestroyer" + counter.ToString() + ".png");
-                            }
-                            else
-                            {
-                                badPosition = true;
-                            }
+                                unitMap[myPoint.Y / 25, myPoint.X / 25] = 2;
+                                if (i + j == 0) shipDestroyer--;
 
-                            break;
-                        case 3:
-                            // submarine
-                            if (row / 25 >= 20 && row / 25 < 42)
-                            {
+                                break;
+                            case 3:
+                                // submarine
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/submarine/submarine" + counter.ToString() + ".png");
-                            }
-                            else
-                            {
-                                badPosition = true;
-                            }
-                            break;
-                        case 4:
-                            // plane
-                            update_label.BorderStyle = BorderStyle.None;
-                            update_label.Image = planeImg[counter - 1];
-                            break;
-                        case 5:
-                            // jet
-                            update_label.BorderStyle = BorderStyle.None;
-                            update_label.Image = jetImg[counter - 1];
-                            break;
-                        case 6:
-                            // soldier
-                            if (row / 25 < 20 || row / 25 >= 42)
-                            {
+                                unitMap[myPoint.Y / 25, myPoint.X / 25] = 3;
+                                if (i + j == 0) submarine--;
+                                break;
+                            case 4:
+                                // plane
+                                update_label.BorderStyle = BorderStyle.None;
+                                update_label.Image = planeImg[counter - 1];
+                                unitMap[myPoint.Y / 25, myPoint.X / 25] = 4;
+                                if (i + j == 0) plane--;
+                                break;
+                            case 5:
+                                // jet
+                                update_label.BorderStyle = BorderStyle.None;
+                                update_label.Image = jetImg[counter - 1];
+                                unitMap[myPoint.Y / 25, myPoint.X / 25] = 5;
+                                if (i + j == 0) jet--;
+                                break;
+                            case 6:
+                                // soldier
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/soldier/soldier" + counter.ToString() + ".png");
-                            }
-                            else
-                            {
-                                badPosition = true;
-                            }
-                            break;
-                        case 7:
-                            //mine
+                                unitMap[myPoint.Y / 25, myPoint.X / 25] = 6;
+                                if (i + j == 0) soldier--;
+                                break;
+                            case 7:
+                                //mine
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/mine.png");
-                            break;
-                        default:
-                            break;
+                                unitMap[myPoint.Y / 25, myPoint.X / 25] = 7;
+                                if (i + j == 0) mine--;
+                                break;
+                            default:
+                                break;
 
+                        }
+                        counter++;
                     }
-                    counter++;
                 }
             }
-            if (badPosition)
+            else
             {
                 MessageBox.Show("You can't place object here", "Game error",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else 
-            {
-                switch (object_id)
-                {
-                    case 1:
-                        shipCarrier--;
-                        break;
-                    case 2:
-                        shipDestroyer--;
-                        break;
-                    case 3:
-                        submarine--;
-                        break;
-                    case 4:
-                        plane--;
-                        break;
-                    case 5:
-                        jet--;
-                        break;
-                    case 6:
-                        soldier--;
-                        break;
-                    case 7:
-                        mine--;
-                        break;
-                    default:
-                        break;
-                }
             }
         }
         private void SendData(string request)
@@ -365,6 +329,15 @@ namespace GamePlayer
             {
                 button3.Enabled = false;
             }
+            /*for (int i = 0; i < 64; i++)
+            {
+                for (int j = 0; j < 64; j++)
+                {
+                    Console.Write(unitMap[i, j]);
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine("__________________________________________________________");*/
         }
 
         private void button4_Click(object sender, EventArgs e)
