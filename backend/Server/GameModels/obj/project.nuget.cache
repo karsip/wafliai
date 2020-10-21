@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "9dN2FoICjRAGI78luzFIJqpsaEX+MaoR/tvzjdHy7n7Xu956iD2JqwSkKVbcwNbzs0odjdSfMVtdRa1QxXc3ww==",
+  "dgSpecHash": "2qVkAa/mLtqrBmhmF679lPX2UhToww4QxDl4MOuiMQsh6JLCIQILcLlugU/YmXuUnKWhZN2PcBuM5LesCMJc3Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Modestas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj",
+  "projectFilePath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Modestas\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "C:\\Users\\Modestas\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
-    "C:\\Users\\Modestas\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
-    "C:\\Users\\Modestas\\.nuget\\packages\\system.drawing.common\\4.7.0\\system.drawing.common.4.7.0.nupkg.sha512"
+    "C:\\Users\\tomas\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\system.drawing.common\\4.7.0\\system.drawing.common.4.7.0.nupkg.sha512"
   ],
   "logs": []
 }

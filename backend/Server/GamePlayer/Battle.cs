@@ -19,12 +19,13 @@ namespace GamePlayer
 {
     public partial class Battle : Form
     {
+        private const char V = ',';
         private static ILogger _logger;
         private static Socket _clientSocket;
         private int clickedObject = 0;
 
         private static int[,] unitMap = new int[64, 64];
-        private static bool receiveUnitMap = false;
+        private int[,] myUnits = new int[64, 64];
 
         int ship1 = 1;
         int ship2 = 2;
@@ -121,6 +122,10 @@ namespace GamePlayer
                 for (int j = 0; j < columnNumber; j++)
                 {
                     Point myPoint = new Point((column + (25 * j)), (row + 25 * i));
+                    int x = (column + (25 * j)) / 25;
+                    int y = (row + (25 * i)) / 25;
+                    unitMap[x, y] = object_id;
+                    myUnits[x, y] = object_id;
                     Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
                     switch (object_id)
                     {
@@ -205,6 +210,10 @@ namespace GamePlayer
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             } else
             {
+                string arrayString = string.Join(",", unitMap.Cast<int>());
+                Console.WriteLine("before request send: ");
+                Console.WriteLine(arrayString);
+                handleRequest(arrayString);
                 // send request to server to update unitArray
             }
         }
@@ -232,6 +241,7 @@ namespace GamePlayer
         public Battle(string username, Socket socket)
         {
             _logger = Logger.GetInstance;
+            // refresh.Visible = false;
             InitializeComponent();
             label1.Text = "Left: " + ship1.ToString();
             label2.Text = "Left: " + ship2.ToString();
@@ -249,6 +259,7 @@ namespace GamePlayer
         }
         private void handleRequest(string request)
         {
+            Console.WriteLine("request ----> ", request);
             byte[] buffer = Encoding.ASCII.GetBytes(request);
             Console.WriteLine("Buffer --- " + System.Text.Encoding.UTF8.GetString(buffer));
             _clientSocket.Send(buffer);
@@ -259,16 +270,6 @@ namespace GamePlayer
             byte[] data = new byte[rec];
             Array.Copy(responseBuffer, data, rec);
 
-            if (receiveUnitMap == false)
-            {
-                Console.WriteLine("receive buff " + rec);
-                var unitMapData = Encoding.ASCII.GetString(data);
-                unitMap = StringTo2DArray(unitMapData);
-                receiveUnitMap = true;
-
-                Array.Clear(responseBuffer, 0, responseBuffer.Length);
-                Array.Clear(data, 0, data.Length);
-            }
 
             Console.WriteLine("Full encoded data", Encoding.ASCII.GetString(data));
             if(request.Length < 10)
@@ -293,6 +294,11 @@ namespace GamePlayer
                         });
                         Console.WriteLine("player data  " + playerDataOnStart.ToString());
                         break;
+                    case "reload":
+                        var unitArrayString = System.Text.Encoding.Default.GetString(data);
+                        unitMap = StringTo2DArray(unitArrayString);
+                        Print2DArray();
+                        break;
                     default:
                         Console.WriteLine("Wrong request.");
                         break;
@@ -303,9 +309,22 @@ namespace GamePlayer
                 Console.WriteLine(System.Text.Encoding.Default.GetString(data));
             }       
         }
+        private void Print2DArray()
+        {
+            string line = new string('-', 70);
+            Console.WriteLine(line);
+            for (int i = 0; i < unitMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < unitMap.GetLength(1); j++)
+                {
+                    Console.Write(unitMap[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+        } 
         private int[,] StringTo2DArray(string query)
         {
-            int[] array = query.Split(',').Select(n => Convert.ToInt32(n)).ToArray();
+            int[] array = query.Split(V).Select(n => Convert.ToInt32(n)).ToArray();
             int[,] arrayToReturn = new int[64,64];
             int counter = 0;
             Console.WriteLine("int length " + array.Length);
@@ -333,6 +352,7 @@ namespace GamePlayer
         {
             handleRequest("map");
             renderLabels();
+            refresh.Visible = true;
         }
 
         private void grid_Paint(object sender, PaintEventArgs e)
@@ -425,6 +445,11 @@ namespace GamePlayer
         private void button9_Click(object sender, EventArgs e)
         {
             SendData("end game");
+        }
+
+        private void refresh_Click(object sender, EventArgs e)
+        {
+            handleRequest("reload");
         }
     }
 }
