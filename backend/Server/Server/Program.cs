@@ -22,7 +22,7 @@ namespace Server
         private static Socket _serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         private static List<Socket> _clientSockets = new List<Socket>();
         private static List<PlayerData> _gamePlayerList = new List<PlayerData>();
-        private static byte[] _buffer = new byte[1024];
+        private static byte[] _buffer = new byte[10000];
         // array to update after each object is placed in map.
         private static int[,] unitArray = new int[64, 64];
         private static bool unitMapSendFirst = false;
@@ -78,22 +78,26 @@ namespace Server
             Socket socket = _serverSocket.EndAccept(AR);
             _clientSockets.Add(socket);
             PlayerData playerToAdd = new PlayerData(socket);
-            Console.WriteLine("Player to add " + playerToAdd);
             _gamePlayerList.Add(playerToAdd);
 
-            if (!unitMapSendFirst)
+            if (unitMapSendFirst == false)
             {
+                unitArray[0, 0] = 1;
+                unitArray[0, 1] = 2;
+                unitArray[0, 20] = 3;
                 string arrayToString = string.Join(',', unitArray.Cast<int>());
                 var data = Encoding.ASCII.GetBytes(arrayToString);
-                Console.WriteLine("array to string " + arrayToString);
                 socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
+                //socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReveiveCallback), socket);
+                // _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
+                unitMapSendFirst = true;
+                Array.Clear(_buffer, 0, _buffer.Length);
+            } else
+            {
+                // begin recieve data for each client socket
                 socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReveiveCallback), socket);
                 _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
-                unitMapSendFirst = true;
-            }
-                // begin recieve data for each client socket
-            socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReveiveCallback), socket);
-            _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
+            }            
         }
 
         private static void ReveiveCallback(IAsyncResult AR)
@@ -102,6 +106,7 @@ namespace Server
             {
                 Socket socket = (Socket)AR.AsyncState;
                 int received = socket.EndReceive(AR);
+                Console.WriteLine("received data -------> " + received);
                 byte[] dataBuf = new byte[received];
                 Array.Copy(_buffer, dataBuf, received);
                 Func<PlayerData, bool> predicate = x => x.socket == socket;
@@ -139,7 +144,13 @@ namespace Server
                 }
                 char[] delimiters = new char[] { ' ', '\r' };
                 string output;
+                int n;
                 byte[] data;
+                Console.WriteLine("Text -----------------> " + text);
+                if (int.TryParse(text, out n))
+                {
+                    Console.WriteLine("Yes it issssss");
+                }
                 int wordCount = text.Split(delimiters, StringSplitOptions.RemoveEmptyEntries).Length;
                 if (wordCount == 1)
                 {

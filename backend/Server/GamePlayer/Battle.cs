@@ -24,6 +24,7 @@ namespace GamePlayer
         private int clickedObject = 0;
 
         private static int[,] unitMap = new int[64, 64];
+        private static bool receiveUnitMap = false;
 
         int ship1 = 1;
         int ship2 = 2;
@@ -243,11 +244,13 @@ namespace GamePlayer
             this.AutoScroll = true;
             this.username.Text = username;
             _clientSocket = socket;
+
             handleRequest("username: " + username);
         }
         private void handleRequest(string request)
         {
             byte[] buffer = Encoding.ASCII.GetBytes(request);
+            Console.WriteLine("Buffer --- " + System.Text.Encoding.UTF8.GetString(buffer));
             _clientSocket.Send(buffer);
 
             byte[] responseBuffer = new byte[300000];
@@ -255,6 +258,17 @@ namespace GamePlayer
 
             byte[] data = new byte[rec];
             Array.Copy(responseBuffer, data, rec);
+
+            if (receiveUnitMap == false)
+            {
+                Console.WriteLine("receive buff " + rec);
+                var unitMapData = Encoding.ASCII.GetString(data);
+                unitMap = StringTo2DArray(unitMapData);
+                receiveUnitMap = true;
+
+                Array.Clear(responseBuffer, 0, responseBuffer.Length);
+                Array.Clear(data, 0, data.Length);
+            }
 
             Console.WriteLine("Full encoded data", Encoding.ASCII.GetString(data));
             if(request.Length < 10)
@@ -288,6 +302,22 @@ namespace GamePlayer
             {
                 Console.WriteLine(System.Text.Encoding.Default.GetString(data));
             }       
+        }
+        private int[,] StringTo2DArray(string query)
+        {
+            int[] array = query.Split(',').Select(n => Convert.ToInt32(n)).ToArray();
+            int[,] arrayToReturn = new int[64,64];
+            int counter = 0;
+            Console.WriteLine("int length " + array.Length);
+            for(int i = 0; i < Math.Sqrt(array.Length); i++)
+            {
+                for (int j = 0; j < Math.Sqrt(array.Length); j++)
+                {
+                    arrayToReturn[i, j] = array[counter];
+                    counter++;
+                }
+            }
+            return arrayToReturn;
         }
         private void Battle_Load(object sender, EventArgs e)
         {

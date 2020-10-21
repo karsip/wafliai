@@ -288,7 +288,6 @@
         private System.Windows.Forms.TextBox username;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button6;
