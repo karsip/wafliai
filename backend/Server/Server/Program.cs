@@ -123,7 +123,6 @@ namespace Server
                 {
                     if (text.Length > 20)
                     {
-                        Console.WriteLine("text is longer than 20");
                         int [,] updatedMap  = StringTo2DArray(text);
                         UpdateUnitMap(unitArray, updatedMap);
                         data = Encoding.ASCII.GetBytes("Map updated");
@@ -215,7 +214,7 @@ namespace Server
             {
                 for (int j = 0; j < unitArray.GetLength(1); j++)
                 {
-                    Console.Write(unitArray[i, j] + " ");
+                    Console.Write(unitArray[i, j]);
                 }
                 Console.WriteLine();
             }

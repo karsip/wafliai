@@ -49,5 +49,11 @@ C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePla
 C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.csproj.CopyComplete
 C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.exe
 C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.pdb
+<<<<<<< HEAD
 C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.EndGame.resources
 C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.EndGame.resources
+=======
+C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.Form2.resources
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.optional.resources
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.Form2.resources
+>>>>>>> 45b08ceecdb9864b12bddc01e706a6d3884a065a
