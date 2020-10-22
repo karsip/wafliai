@@ -1,40 +1,37 @@
 ﻿using GameModels;
 using GameModels.GroundTypes;
+using GameModels.Singleton;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Net.Sockets;
-using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using GameModels.AirCraftTypes;
-using GameModels.Checker;
-using System.CodeDom;
 
 namespace GamePlayer
 {
     public partial class Battle : Form
     {
+        private const char V = ',';
+        private static ILogger _logger;
         private static Socket _clientSocket;
         private int clickedObject = 0;
-        int[,] unitMap = new int[64, 64];
 
-        int shipCarrier = 2;
-        int shipDestroyer = 2;
-        int submarine = 3;
+        private static int[,] unitMap = new int[64, 64];
+        private int[,] myUnits = new int[64, 64];
+
+        int ship1 = 1;
+        int ship2 = 2;
+        int ship3 = 3;
         int plane = 2;
-        int jet = 2;
         int soldier = 3;
-        int mine = 5;
+        int mine = 2;
 
         private MapCell[][] map;
         private PlayerData playerDataOnStart;
+        
 
         private void renderLabels()
         {
@@ -75,10 +72,10 @@ namespace GamePlayer
                 }
             }
         }
+
         protected void HandleClickLabel(object sender, EventArgs e)
         {
             Label button = sender as Label;
-
             int row = button.Top;
             int column = button.Left;
             UpdateMap(row, column);
@@ -89,25 +86,22 @@ namespace GamePlayer
             switch (clickedObject)
             {
                 case 1:
-                    // render shipCarrier
-                    renderObject(column, row, 2, 4, clickedObject);
-                    break;
-                case 2:
-                    renderObject(column, row, 1, 4, clickedObject);
-                    break;
-                case 3:
-                    renderObject(column, row, 1, 5, clickedObject);
-                    break;
-                case 4:
+                    // render plane
                     renderObject(column, row, 3, 2, clickedObject);
                     break;
-                case 5:
-                    renderObject(column, row, 2, 2, clickedObject);
+                case 2:
+                    renderObject(column, row, 2, 4, clickedObject);
                     break;
-                case 6:
+                case 3:
+                    renderObject(column, row, 1, 4, clickedObject);
+                    break;
+                case 4:
+                    renderObject(column, row, 1, 5, clickedObject);
+                    break;
+                case 5:
                     renderObject(column, row, 1, 2, clickedObject);
                     break;
-                case 7:
+                case 6:
                     renderObject(column, row, 1, 1, clickedObject);
                     break;
                 default:
@@ -116,98 +110,115 @@ namespace GamePlayer
         }
         private void renderObject(int column, int row, int columnNumber, int rowNumber, int object_id)
         {
-            AirCraftBuilder builder;
-            AirCraftDirector airCraftDirector = new AirCraftDirector();
-            builder = new JetBuilder();
-            airCraftDirector.Construct(builder);
-            Image[] jetImg = builder.AirCraft.ForMap();
-            builder = new PlaneBuilder();
-            airCraftDirector.Construct(builder);
-            Image[] planeImg = builder.AirCraft.ForMap();
-            CanBePlaced canBePlaced = new CanBePlaced();
-            bool eligible = canBePlaced.IsEligible(unitMap, (column / 25), (row / 25), rowNumber, columnNumber, object_id);
             int counter = 1;
-            if (eligible)
+            bool badPosition = false;
+            for (int i = 0; i < rowNumber; i++)
             {
-                for (int i = 0; i < rowNumber; i++)
+                for (int j = 0; j < columnNumber; j++)
                 {
-                    for (int j = 0; j < columnNumber; j++)
+                    Point myPoint = new Point((column + (25 * j)), (row + 25 * i));
+                    int x = (column + (25 * j)) / 25;
+                    int y = (row + (25 * i)) / 25;
+                    unitMap[x, y] = object_id;
+                    myUnits[x, y] = object_id;
+                    Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
+                    switch (object_id)
                     {
-                        Point myPoint = new Point((column + (25 * j)), (row + 25 * i));
-                        Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
-                        switch (object_id)
-                        {
-                            // aircrafts 2, ships - 3, mine - 1, soldier: 1
-                            case 1:
-                                // shipcarrier
+                        // aircrafts 2, ships - 3, mine - 1, soldier: 1
+                        case 1:
+                            // plane
+                            update_label.BorderStyle = BorderStyle.None;
+                            update_label.Image = Image.FromFile("../../../GameModels/Textures/plane/plane" + counter.ToString() + ".png");
+                            break;
+                        case 2:
+                            // shipcarrier
+                            if (row / 25 >= 20 && row / 25 < 42)
+                            {
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/shipcarrier/shipcarrier" + counter.ToString() + ".png");
-                                unitMap[myPoint.Y / 25, myPoint.X / 25] = 1;
-                                if(i+j ==0)shipCarrier--;
-                                break;
-                            case 2:
-                                // shipdestroyer
+                            }
+                            else
+                            {
+                                badPosition = true;
+                            }
+                            break;
+                        case 3:
+                            // shipdestroyer
+                            if (row / 25 >= 20 && row / 25 < 42)
+                            {
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/shipdestroyer/shipdestroyer" + counter.ToString() + ".png");
-                                unitMap[myPoint.Y / 25, myPoint.X / 25] = 2;
-                                if (i + j == 0) shipDestroyer--;
+                            }
+                            else
+                            {
+                                badPosition = true;
+                            }
 
-                                break;
-                            case 3:
-                                // submarine
+                            break;
+                        case 4:
+                            // submarine
+                            if (row / 25 >= 20 && row / 25 < 42)
+                            {
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/submarine/submarine" + counter.ToString() + ".png");
-                                unitMap[myPoint.Y / 25, myPoint.X / 25] = 3;
-                                if (i + j == 0) submarine--;
-                                break;
-                            case 4:
-                                // plane
-                                update_label.BorderStyle = BorderStyle.None;
-                                update_label.Image = planeImg[counter - 1];
-                                unitMap[myPoint.Y / 25, myPoint.X / 25] = 4;
-                                if (i + j == 0) plane--;
-                                break;
-                            case 5:
-                                // jet
-                                update_label.BorderStyle = BorderStyle.None;
-                                update_label.Image = jetImg[counter - 1];
-                                unitMap[myPoint.Y / 25, myPoint.X / 25] = 5;
-                                if (i + j == 0) jet--;
-                                break;
-                            case 6:
-                                // soldier
+                            }
+                            else
+                            {
+                                badPosition = true;
+                            }
+                            break;
+                        case 5:
+                            // soldier
+                            if (row / 25 < 20 || row / 25 >= 42)
+                            {
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/soldier/soldier" + counter.ToString() + ".png");
-                                unitMap[myPoint.Y / 25, myPoint.X / 25] = 6;
-                                if (i + j == 0) soldier--;
-                                break;
-                            case 7:
-                                //mine
+                            }
+                            else
+                            {
+                                badPosition = true;
+                            }
+                            break;
+                        case 6:
+                            if (row / 25 < 20 || row / 25 >= 42)
+                            {
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/mine.png");
-                                unitMap[myPoint.Y / 25, myPoint.X / 25] = 7;
-                                if (i + j == 0) mine--;
-                                break;
-                            default:
-                                break;
+                            }
+                            else
+                            {
+                                badPosition = true;
+                            }
+                            break;
+                        default:
+                            break;
 
-                        }
-                        counter++;
                     }
+                    counter++;
                 }
             }
-            else
+            if (badPosition)
             {
+                String err_Message = String.Format("User tried to place object which id is {0} in location x: {1} and y: {2}, which is not available", object_id, row, column);
+                _logger.LogException(err_Message);
                 MessageBox.Show("You can't place object here", "Game error",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
+            } else
+            {
+                string arrayString = string.Join(",", unitMap.Cast<int>());
+                Console.WriteLine("before request send: ");
+                Console.WriteLine(arrayString);
+                handleRequest(arrayString);
+                // send request to server to update unitArray
             }
         }
         private void SendData(string request)
         {
             if (request.ToLower() == "end game")
             {
-                MessageBox.Show("You ended the game", "Game status",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Hide();
+                EndGame endForm = new EndGame();
+                endForm.ShowDialog();
             }
             byte[] buffer = Encoding.ASCII.GetBytes(request);
 
@@ -224,24 +235,28 @@ namespace GamePlayer
         }
         public Battle(string username, Socket socket)
         {
+            _logger = Logger.GetInstance;
+            // refresh.Visible = false;
             InitializeComponent();
-            label1.Text = "Left: " + shipCarrier.ToString();
-            label2.Text = "Left: " + shipDestroyer.ToString();
-            label3.Text = "Left: " + submarine.ToString();
+            label1.Text = "Left: " + ship1.ToString();
+            label2.Text = "Left: " + ship2.ToString();
+            label3.Text = "Left: " + ship3.ToString();
             label4.Text = "Left: " + plane.ToString();
-            label5.Text = "Left: " + jet.ToString();
-            label6.Text = "Left: " + soldier.ToString();
-            label7.Text = "Left: " + mine.ToString();
+            label5.Text = "Left: " + soldier.ToString();
+            label6.Text = "Left: " + mine.ToString();
 
-            flowLayoutPanel2.Size = new Size(1239, 64 * 25);
+            // flowLayoutPanel2.Size = new Size(1239, 64 * 25);
             this.AutoScroll = true;
             this.username.Text = username;
             _clientSocket = socket;
+
             handleRequest("username: " + username);
         }
         private void handleRequest(string request)
         {
+            Console.WriteLine("request ----> ", request);
             byte[] buffer = Encoding.ASCII.GetBytes(request);
+            Console.WriteLine("Buffer --- " + System.Text.Encoding.UTF8.GetString(buffer));
             _clientSocket.Send(buffer);
 
             byte[] responseBuffer = new byte[300000];
@@ -250,6 +265,7 @@ namespace GamePlayer
             byte[] data = new byte[rec];
             Array.Copy(responseBuffer, data, rec);
 
+
             Console.WriteLine("Full encoded data", Encoding.ASCII.GetString(data));
             if(request.Length < 10)
             {
@@ -257,7 +273,6 @@ namespace GamePlayer
                 {
                     case "map":
                         var mapString = System.Text.Encoding.Default.GetString(data);
-                        Console.WriteLine("MapString:    " + mapString);
                         map = JsonConvert.DeserializeObject<MapCell[][]>(mapString, new JsonSerializerSettings()
                         {
                             TypeNameHandling = TypeNameHandling.Auto
@@ -274,6 +289,11 @@ namespace GamePlayer
                         });
                         Console.WriteLine("player data  " + playerDataOnStart.ToString());
                         break;
+                    case "reload":
+                        var unitArrayString = System.Text.Encoding.Default.GetString(data);
+                        unitMap = StringTo2DArray(unitArrayString);
+                        Print2DArray();
+                        break;
                     default:
                         Console.WriteLine("Wrong request.");
                         break;
@@ -284,18 +304,37 @@ namespace GamePlayer
                 Console.WriteLine(System.Text.Encoding.Default.GetString(data));
             }       
         }
+        private void Print2DArray()
+        {
+            string line = new string('-', 70);
+            Console.WriteLine(line);
+            for (int i = 0; i < unitMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < unitMap.GetLength(1); j++)
+                {
+                    Console.Write(unitMap[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+        } 
+        private int[,] StringTo2DArray(string query)
+        {
+            int[] array = query.Split(V).Select(n => Convert.ToInt32(n)).ToArray();
+            int[,] arrayToReturn = new int[64,64];
+            int counter = 0;
+            Console.WriteLine("int length " + array.Length);
+            for(int i = 0; i < Math.Sqrt(array.Length); i++)
+            {
+                for (int j = 0; j < Math.Sqrt(array.Length); j++)
+                {
+                    arrayToReturn[i, j] = array[counter];
+                    counter++;
+                }
+            }
+            return arrayToReturn;
+        }
         private void Battle_Load(object sender, EventArgs e)
         {
-            AirCraftBuilder builder;
-            AirCraftDirector airCraftDirector = new AirCraftDirector();
-            builder = new JetBuilder();
-            airCraftDirector.Construct(builder);
-            Image jetImg = builder.AirCraft.Show();
-            button7.BackgroundImage = jetImg;
-            builder = new PlaneBuilder();
-            airCraftDirector.Construct(builder);
-            Image planeImg = builder.AirCraft.Show();
-            button6.BackgroundImage = planeImg;
 
         }
 
@@ -308,6 +347,7 @@ namespace GamePlayer
         {
             handleRequest("map");
             renderLabels();
+            refresh.Visible = true;
         }
 
         private void grid_Paint(object sender, PaintEventArgs e)
@@ -322,30 +362,23 @@ namespace GamePlayer
 
         private void button3_Click(object sender, EventArgs e)
         {
-            clickedObject = 1;
-            label1.Text = "Left: " + shipCarrier.ToString();
+            ship1--;
+            clickedObject = 2;
+            label1.Text = "Left: " + ship1.ToString();
             handleRequest("start");
-            if (shipCarrier <= 0)
+            if (ship1 <= 0)
             {
                 button3.Enabled = false;
             }
-            /*for (int i = 0; i < 64; i++)
-            {
-                for (int j = 0; j < 64; j++)
-                {
-                    Console.Write(unitMap[i, j]);
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine("__________________________________________________________");*/
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            label2.Text = "Left: " + shipDestroyer.ToString();
-            clickedObject = 2;
+            ship2--;
+            label2.Text = "Left: " + ship2.ToString();
+            clickedObject = 3;
             handleRequest("start");
-            if (shipDestroyer <= 0)
+            if (ship2 <= 0)
             {
                 button4.Enabled = false;
             }
@@ -353,10 +386,11 @@ namespace GamePlayer
 
         private void button5_Click(object sender, EventArgs e)
         {
-            clickedObject = 3;
-            label3.Text = "Left: " + submarine.ToString();
+            ship3--;
+            clickedObject = 4;
+            label3.Text = "Left: " + ship3.ToString();
             handleRequest("start");
-            if (submarine <= 0)
+            if (ship3 <= 0)
             {
                 button5.Enabled = false;
             }
@@ -364,7 +398,8 @@ namespace GamePlayer
 
         private void button6_Click(object sender, EventArgs e)
         {
-            clickedObject = 4;
+            plane--;
+            clickedObject = 1;
             label4.Text = "Left: " + plane.ToString();
             handleRequest("start");
             if (plane <= 0)
@@ -375,6 +410,7 @@ namespace GamePlayer
 
         private void button7_Click(object sender, EventArgs e)
         {
+            soldier--;
             clickedObject = 5;
             label5.Text = "Left: " + soldier.ToString();
             handleRequest("start");
@@ -386,30 +422,29 @@ namespace GamePlayer
 
         private void button8_Click(object sender, EventArgs e)
         {
+            mine--;
             clickedObject = 6;
-            label6.Text = "Left: " + soldier.ToString();
+            label6.Text = "Left: " + mine.ToString();
             handleRequest("start");
-            if (soldier <= 0)
+            if (mine <= 0)
             {
                 button8.Enabled = false;
             }
         }
 
-        private void button9_Click(object sender, EventArgs e)
-        {
-            clickedObject = 7;
-            label7.Text = "Left: " + mine.ToString();
-            handleRequest("start");
-            if (mine <= 0)
-            {
-                button9.Enabled = false;
-            }
-        }
-
         private void flowLayoutPanel2_Paint(object sender, PaintEventArgs e)
         {
-
+            
         }
 
+        private void button9_Click(object sender, EventArgs e)
+        {
+            SendData("end game");
+        }
+
+        private void refresh_Click(object sender, EventArgs e)
+        {
+            handleRequest("reload");
+        }
     }
 }

@@ -1,25 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\BattleShipPlayer.csproj": {}
+    "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\BattleShipPlayer.csproj": {}
   },
   "projects": {
-    "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\BattleShipPlayer.csproj": {
+    "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\BattleShipPlayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\BattleShipPlayer.csproj",
+        "projectUniqueName": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\BattleShipPlayer.csproj",
         "projectName": "BattleShipPlayer",
-        "projectPath": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\BattleShipPlayer.csproj",
-        "packagesPath": "C:\\Users\\ignbar1\\.nuget\\packages\\",
-        "outputPath": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\obj\\",
+        "projectPath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\BattleShipPlayer.csproj",
+        "packagesPath": "C:\\Users\\tomas\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "F:\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\ignbar1\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\tomas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"

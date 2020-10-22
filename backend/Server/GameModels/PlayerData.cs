@@ -9,14 +9,15 @@ namespace GameModels
     [Serializable]
      public class PlayerData
     {
-        private int[] unitCount;
-        private int livePoints { get; set; }
-        private bool isYourTurn { get; set; }
-        private int[,,] objectLocations { get; set; }
-        private bool isLost { get; set; }
+        public int[] unitCount;
+        public int livePoints;
 
-        private string username { get; set; }
-        private Socket socket { get; set; }
+        public bool isYourTurn;
+        public int[,,] objectLocations;
+        public bool isLost;
+
+        public string username;
+        public Socket socket;
 
         public PlayerData(string username)
         {
@@ -28,24 +29,31 @@ namespace GameModels
             unitCount = new int[6];
             for (int i = 0; i < 6; i++)
             {
-                unitCount[i] = 0;
+                switch (i)
+                {
+                    case 0:
+                    case 1:
+                    case 3:
+                    case 4:
+                        //planes, ShipCarrier, shipDestroyer
+                        unitCount[i] = 2;
+                        break;
+                    case 2:
+                    case 5:
+                        // soldiers submarines
+                        unitCount[i] = 3;
+                        break;
+                    case 6:
+                        // mines
+                        unitCount[i] = 5;
+                        break;
+                    default: break;  
+                }
             }
             livePoints = 10;
             isYourTurn = true;
             isLost = false;
             objectLocations = new int[0,0,0];
-        }
-        public string getUsername()
-        {
-            return this.username;
-        }
-        public Socket getSocket()
-        {
-            return this.socket;
-        }
-        public void SetUsername(string username)
-        {
-            this.username = username;
         }
         public PlayerData(string username, Socket socket)
         {
@@ -60,8 +68,9 @@ namespace GameModels
             isYourTurn = true;
             isLost = false;
         }
-        public PlayerData(int[] UnitCount, int LivePoints, bool IsYourTurn, int[,,] objectLocation, bool IsLost)
+        public PlayerData(int[] UnitCount, int LivePoints, bool IsYourTurn, int[,,] objectLocation, bool IsLost, string username)
         {
+            this.username = username;
             unitCount = UnitCount;
             livePoints = LivePoints;
             isYourTurn = IsYourTurn;
@@ -69,36 +78,14 @@ namespace GameModels
             isLost = IsLost;
         }
         public PlayerData() { }
-        public void SetNewUnitPoints(int [] unitPoints)
-        {
-            this.unitCount = unitPoints;
-        }
-        public void SetNewLifePoints(int lifePoints)
-        {
-            this.livePoints = lifePoints;
-        }
-        public void SetIsYourTurn(bool turn)
-        {
-            isYourTurn = turn;
-        }
-
-        public int[] GetUnitCount() { return (unitCount); }
-        public int GetLivePoints() { return (livePoints); }
-        public bool GetIsYourTurn() { return (isYourTurn); }
-        public int[,,] GetObjectLocations() { return (objectLocations); }
-
-        public void setObjectLocations(int object_id, int x, int y)
+        
+        /* public void setObjectLocations(int object_id, int x, int y)
         {
             int current_Length = objectLocations.GetLength(0);
             objectLocations[current_Length, 1, 0] = x;
             objectLocations[current_Length, 1, 1] = y;
             objectLocations[current_Length, 1, 2] = object_id;
-        }
-        public int getLocationsArrLength()
-        {
-            return objectLocations.GetLength(0);
-        }
-        public bool GetIsLost() { return (isLost); }
+        } */
         public override string ToString()
         {
             return "Life points: " + livePoints.ToString() + "  and is he lost: " + isLost.ToString() + "  Username: " + username;
