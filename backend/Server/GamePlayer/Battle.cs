@@ -1,4 +1,6 @@
 ﻿using GameModels;
+using GameModels.AirCraftTypes;
+using GameModels.Checker;
 using GameModels.GroundTypes;
 using GameModels.Singleton;
 using Newtonsoft.Json;
@@ -22,12 +24,13 @@ namespace GamePlayer
         private static int[,] unitMap = new int[64, 64];
         private int[,] myUnits = new int[64, 64];
 
-        int ship1 = 1;
-        int ship2 = 2;
-        int ship3 = 3;
+        int shipCarrier = 2;
+        int shipDestroyer = 2;
+        int submarine = 3;
         int plane = 2;
+        int jet = 2;
         int soldier = 3;
-        int mine = 2;
+        int mine = 5;
 
         private MapCell[][] map;
         private PlayerData playerDataOnStart;
@@ -41,7 +44,6 @@ namespace GamePlayer
             {
                 for (int j = 0; j < lableArray.GetLength(1); j++)
                 {
-
                     var label_to_add = new Label();
                     label_to_add.Size = new Size(25, 25);
                     label_to_add.Top = i * 25;
@@ -86,22 +88,25 @@ namespace GamePlayer
             switch (clickedObject)
             {
                 case 1:
-                    // render plane
-                    renderObject(column, row, 3, 2, clickedObject);
-                    break;
-                case 2:
+                    // render shipCarrier
                     renderObject(column, row, 2, 4, clickedObject);
                     break;
-                case 3:
+                case 2:
                     renderObject(column, row, 1, 4, clickedObject);
                     break;
-                case 4:
+                case 3:
                     renderObject(column, row, 1, 5, clickedObject);
                     break;
+                case 4:
+                    renderObject(column, row, 3, 2, clickedObject);
+                    break;
                 case 5:
-                    renderObject(column, row, 1, 2, clickedObject);
+                    renderObject(column, row, 2, 2, clickedObject);
                     break;
                 case 6:
+                    renderObject(column, row, 1, 2, clickedObject);
+                    break;
+                case 7:
                     renderObject(column, row, 1, 1, clickedObject);
                     break;
                 default:
@@ -110,106 +115,137 @@ namespace GamePlayer
         }
         private void renderObject(int column, int row, int columnNumber, int rowNumber, int object_id)
         {
+            AirCraftBuilder builder;
+            AirCraftDirector airCraftDirector = new AirCraftDirector();
+            builder = new JetBuilder();
+            airCraftDirector.Construct(builder);
+            Image[] jetImg = builder.AirCraft.ForMap();
+            builder = new PlaneBuilder();
+            airCraftDirector.Construct(builder);
+            Image[] planeImg = builder.AirCraft.ForMap();
+            CanBePlaced canBePlaced = new CanBePlaced();
+            bool eligible = canBePlaced.IsEligible(unitMap, (column / 25), (row / 25), rowNumber, columnNumber, object_id);
             int counter = 1;
-            bool badPosition = false;
-            for (int i = 0; i < rowNumber; i++)
+            if (eligible)
             {
-                for (int j = 0; j < columnNumber; j++)
+                for (int i = 0; i < rowNumber; i++)
                 {
-                    Point myPoint = new Point((column + (25 * j)), (row + 25 * i));
+                    for (int j = 0; j < columnNumber; j++)
+                    {
+                        // Point myPoint = new Point((column + (25 * j)), (row + 25 * i));
+                        // Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
+
+                        Point myPoint = new Point((column + (25 * j)), (row + 25 * i));
                     int x = (column + (25 * j)) / 25;
                     int y = (row + (25 * i)) / 25;
-                    unitMap[x, y] = object_id;
-                    myUnits[x, y] = object_id;
+                    unitMap[y, x] = object_id;
+                    myUnits[y, x] = object_id;
                     Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
-                    switch (object_id)
-                    {
-                        // aircrafts 2, ships - 3, mine - 1, soldier: 1
-                        case 1:
-                            // plane
-                            update_label.BorderStyle = BorderStyle.None;
-                            update_label.Image = Image.FromFile("../../../GameModels/Textures/plane/plane" + counter.ToString() + ".png");
-                            break;
-                        case 2:
-                            // shipcarrier
-                            if (row / 25 >= 20 && row / 25 < 42)
-                            {
+                        switch (object_id)
+                        {
+                            // aircrafts 2, ships - 3, mine - 1, soldier: 1
+                            case 1:
+                                // shipcarrier
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/shipcarrier/shipcarrier" + counter.ToString() + ".png");
-                            }
-                            else
-                            {
-                                badPosition = true;
-                            }
-                            break;
-                        case 3:
-                            // shipdestroyer
-                            if (row / 25 >= 20 && row / 25 < 42)
-                            {
+                                // unitMap[myPoint.Y / 25, myPoint.X / 25] = 1;
+                                if (i + j == 0)
+                                {
+                                    shipCarrier--;
+                                    label1.Text = "Left: " + shipCarrier.ToString();
+                                    
+                                }
+                                break;
+                            case 2:
+                                // shipdestroyer
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/shipdestroyer/shipdestroyer" + counter.ToString() + ".png");
-                            }
-                            else
-                            {
-                                badPosition = true;
-                            }
+                                // unitMap[myPoint.Y / 25, myPoint.X / 25] = 2;
+                                if (i + j == 0)
+                                {
+                                    shipDestroyer--;
+                                    label2.Text = "Left: " + shipDestroyer.ToString();
+                                    
+                                }
 
-                            break;
-                        case 4:
-                            // submarine
-                            if (row / 25 >= 20 && row / 25 < 42)
-                            {
+                                break;
+                            case 3:
+                                // submarine
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/submarine/submarine" + counter.ToString() + ".png");
-                            }
-                            else
-                            {
-                                badPosition = true;
-                            }
-                            break;
-                        case 5:
-                            // soldier
-                            if (row / 25 < 20 || row / 25 >= 42)
-                            {
+                                // unitMap[myPoint.Y / 25, myPoint.X / 25] = 3;
+                                if (i + j == 0)
+                                {
+                                    submarine--;
+                                    label3.Text = "Left: " + submarine.ToString();
+                                   
+                                }
+                                break;
+                            case 4:
+                                // plane
+                                update_label.BorderStyle = BorderStyle.None;
+                                update_label.Image = planeImg[counter - 1];
+                                // unitMap[myPoint.Y / 25, myPoint.X / 25] = 4;
+                                if (i + j == 0)
+                                {
+                                    plane--;
+                                    label4.Text = "Left: " + plane.ToString();
+                                    
+                                }
+                                break;
+                            case 5:
+                                // jet
+                                update_label.BorderStyle = BorderStyle.None;
+                                update_label.Image = jetImg[counter - 1];
+                                // unitMap[myPoint.Y / 25, myPoint.X / 25] = 5;
+                                if (i + j == 0)
+                                {
+                                    jet--;
+                                    label8.Text = "Left: " + jet.ToString();
+                                    
+                                }
+                                break;
+                            case 6:
+                                // soldier
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/soldier/soldier" + counter.ToString() + ".png");
-                            }
-                            else
-                            {
-                                badPosition = true;
-                            }
-                            break;
-                        case 6:
-                            if (row / 25 < 20 || row / 25 >= 42)
-                            {
+                                // unitMap[myPoint.Y / 25, myPoint.X / 25] = 6;
+                                if (i + j == 0)
+                                {
+                                    soldier--;
+                                    label5.Text = "Left: " + soldier.ToString();
+                                    
+                                }
+                                break;
+                            case 7:
+                                //mine
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/mine.png");
-                            }
-                            else
-                            {
-                                badPosition = true;
-                            }
-                            break;
-                        default:
-                            break;
+                                // unitMap[myPoint.Y / 25, myPoint.X / 25] = 7;
+                                if (i + j == 0)
+                                {
+                                    mine--;
+                                    label6.Text = "Left: " + mine.ToString();
+                                }
+                                break;
+                            default:
+                                break;
 
+                        }
+                        counter++;
                     }
-                    counter++;
                 }
+                string arrayString = string.Join(",", unitMap.Cast<int>());
+                Console.WriteLine("before request send: ");
+                Console.WriteLine(arrayString);
+                handleRequest(arrayString);
             }
-            if (badPosition)
+            else
             {
                 String err_Message = String.Format("User tried to place object which id is {0} in location x: {1} and y: {2}, which is not available", object_id, row, column);
                 _logger.LogException(err_Message);
                 MessageBox.Show("You can't place object here", "Game error",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
-            } else
-            {
-                string arrayString = string.Join(",", unitMap.Cast<int>());
-                Console.WriteLine("before request send: ");
-                Console.WriteLine(arrayString);
-                handleRequest(arrayString);
-                // send request to server to update unitArray
             }
         }
         private void SendData(string request)
@@ -238,16 +274,19 @@ namespace GamePlayer
             _logger = Logger.GetInstance;
             // refresh.Visible = false;
             InitializeComponent();
-            label1.Text = "Left: " + ship1.ToString();
-            label2.Text = "Left: " + ship2.ToString();
-            label3.Text = "Left: " + ship3.ToString();
+
+            label1.Text = "Left: " + shipCarrier.ToString();
+            label2.Text = "Left: " + shipDestroyer.ToString();
+            label3.Text = "Left: " + submarine.ToString();
             label4.Text = "Left: " + plane.ToString();
+            label8.Text = "Left: " + jet.ToString();
             label5.Text = "Left: " + soldier.ToString();
             label6.Text = "Left: " + mine.ToString();
 
             // flowLayoutPanel2.Size = new Size(1239, 64 * 25);
             this.AutoScroll = true;
-            this.username.Text = username;
+            this.username.Text = "User: " + username;
+            this.lifepoints.Text = "LifePoints: " + 19.ToString();
             _clientSocket = socket;
 
             handleRequest("username: " + username);
@@ -335,12 +374,16 @@ namespace GamePlayer
         }
         private void Battle_Load(object sender, EventArgs e)
         {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            // renderLabels();
+            AirCraftBuilder builder;
+            AirCraftDirector airCraftDirector = new AirCraftDirector();
+            builder = new JetBuilder();
+            airCraftDirector.Construct(builder);
+            Image jetImg = builder.AirCraft.Show();
+            button10.BackgroundImage = jetImg;
+            builder = new PlaneBuilder();
+            airCraftDirector.Construct(builder);
+            Image planeImg = builder.AirCraft.Show();
+            button6.BackgroundImage = planeImg;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -362,11 +405,9 @@ namespace GamePlayer
 
         private void button3_Click(object sender, EventArgs e)
         {
-            ship1--;
-            clickedObject = 2;
-            label1.Text = "Left: " + ship1.ToString();
+            clickedObject = 1;
             handleRequest("start");
-            if (ship1 <= 0)
+            if (shipCarrier <= 1)
             {
                 button3.Enabled = false;
             }
@@ -374,11 +415,9 @@ namespace GamePlayer
 
         private void button4_Click(object sender, EventArgs e)
         {
-            ship2--;
-            label2.Text = "Left: " + ship2.ToString();
-            clickedObject = 3;
+            clickedObject = 2;
             handleRequest("start");
-            if (ship2 <= 0)
+            if (shipDestroyer <= 1)
             {
                 button4.Enabled = false;
             }
@@ -386,11 +425,9 @@ namespace GamePlayer
 
         private void button5_Click(object sender, EventArgs e)
         {
-            ship3--;
-            clickedObject = 4;
-            label3.Text = "Left: " + ship3.ToString();
+            clickedObject = 3;
             handleRequest("start");
-            if (ship3 <= 0)
+            if (submarine <= 1)
             {
                 button5.Enabled = false;
             }
@@ -398,11 +435,10 @@ namespace GamePlayer
 
         private void button6_Click(object sender, EventArgs e)
         {
-            plane--;
-            clickedObject = 1;
-            label4.Text = "Left: " + plane.ToString();
+            // plane builder 
+            clickedObject = 4;
             handleRequest("start");
-            if (plane <= 0)
+            if (plane <= 1)
             {
                 button6.Enabled = false;
             }
@@ -410,11 +446,9 @@ namespace GamePlayer
 
         private void button7_Click(object sender, EventArgs e)
         {
-            soldier--;
-            clickedObject = 5;
-            label5.Text = "Left: " + soldier.ToString();
+            clickedObject = 6;
             handleRequest("start");
-            if (soldier <= 0)
+            if (soldier <= 1)
             {
                 button7.Enabled = false;
             }
@@ -422,19 +456,23 @@ namespace GamePlayer
 
         private void button8_Click(object sender, EventArgs e)
         {
-            mine--;
-            clickedObject = 6;
-            label6.Text = "Left: " + mine.ToString();
-            handleRequest("start");
-            if (mine <= 0)
-            {
-                button8.Enabled = false;
-            }
+             clickedObject = 7;
+             handleRequest("start");
+             if (mine <= 1)
+             {
+                 button8.Enabled = false;
+             }
         }
 
         private void flowLayoutPanel2_Paint(object sender, PaintEventArgs e)
         {
             
+            // clickedObject = 7;
+            // handleRequest("start");
+            // if (mine <= 1)
+            // {
+            //     button9.Enabled = false;
+            // }
         }
 
         private void button9_Click(object sender, EventArgs e)
@@ -445,6 +483,21 @@ namespace GamePlayer
         private void refresh_Click(object sender, EventArgs e)
         {
             handleRequest("reload");
+        }
+        private void username_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            // jet builder
+            clickedObject = 5;
+            handleRequest("start");
+            if (jet <= 1)
+            {
+                button7.Enabled = false;
+            }
         }
     }
 }
