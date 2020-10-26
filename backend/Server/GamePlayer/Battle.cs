@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -20,9 +21,12 @@ namespace GamePlayer
         private static ILogger _logger;
         private static Socket _clientSocket;
         private int clickedObject = 0;
+        private bool objectChecked = false;
+        private int currentSelectedObject = 0;
 
         private static int[,] unitMap = new int[64, 64];
         private int[,] myUnits = new int[64, 64];
+        private int[,] currentSelected;
 
         int shipCarrier = 2;
         int shipDestroyer = 2;
@@ -74,14 +78,203 @@ namespace GamePlayer
                 }
             }
         }
-
         protected void HandleClickLabel(object sender, EventArgs e)
         {
             Label button = sender as Label;
             int row = button.Top;
             int column = button.Left;
-            UpdateMap(row, column);
-            clickedObject = 0;
+            bool isOK = true;
+            if (objectChecked && currentSelectedObject != -1)
+            {
+                if(unitMap[row/25, column/25] == 0)
+                {
+                    int column_number = ReturnbjectColumnNumber(currentSelectedObject);
+                    int row_number = ReturnObjectRowNumber(currentSelectedObject);
+                    renderObject(column, row, column_number, row_number, currentSelectedObject);
+                    CanBePlaced canBePlaced = new CanBePlaced();
+                    bool eligible = canBePlaced.IsEligible(unitMap, (column / 25), (row / 25), column_number, row_number, currentSelectedObject);
+                    // if (eligible == true)
+                    //{
+                        RenderGroundAfterChange();
+                        // should set currentSelected to main value
+                        objectChecked = false;
+                        currentSelectedObject = -1;
+                    // }
+                    /*else
+                    {
+                        MessageBox.Show("You can't place object here", "Game error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    } */
+                } else
+                {
+                    isOK = false;
+                    String err_Message = String.Format("User tried to place object on another object");
+                    _logger.LogException(err_Message);
+                    MessageBox.Show("You can't place object here", "Game error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                if(CheckIfClickOnAnObject(row, column))
+                {
+                    objectChecked = true;
+                    Console.WriteLine("Clicked on object");
+                    currentSelectedObject = myUnits[row / 25, column / 25];
+                    string Cordinates = "";
+                    BasicFill(myUnits, column / 25, row / 25, currentSelectedObject, ref Cordinates);
+                    Console.WriteLine("String corrdinates -> " + Cordinates);
+                    currentSelected = ConvertStringToArray(Cordinates, currentSelectedObject);
+                    Print2DArray(currentSelected);
+                    HighlightObject(currentSelected);
+
+                }
+            }
+            if (isOK)
+            {
+                UpdateMap(row, column);
+                clickedObject = 0;
+            }
+        }
+        private void RenderGroundAfterChange()
+        {
+            for(int i = 0; i < currentSelected.GetLength(0); i++)
+            {
+                for(int j = 0; j < currentSelected.GetLength(0); j++)
+                {
+                    Point myPoint = new Point(25 * currentSelected[i, 1], 25 * currentSelected[i, 0]);
+                    Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
+                    update_label.BorderStyle = BorderStyle.None;
+                    update_label.BorderStyle = BorderStyle.FixedSingle;
+                    if (map[currentSelected[i, 0]][currentSelected[i, 1]].mapObject is Sand)
+                    {
+                        update_label.BackColor = Color.SandyBrown;
+                        update_label.Image = Image.FromFile("../../../GameModels/Textures/sandTile.png");
+                    } else if (map[currentSelected[i, 0]][currentSelected[i, 1]].mapObject is Grass)
+                    {
+                        update_label.BackColor = Color.LawnGreen;
+                        update_label.Image = Image.FromFile("../../../GameModels/Textures/grassTile.png");
+                    } else
+                    {
+                        update_label.BackColor = Color.DarkCyan;
+                        update_label.Image = Image.FromFile("../../../GameModels/Textures/waterTile.png");
+                    }
+                }
+            }
+        }
+        private bool CheckIfClickOnAnObject(int row, int column)
+        {
+            int x = row / 25;
+            int y = column / 25;
+            if(myUnits[x,y] != 0)
+            {
+                return true;
+            }
+            else return false;
+        }
+        private static void BasicFill(int[,] array, int x, int y, int object_id, ref string coordinates)
+        {
+            if (array[y, x] == object_id)
+            {
+                BasicFill(array, x, y, array.GetLength(1), array.GetLength(0), object_id, ref coordinates);
+            }
+        }
+        private int[,] ConvertStringToArray(string Cordinates, int object_id)
+        {
+            Cordinates = Cordinates.Remove(Cordinates.Length - 1);
+            Console.WriteLine("coordinates agfter remove " + Cordinates);
+            var numbers = Cordinates.Split(',').Select(Int32.Parse).ToList();
+
+            int[,] newArr = ReturnAreaSize(object_id);
+            for (int i = 0; i < newArr.GetLength(0); i++)
+            {
+                newArr[i, 0] = numbers[i * 2 + 1];
+                newArr[i, 1] = numbers[i * 2];
+            }
+            return newArr;
+        }
+        private void HighlightObject(int [,] arr)
+        {
+            for(int i = 0; i < arr.GetLength(0); i++)
+            {
+                Point myPoint = new Point(25 * arr[i, 1], 25 * arr[i, 0]);
+                Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
+                update_label.BorderStyle = BorderStyle.Fixed3D;
+                update_label.ForeColor = Color.Red;
+            }
+        }
+        static void BasicFill(int[,] array, int x, int y, int width, int height, int object_id, ref string coordinates)
+        {
+            array[y, x] = 2;
+            coordinates += x.ToString() + "," + y.ToString() + ",";
+            if (y > 0 && array[y - 1, x] == object_id)
+            {
+                BasicFill(array, x, y - 1, width, height, object_id, ref coordinates);
+            }
+
+            if (x > 0 && array[y, x - 1] == object_id)
+            {
+                BasicFill(array, x - 1, y, width, height, object_id, ref coordinates);
+            }
+
+            if (x < width - 1 && array[y, x + 1] == object_id)
+            {
+                BasicFill(array, x + 1, y, width, height, object_id, ref coordinates);
+            }
+
+            if (y < height - 1 && array[y + 1, x] == object_id)
+            {
+                BasicFill(array, x, y + 1, width, height, object_id, ref coordinates);
+            }
+        }
+        private int [,] ReturnAreaSize(int object_id)
+        {
+            switch (object_id)
+            {
+                case 1:
+                    return new int[8, 2];
+                case 2:
+                case 5:
+                    return  new int[4, 2];
+                case 3:
+                    return  new int[5, 2];
+                case 4:
+                    return  new int[6, 2];
+                case 6:
+                    return  new int[2, 2];
+                default:
+                    return  new int[1,2];
+            }
+        }
+        private int ReturnObjectRowNumber(int object_id)
+        {
+            switch (object_id)
+            {
+                case 5:
+                case 6:
+                case 4:
+                    return 2;
+                case 2:
+                case 1:
+                    return 4;
+                case 3:
+                    return 5;
+                default:
+                    return 1;
+            }
+        }
+        private int ReturnbjectColumnNumber(int object_id)
+        {
+            switch (object_id)
+            {
+                case 1:
+                case 5:
+                    return 2;
+                case 4:
+                    return 3;
+                default:
+                    return 1;
+            }
         }
         private void UpdateMap(int row, int column)
         {
@@ -331,7 +524,7 @@ namespace GamePlayer
                     case "reload":
                         var unitArrayString = System.Text.Encoding.Default.GetString(data);
                         unitMap = StringTo2DArray(unitArrayString);
-                        Print2DArray();
+                        Print2DArray(unitMap);
                         break;
                     default:
                         Console.WriteLine("Wrong request.");
@@ -343,15 +536,15 @@ namespace GamePlayer
                 Console.WriteLine(System.Text.Encoding.Default.GetString(data));
             }       
         }
-        private void Print2DArray()
+        private void Print2DArray(int [,] arr)
         {
             string line = new string('-', 70);
             Console.WriteLine(line);
-            for (int i = 0; i < unitMap.GetLength(0); i++)
+            for (int i = 0; i < arr.GetLength(0); i++)
             {
-                for (int j = 0; j < unitMap.GetLength(1); j++)
+                for (int j = 0; j < arr.GetLength(1); j++)
                 {
-                    Console.Write(unitMap[i, j] + " ");
+                    Console.Write(arr[i, j] + " ");
                 }
                 Console.WriteLine();
             }
