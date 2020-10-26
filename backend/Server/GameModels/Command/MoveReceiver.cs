@@ -4,20 +4,59 @@ using System.Text;
 
 namespace GameModels.Command
 {
-    public class MovementReceiver
+    public class MoveReceiver
     {
-        public void MoveTo(int[,] map, int object_id, int x_pos, int y_pos)
+        private int[,] map;
+        private int object_id;
+        private int x_pos;
+        private int y_pos;
+        private int[,] selectedArea;
+
+        public MoveReceiver(int [,] map, int object_id, int x_pos, int y_pos, int[,] selectedArea)
+        {
+            this.map = map;
+            this.object_id = object_id;
+            this.x_pos = x_pos;
+            this.y_pos = y_pos;
+            this.selectedArea = selectedArea;
+        }
+        public int [,] Undo()
+        {
+            int[] objectSize = GetAreaSize(object_id);
+            for (int i = 0; i < objectSize[1]; i++)
+            {
+                for (int j = 0; j < objectSize[0]; j++)
+                {
+                    // clear the updated object place 
+                    map[x_pos + i, y_pos + j] = 0;
+                }
+            }
+            for (int i = 0; i < selectedArea.GetLength(0); i++)
+            {
+                map[selectedArea[i, 0], selectedArea[i, 1]] = object_id;
+            }
+            return map;
+        }
+        public int [,] Move()
         {
             try
             {
-                writeToMap(map, object_id, x_pos, y_pos);
+                ClearNowEmptySpace(map, selectedArea);
+                writeToMap(map, object_id, x_pos, y_pos);  
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 String errrMessage = String.Format("Object wchich id is {0} cannot move to position x:{1} and y:{2}. Error occurred -> {3}", object_id, x_pos, y_pos, e.Message);
                 Console.WriteLine(errrMessage);
-            }               
-            
+            }
+            return map;
+        }
+        private void ClearNowEmptySpace(int[,] map, int[,] selectedArea)
+        {
+            for (int i = 0; i < selectedArea.GetLength(0); i++)
+            {
+                map[selectedArea[i, 0], selectedArea[i, 1]] = 0;
+            }
         }
         private void writeToMap(int[,] map, int object_id, int x_pos, int y_pos)
         {
@@ -31,9 +70,9 @@ namespace GameModels.Command
                 map[x_pos, y_pos + m] = object_id;
             }
         }
-        private int [] GetAreaSize(int object_id)
+        private int[] GetAreaSize(int object_id)
         {
-            int[] area = new int[1];
+            int[] area = new int[2];
             switch (object_id)
             {
                 case 1:

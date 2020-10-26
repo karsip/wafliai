@@ -7,5 +7,6 @@ namespace GameModels.Command
     public interface IMoveCommand
     {
         void Execute();
+        void Undo();
     }
 }

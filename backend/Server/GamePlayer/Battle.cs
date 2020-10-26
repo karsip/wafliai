@@ -1,6 +1,7 @@
 ﻿using GameModels;
 using GameModels.AirCraftTypes;
 using GameModels.Checker;
+using GameModels.Command;
 using GameModels.GroundTypes;
 using GameModels.Singleton;
 using Newtonsoft.Json;
@@ -23,6 +24,8 @@ namespace GamePlayer
         private int clickedObject = 0;
         private bool objectChecked = false;
         private int currentSelectedObject = 0;
+        private int x_loc;
+        private int y_loc;
 
         private static int[,] unitMap = new int[64, 64];
         private int[,] myUnits = new int[64, 64];
@@ -88,17 +91,40 @@ namespace GamePlayer
             {
                 if(unitMap[row/25, column/25] == 0)
                 {
+                    x_loc = row / 25;
+                    y_loc = column / 25;
                     int column_number = ReturnbjectColumnNumber(currentSelectedObject);
                     int row_number = ReturnObjectRowNumber(currentSelectedObject);
                     renderObject(column, row, column_number, row_number, currentSelectedObject);
                     CanBePlaced canBePlaced = new CanBePlaced();
-                    bool eligible = canBePlaced.IsEligible(unitMap, (column / 25), (row / 25), column_number, row_number, currentSelectedObject);
+                    bool eligible = canBePlaced.IsEligible(myUnits, (column / 25), (row / 25), column_number, row_number, currentSelectedObject);
                     // if (eligible == true)
                     //{
                         RenderGroundAfterChange();
+                        // Command design pattern for player map and server map
+                        MoveReceiver receiver = new MoveReceiver(myUnits, currentSelectedObject, row / 25, column / 25, currentSelected);
+                        MoveReceiver server_receiver = new MoveReceiver(unitMap, currentSelectedObject, row / 25, column / 25, currentSelected);
+                        MoveCommand command = new MoveToCommand(receiver);
+                        MoveCommand server_command = new MoveToCommand(server_receiver);
+                        MoveInvoker invoker = new MoveInvoker();
+                        MoveInvoker server_invoker = new MoveInvoker();
+
+                        invoker.SetCommand(command);
+                        server_invoker.SetCommand(server_command);
+                        Console.WriteLine("Before command --------------------------------------------");
+                        Print2DArray(unitMap);
+                        myUnits = invoker.ExecuteCommand();
+                        unitMap = server_invoker.ExecuteCommand();
+
+                        string arrayString = string.Join(",", unitMap.Cast<int>());
+                        handleRequest(arrayString);
+
+                        undo.Enabled = true;
+                        Console.WriteLine("After command --------------------------------------------");
+                        Print2DArray(unitMap);
+                        
                         // should set currentSelected to main value
-                        objectChecked = false;
-                        currentSelectedObject = -1;
+                        objectChecked = false;                   
                     // }
                     /*else
                     {
@@ -119,11 +145,11 @@ namespace GamePlayer
                 if(CheckIfClickOnAnObject(row, column))
                 {
                     objectChecked = true;
-                    Console.WriteLine("Clicked on object");
+
                     currentSelectedObject = myUnits[row / 25, column / 25];
                     string Cordinates = "";
                     BasicFill(myUnits, column / 25, row / 25, currentSelectedObject, ref Cordinates);
-                    Console.WriteLine("String corrdinates -> " + Cordinates);
+
                     currentSelected = ConvertStringToArray(Cordinates, currentSelectedObject);
                     Print2DArray(currentSelected);
                     HighlightObject(currentSelected);
@@ -182,7 +208,7 @@ namespace GamePlayer
         private int[,] ConvertStringToArray(string Cordinates, int object_id)
         {
             Cordinates = Cordinates.Remove(Cordinates.Length - 1);
-            Console.WriteLine("coordinates agfter remove " + Cordinates);
+            Console.WriteLine("coordinates after remove " + Cordinates);
             var numbers = Cordinates.Split(',').Select(Int32.Parse).ToList();
 
             int[,] newArr = ReturnAreaSize(object_id);
@@ -332,6 +358,7 @@ namespace GamePlayer
                     int x = (column + (25 * j)) / 25;
                     int y = (row + (25 * i)) / 25;
                     unitMap[y, x] = object_id;
+                    Console.WriteLine("Object id placed on map -- " + object_id);
                     myUnits[y, x] = object_id;
                     Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
                         switch (object_id)
@@ -341,7 +368,6 @@ namespace GamePlayer
                                 // shipcarrier
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/shipcarrier/shipcarrier" + counter.ToString() + ".png");
-                                // unitMap[myPoint.Y / 25, myPoint.X / 25] = 1;
                                 if (i + j == 0)
                                 {
                                     shipCarrier--;
@@ -353,7 +379,6 @@ namespace GamePlayer
                                 // shipdestroyer
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/shipdestroyer/shipdestroyer" + counter.ToString() + ".png");
-                                // unitMap[myPoint.Y / 25, myPoint.X / 25] = 2;
                                 if (i + j == 0)
                                 {
                                     shipDestroyer--;
@@ -366,7 +391,6 @@ namespace GamePlayer
                                 // submarine
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/submarine/submarine" + counter.ToString() + ".png");
-                                // unitMap[myPoint.Y / 25, myPoint.X / 25] = 3;
                                 if (i + j == 0)
                                 {
                                     submarine--;
@@ -378,7 +402,6 @@ namespace GamePlayer
                                 // plane
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = planeImg[counter - 1];
-                                // unitMap[myPoint.Y / 25, myPoint.X / 25] = 4;
                                 if (i + j == 0)
                                 {
                                     plane--;
@@ -390,7 +413,6 @@ namespace GamePlayer
                                 // jet
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = jetImg[counter - 1];
-                                // unitMap[myPoint.Y / 25, myPoint.X / 25] = 5;
                                 if (i + j == 0)
                                 {
                                     jet--;
@@ -402,7 +424,6 @@ namespace GamePlayer
                                 // soldier
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/soldier/soldier" + counter.ToString() + ".png");
-                                // unitMap[myPoint.Y / 25, myPoint.X / 25] = 6;
                                 if (i + j == 0)
                                 {
                                     soldier--;
@@ -414,7 +435,6 @@ namespace GamePlayer
                                 //mine
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/mine.png");
-                                // unitMap[myPoint.Y / 25, myPoint.X / 25] = 7;
                                 if (i + j == 0)
                                 {
                                     mine--;
@@ -476,6 +496,8 @@ namespace GamePlayer
             label5.Text = "Left: " + soldier.ToString();
             label6.Text = "Left: " + mine.ToString();
 
+            undo.Enabled = false;
+
             // flowLayoutPanel2.Size = new Size(1239, 64 * 25);
             this.AutoScroll = true;
             this.username.Text = "User: " + username;
@@ -524,7 +546,7 @@ namespace GamePlayer
                     case "reload":
                         var unitArrayString = System.Text.Encoding.Default.GetString(data);
                         unitMap = StringTo2DArray(unitArrayString);
-                        Print2DArray(unitMap);
+                        // Print2DArray(unitMap);
                         break;
                     default:
                         Console.WriteLine("Wrong request.");
@@ -581,6 +603,7 @@ namespace GamePlayer
 
         private void button2_Click(object sender, EventArgs e)
         {
+            undo.Enabled = false;
             handleRequest("map");
             renderLabels();
             refresh.Visible = true;
@@ -598,6 +621,7 @@ namespace GamePlayer
 
         private void button3_Click(object sender, EventArgs e)
         {
+            undo.Enabled = false;
             clickedObject = 1;
             handleRequest("start");
             if (shipCarrier <= 1)
@@ -608,6 +632,7 @@ namespace GamePlayer
 
         private void button4_Click(object sender, EventArgs e)
         {
+            undo.Enabled = false;
             clickedObject = 2;
             handleRequest("start");
             if (shipDestroyer <= 1)
@@ -618,6 +643,7 @@ namespace GamePlayer
 
         private void button5_Click(object sender, EventArgs e)
         {
+            undo.Enabled = false;
             clickedObject = 3;
             handleRequest("start");
             if (submarine <= 1)
@@ -628,6 +654,7 @@ namespace GamePlayer
 
         private void button6_Click(object sender, EventArgs e)
         {
+            undo.Enabled = false;
             // plane builder 
             clickedObject = 4;
             handleRequest("start");
@@ -639,6 +666,7 @@ namespace GamePlayer
 
         private void button7_Click(object sender, EventArgs e)
         {
+            undo.Enabled = false;
             clickedObject = 6;
             handleRequest("start");
             if (soldier <= 1)
@@ -649,7 +677,8 @@ namespace GamePlayer
 
         private void button8_Click(object sender, EventArgs e)
         {
-             clickedObject = 7;
+            undo.Enabled = false;
+            clickedObject = 7;
              handleRequest("start");
              if (mine <= 1)
              {
@@ -675,6 +704,7 @@ namespace GamePlayer
 
         private void refresh_Click(object sender, EventArgs e)
         {
+            undo.Enabled = false;
             handleRequest("reload");
         }
         private void username_TextChanged(object sender, EventArgs e)
@@ -684,6 +714,7 @@ namespace GamePlayer
 
         private void button10_Click(object sender, EventArgs e)
         {
+            undo.Enabled = false;
             // jet builder
             clickedObject = 5;
             handleRequest("start");
@@ -691,6 +722,69 @@ namespace GamePlayer
             {
                 button7.Enabled = false;
             }
+        }
+        private void UndoObjectPosition(int x, int y, int object_id)
+        {
+            int[,] areaSize = ReturnAreaSize(object_id);
+            for (int i = 0; i < areaSize.GetLength(0); i++)
+            {
+                for(int j = 0; j < areaSize.GetLength(1); j++)
+                {
+                    Point myPoint = new Point((y + i) * 25, (x + j) * 25);
+                    Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
+                    update_label.BorderStyle = BorderStyle.FixedSingle;
+                    if (map[x+j][y+i].mapObject is Grass)
+                    {
+                        update_label.BackColor = Color.LawnGreen;
+                        update_label.Image = Image.FromFile("../../../GameModels/Textures/grassTile.png");
+                    }
+                    else if(map[x + j][y + i].mapObject is Sand)
+                    {
+                        update_label.BackColor = Color.SandyBrown;
+                        update_label.Image = Image.FromFile("../../../GameModels/Textures/sandTile.png");
+                    }
+                    else
+                    {
+                        update_label.BackColor = Color.DarkCyan;
+                        update_label.Image = Image.FromFile("../../../GameModels/Textures/waterTile.png");
+                    }
+                }
+            }
+            int column_number = ReturnbjectColumnNumber(currentSelectedObject);
+            int row_number = ReturnObjectRowNumber(currentSelectedObject);
+            renderObject(currentSelected[0, 1] * 25, currentSelected[0, 0] * 25, column_number, row_number, currentSelectedObject);
+        }
+        private void undo_Click(object sender, EventArgs e)
+        {
+
+            Print2DArray(currentSelected);
+            // Command design pattern for player map and server map
+            MoveReceiver receiver = new MoveReceiver(myUnits, currentSelectedObject, x_loc, y_loc, currentSelected);
+            MoveReceiver server_receiver = new MoveReceiver(unitMap, currentSelectedObject, x_loc, y_loc, currentSelected);
+            // undo moves 
+            MoveCommand command = new UndoCommand(receiver);
+            MoveCommand server_command = new UndoCommand(server_receiver);
+            MoveInvoker invoker = new MoveInvoker();
+            MoveInvoker server_invoker = new MoveInvoker();
+            String line = new String('-', 50);
+            Console.WriteLine(line);
+            Print2DArray(unitMap);
+
+            invoker.SetCommand(command);
+            server_invoker.SetCommand(server_command);
+            // update map front
+            UndoObjectPosition(x_loc, y_loc, currentSelectedObject);
+            myUnits = invoker.ExecuteCommand();
+
+            Console.WriteLine(line);
+            Print2DArray(unitMap);
+            unitMap = server_invoker.ExecuteCommand();
+
+            string arrayString = string.Join(",", unitMap.Cast<int>());
+            handleRequest(arrayString);
+
+            undo.Enabled = false;
+            currentSelectedObject = -1;
         }
     }
 }

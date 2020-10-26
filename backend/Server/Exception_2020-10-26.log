@@ -4,3 +4,6 @@ Exception occurred while receiving callback -  An existing connection was forcib
 -------------------------
 2020-10-26 01:32:33
 Exception occurred while receiving callback -  An existing connection was forcibly closed by the remote host.
+-------------------------
+2020-10-26 14:10:40
+Exception occurred while receiving callback -  An existing connection was forcibly closed by the remote host.
