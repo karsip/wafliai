@@ -20,14 +20,17 @@ namespace GameModels.Checker
             if (!_isInMap.inside(x, y, row, column))
             {
                 eligible = false;
+                Console.WriteLine("IsInMap");
             }
             else if (!_isGoodType.isOnGoodTile(x, y, row, column, type))
             {
                 eligible = false;
+                Console.WriteLine("IsOnGoodTile");
             }
             else if (!_isGroundUsed.isFree(map, x, y, row, column))
             {
                 eligible = false;
+                Console.WriteLine("IsFree");
             }
             return eligible;
         }

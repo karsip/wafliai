@@ -2,6 +2,7 @@
 using GameModels.AirCraftTypes;
 using GameModels.Checker;
 using GameModels.Command;
+using GameModels.Mine_explosion;
 using GameModels.GroundTypes;
 using GameModels.Singleton;
 using Newtonsoft.Json;
@@ -22,6 +23,7 @@ namespace GamePlayer
         private static ILogger _logger;
         private static Socket _clientSocket;
         private int clickedObject = 0;
+        private bool isInCreationStage = false;
         private bool objectChecked = false;
         private int currentSelectedObject = 0;
         private int x_loc;
@@ -94,17 +96,15 @@ namespace GamePlayer
             bool isOK = true;
             if (objectChecked && currentSelectedObject != -1)
             {
-                if (unitMap[row / 25, column / 25] == 0)
+                int column_number = ReturnbjectColumnNumber(currentSelectedObject);
+                int row_number = ReturnObjectRowNumber(currentSelectedObject);
+                CanBePlaced canBePlaced = new CanBePlaced();
+                bool eligible = canBePlaced.IsEligible(unitMap, (column / 25), (row / 25), column_number, row_number, currentSelectedObject);
+                if (eligible)
                 {
                     x_loc = row / 25;
                     y_loc = column / 25;
-                    int column_number = ReturnbjectColumnNumber(currentSelectedObject);
-                    int row_number = ReturnObjectRowNumber(currentSelectedObject);
                     renderObject(column, row, column_number, row_number, currentSelectedObject);
-                    CanBePlaced canBePlaced = new CanBePlaced();
-                    bool eligible = canBePlaced.IsEligible(myUnits, (column / 25), (row / 25), column_number, row_number, currentSelectedObject);
-                    // if (eligible == true)
-                    //{
                     RenderGroundAfterChange();
                     // Command design pattern for player map and server map
                     MoveReceiver receiver = new MoveReceiver(myUnits, currentSelectedObject, row / 25, column / 25, currentSelected);
@@ -113,7 +113,6 @@ namespace GamePlayer
                     MoveCommand server_command = new MoveToCommand(server_receiver);
                     MoveInvoker invoker = new MoveInvoker();
                     MoveInvoker server_invoker = new MoveInvoker();
-
                     invoker.SetCommand(command);
                     server_invoker.SetCommand(server_command);
                     Console.WriteLine("Before command --------------------------------------------");
@@ -130,18 +129,12 @@ namespace GamePlayer
 
                     // should set currentSelected to main value
                     objectChecked = false;
-                    // }
-                    /*else
-                    {
-                        MessageBox.Show("You can't place object here", "Game error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    } */
                 }
                 else
                 {
                     isOK = false;
-                    String err_Message = String.Format("User tried to place object on another object");
-                    _logger.LogException(err_Message);
+                    //String err_Message = String.Format("User tried to place object on another object or on a wrong tile");
+                    //_logger.LogException(err_Message);
                     MessageBox.Show("You can't place object here", "Game error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -150,17 +143,40 @@ namespace GamePlayer
             {
                 if (CheckIfClickOnAnObject(row, column))
                 {
-                    objectChecked = true;
-                    prev_x_loc = row / 25;
-                    prev_y_loc = column / 25;
+                    if (unitMap[row / 25, column / 25] == 7)
+                    {
 
-                    currentSelectedObject = myUnits[row / 25, column / 25];
-                    string Cordinates = "";
-                    BasicFill(myUnits, column / 25, row / 25, currentSelectedObject, ref Cordinates);
-
-                    currentSelected = ConvertStringToArray(Cordinates, currentSelectedObject);
-                    Print2DArray(currentSelected);
-                    HighlightObject(currentSelected);
+                        var rnd = new Random();
+                        int ExplosionPower = rnd.Next(3);
+                        MineStrategy mineStrategy = new MineStrategy();
+                        switch (ExplosionPower)
+                        {
+                            case 0:
+                                mineStrategy.SetMineStrategy(new SmallExplosion());
+                                break;
+                            case 1:
+                                mineStrategy.SetMineStrategy(new MediumExplosion());
+                                break;
+                            case 2:
+                                mineStrategy.SetMineStrategy(new HugeExplosion());
+                                break;
+                        }
+                        mineStrategy.ExplodeMine(1);
+                    }
+                    else
+                    {
+                        objectChecked = true;
+                        prev_x_loc = row / 25;
+                        prev_y_loc = column / 25;
+    
+                        currentSelectedObject = myUnits[row / 25, column / 25];
+                        string Cordinates = "";
+                        BasicFill(myUnits, column / 25, row / 25, currentSelectedObject, ref Cordinates);
+    
+                        currentSelected = ConvertStringToArray(Cordinates, currentSelectedObject);
+                        Print2DArray(currentSelected);
+                        HighlightObject(currentSelected);
+                    }
                 }
             }
             if (isOK)
@@ -201,7 +217,7 @@ namespace GamePlayer
         {
             int x = row / 25;
             int y = column / 25;
-            if (myUnits[x, y] != 0)
+            if (myUnits[x, y] != 0 && myUnits[x, y] != 8)
             {
                 return true;
             }
@@ -378,10 +394,15 @@ namespace GamePlayer
                                 // shipcarrier
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/shipcarrier/shipcarrier" + counter.ToString() + ".png");
-                                if (i + j == 0)
+                                if (isInCreationStage)
                                 {
                                     shipCarrier--;
                                     label1.Text = "Left: " + shipCarrier.ToString();
+                                    isInCreationStage = false;
+                                    if (shipCarrier <= 0)
+                                    {
+                                        button3.Enabled = false;
+                                    }
 
                                 }
                                 break;
@@ -389,11 +410,15 @@ namespace GamePlayer
                                 // shipdestroyer
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/shipdestroyer/shipdestroyer" + counter.ToString() + ".png");
-                                if (i + j == 0)
+                                if (isInCreationStage)
                                 {
                                     shipDestroyer--;
                                     label2.Text = "Left: " + shipDestroyer.ToString();
-
+                                    isInCreationStage = false;
+                                    if (shipDestroyer <= 0)
+                                    {
+                                        button4.Enabled = false;
+                                    }
                                 }
 
                                 break;
@@ -401,54 +426,75 @@ namespace GamePlayer
                                 // submarine
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/submarine/submarine" + counter.ToString() + ".png");
-                                if (i + j == 0)
+                                if (isInCreationStage)
                                 {
                                     submarine--;
                                     label3.Text = "Left: " + submarine.ToString();
-
+                                    isInCreationStage = false;
+                                    if (submarine <= 0)
+                                    {
+                                        button5.Enabled = false;
+                                    }
                                 }
                                 break;
                             case 4:
                                 // plane
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = planeImg[counter - 1];
-                                if (i + j == 0)
+                                if (isInCreationStage)
                                 {
                                     plane--;
                                     label4.Text = "Left: " + plane.ToString();
-
+                                    isInCreationStage = false;
+                                    if (plane <= 0)
+                                    {
+                                        button6.Enabled = false;
+                                    }
                                 }
                                 break;
                             case 5:
                                 // jet
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = jetImg[counter - 1];
-                                if (i + j == 0)
+                                if (isInCreationStage)
                                 {
                                     jet--;
                                     label8.Text = "Left: " + jet.ToString();
-
+                                    isInCreationStage = false;
+                                    if (jet <= 0)
+                                    {
+                                        button10.Enabled = false;
+                                    }
                                 }
                                 break;
                             case 6:
                                 // soldier
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/soldier/soldier" + counter.ToString() + ".png");
-                                if (i + j == 0)
+                                if (isInCreationStage)
                                 {
                                     soldier--;
                                     label5.Text = "Left: " + soldier.ToString();
-
+                                    isInCreationStage = false;
+                                    if (soldier <= 0)
+                                    {
+                                        button7.Enabled = false;
+                                    }
                                 }
                                 break;
                             case 7:
                                 //mine
                                 update_label.BorderStyle = BorderStyle.None;
                                 update_label.Image = Image.FromFile("../../../GameModels/Textures/mine.png");
-                                if (i + j == 0)
+                                if (isInCreationStage)
                                 {
                                     mine--;
                                     label6.Text = "Left: " + mine.ToString();
+                                    isInCreationStage = false;
+                                    if (mine <= 0)
+                                    {
+                                        button8.Enabled = false;
+                                    }
                                 }
                                 break;
                             default:
@@ -633,33 +679,24 @@ namespace GamePlayer
         {
             undo.Enabled = false;
             clickedObject = 1;
+            isInCreationStage = true;
             handleRequest("start");
-            if (shipCarrier <= 1)
-            {
-                button3.Enabled = false;
-            }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             undo.Enabled = false;
             clickedObject = 2;
+            isInCreationStage = true;
             handleRequest("start");
-            if (shipDestroyer <= 1)
-            {
-                button4.Enabled = false;
-            }
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
             undo.Enabled = false;
             clickedObject = 3;
+            isInCreationStage = true;
             handleRequest("start");
-            if (submarine <= 1)
-            {
-                button5.Enabled = false;
-            }
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -667,33 +704,24 @@ namespace GamePlayer
             undo.Enabled = false;
             // plane builder 
             clickedObject = 4;
+            isInCreationStage = true;
             handleRequest("start");
-            if (plane <= 1)
-            {
-                button6.Enabled = false;
-            }
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
             undo.Enabled = false;
             clickedObject = 6;
+            isInCreationStage = true;
             handleRequest("start");
-            if (soldier <= 1)
-            {
-                button7.Enabled = false;
-            }
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
             undo.Enabled = false;
             clickedObject = 7;
+            isInCreationStage = true;
             handleRequest("start");
-            if (mine <= 1)
-            {
-                button8.Enabled = false;
-            }
         }
 
         private void flowLayoutPanel2_Paint(object sender, PaintEventArgs e)
@@ -727,11 +755,8 @@ namespace GamePlayer
             undo.Enabled = false;
             // jet builder
             clickedObject = 5;
+            isInCreationStage = true;
             handleRequest("start");
-            if (jet <= 1)
-            {
-                button7.Enabled = false;
-            }
         }
         private void UndoObjectPosition(int x, int y, int object_id)
         {
