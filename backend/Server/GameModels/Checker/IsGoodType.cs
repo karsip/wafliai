@@ -8,7 +8,7 @@ namespace GameModels.Checker
     {
         public bool isOnGoodTile(int x, int y, int row, int column, int type)
         {
-            if (type == 4 || type == 5 || type == 7)
+            if (type == 4 || type == 5 || type == 7 || type == 8 || type == 9 || type == 10)
             {
                 return true;
             }

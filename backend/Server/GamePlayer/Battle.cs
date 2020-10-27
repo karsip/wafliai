@@ -36,14 +36,14 @@ namespace GamePlayer
         private static int[,] unitMap = new int[64, 64];
         private int[,] myUnits = new int[64, 64];
         private int[,] currentSelected;
-
+        int lifepointsLeft = 14;
         int shipCarrier = 2;
         int shipDestroyer = 2;
         int submarine = 3;
         int plane = 2;
         int jet = 2;
         int soldier = 3;
-        int mine = 5;
+        int mine = 5;//5
 
         private MapCell[][] map;
         private PlayerData playerDataOnStart;
@@ -87,6 +87,38 @@ namespace GamePlayer
                 }
             }
         }
+        private bool LandedOnMine(int[,] map, int x, int y, int row, int column) 
+        {
+            for (int i = 0; i < row; i++)
+            {
+                for (int j = 0; j < column; j++)
+                {
+                    int newx = (x + j);
+                    int newy = (y + i);
+                    if (map[newy, newx] == 7)
+                        return true;
+                }
+            }
+            return false;
+        }
+        private int[] MineCoordinates(int[,] map, int x, int y, int row, int column)
+        {
+            int[] coordinates = new int[2];
+            for (int i = 0; i < row; i++)
+            {
+                for (int j = 0; j < column; j++)
+                {
+                    int newx = (x + j);
+                    int newy = (y + i);
+                    if (map[newy, newx] == 7)
+                    {
+                        coordinates[0] = newx;
+                        coordinates[1] = newy;
+                    }
+                }
+            }
+            return coordinates;
+        }
         protected void HandleClickLabel(object sender, EventArgs e)
         {
             Label button = sender as Label;
@@ -102,33 +134,79 @@ namespace GamePlayer
                 bool eligible = canBePlaced.IsEligible(unitMap, (column / 25), (row / 25), column_number, row_number, currentSelectedObject);
                 if (eligible)
                 {
-                    x_loc = row / 25;
-                    y_loc = column / 25;
-                    renderObject(column, row, column_number, row_number, currentSelectedObject);
-                    RenderGroundAfterChange();
-                    // Command design pattern for player map and server map
-                    MoveReceiver receiver = new MoveReceiver(myUnits, currentSelectedObject, row / 25, column / 25, currentSelected);
-                    MoveReceiver server_receiver = new MoveReceiver(unitMap, currentSelectedObject, row / 25, column / 25, currentSelected);
-                    MoveCommand command = new MoveToCommand(receiver);
-                    MoveCommand server_command = new MoveToCommand(server_receiver);
-                    MoveInvoker invoker = new MoveInvoker();
-                    MoveInvoker server_invoker = new MoveInvoker();
-                    invoker.SetCommand(command);
-                    server_invoker.SetCommand(server_command);
-                    Console.WriteLine("Before command --------------------------------------------");
-                    Print2DArray(unitMap);
-                    myUnits = invoker.ExecuteCommand();
-                    unitMap = server_invoker.ExecuteCommand();
+                    if (LandedOnMine(unitMap, (column / 25), (row / 25), row_number, column_number))
+                    {
+                        int[] coordinates = MineCoordinates(unitMap, (column / 25), (row / 25), row_number, column_number);
+                        var rnd = new Random();
+                        int ExplosionPower = rnd.Next(3);
+                        MineStrategy mineStrategy = new MineStrategy();
+                        switch (ExplosionPower)
+                        {
+                            case 0:
+                                mineStrategy.SetMineStrategy(new SmallExplosion());
+                                renderObject(coordinates[0]*25, coordinates[1] * 25, 1, 1, 8);
+                                break;
+                            case 1:
+                                mineStrategy.SetMineStrategy(new MediumExplosion());
+                                renderObject(coordinates[0] * 25, coordinates[1] * 25, 2, 2, 9);
+                                break;
+                            case 2:
+                                mineStrategy.SetMineStrategy(new HugeExplosion());
+                                renderObject(coordinates[0] * 25, coordinates[1] * 25, 3, 3, 10);
+                                break;
+                        }
+                        unitMap = mineStrategy.ExplodeMine(unitMap, coordinates[1], coordinates[0]);
+                        myUnits = mineStrategy.ExplodeMine(myUnits, coordinates[1], coordinates[0]);
+                        objectChecked = false;
+                        //RenderGroundAfterChange();
+                        lifepointsLeft--;
+                        this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
+                        //MoveReceiver receiver = new MoveReceiver(myUnits, currentSelectedObject, row / 25, column / 25, currentSelected);
+                        //MoveReceiver server_receiver = new MoveReceiver(unitMap, currentSelectedObject, row / 25, column / 25, currentSelected);
+                        //MoveCommand command = new MoveToCommand(receiver);
+                        //MoveCommand server_command = new MoveToCommand(server_receiver);
+                        //MoveInvoker invoker = new MoveInvoker();
+                        //MoveInvoker server_invoker = new MoveInvoker();
+                        //invoker.SetCommand(command);
+                        //server_invoker.SetCommand(server_command);
+                        //myUnits = invoker.ExecuteCommand();
+                        //unitMap = server_invoker.ExecuteCommand();
 
-                    string arrayString = string.Join(",", unitMap.Cast<int>());
-                    handleRequest(arrayString);
+                        //string arrayString = string.Join(",", unitMap.Cast<int>());
+                        //handleRequest(arrayString);
+                        Console.WriteLine("After Explosion");
+                        Print2DArray(unitMap);
+                    }
+                    else
+                    {
+                        x_loc = row / 25;
+                        y_loc = column / 25;
+                        renderObject(column, row, column_number, row_number, currentSelectedObject);
+                        RenderGroundAfterChange();
+                        // Command design pattern for player map and server map
+                        MoveReceiver receiver = new MoveReceiver(myUnits, currentSelectedObject, row / 25, column / 25, currentSelected);
+                        MoveReceiver server_receiver = new MoveReceiver(unitMap, currentSelectedObject, row / 25, column / 25, currentSelected);
+                        MoveCommand command = new MoveToCommand(receiver);
+                        MoveCommand server_command = new MoveToCommand(server_receiver);
+                        MoveInvoker invoker = new MoveInvoker();
+                        MoveInvoker server_invoker = new MoveInvoker();
+                        invoker.SetCommand(command);
+                        server_invoker.SetCommand(server_command);
+                        Console.WriteLine("Before command --------------------------------------------");
+                        Print2DArray(unitMap);
+                        myUnits = invoker.ExecuteCommand();
+                        unitMap = server_invoker.ExecuteCommand();
 
-                    undo.Enabled = true;
-                    Console.WriteLine("After command --------------------------------------------");
-                    Print2DArray(unitMap);
+                        string arrayString = string.Join(",", unitMap.Cast<int>());
+                        handleRequest(arrayString);
 
-                    // should set currentSelected to main value
-                    objectChecked = false;
+                        undo.Enabled = true;
+                        Console.WriteLine("After command --------------------------------------------");
+                        Print2DArray(unitMap);
+
+                        // should set currentSelected to main value
+                        objectChecked = false;
+                    }
                 }
                 else
                 {
@@ -143,28 +221,6 @@ namespace GamePlayer
             {
                 if (CheckIfClickOnAnObject(row, column))
                 {
-                    if (unitMap[row / 25, column / 25] == 7)
-                    {
-
-                        var rnd = new Random();
-                        int ExplosionPower = rnd.Next(3);
-                        MineStrategy mineStrategy = new MineStrategy();
-                        switch (ExplosionPower)
-                        {
-                            case 0:
-                                mineStrategy.SetMineStrategy(new SmallExplosion());
-                                break;
-                            case 1:
-                                mineStrategy.SetMineStrategy(new MediumExplosion());
-                                break;
-                            case 2:
-                                mineStrategy.SetMineStrategy(new HugeExplosion());
-                                break;
-                        }
-                        mineStrategy.ExplodeMine(1);
-                    }
-                    else
-                    {
                         objectChecked = true;
                         prev_x_loc = row / 25;
                         prev_y_loc = column / 25;
@@ -176,7 +232,6 @@ namespace GamePlayer
                         currentSelected = ConvertStringToArray(Cordinates, currentSelectedObject);
                         Print2DArray(currentSelected);
                         HighlightObject(currentSelected);
-                    }
                 }
             }
             if (isOK)
@@ -217,7 +272,7 @@ namespace GamePlayer
         {
             int x = row / 25;
             int y = column / 25;
-            if (myUnits[x, y] != 0 && myUnits[x, y] != 8)
+            if (myUnits[x, y] != 0 && myUnits[x, y] != 8 && myUnits[x, y] != 9 && myUnits[x, y] != 10)
             {
                 return true;
             }
@@ -372,7 +427,6 @@ namespace GamePlayer
             int counter = 1;
             if (eligible)
             {
-
                 for (int i = 0; i < rowNumber; i++)
                 {
                     for (int j = 0; j < columnNumber; j++)
@@ -383,6 +437,25 @@ namespace GamePlayer
                         Point myPoint = new Point((column + (25 * j)), (row + 25 * i));
                         int x = (column + (25 * j)) / 25;
                         int y = (row + (25 * i)) / 25;
+                        if (object_id == 10) 
+                        {
+                            if (column + (25 * j) - 25 < 0 && row + (25 * j) - 25 < 0)
+                            {
+                                myPoint = new Point(0, 0);
+                            }
+                            else if (column + (25 * j) - 25 < 0)
+                            {
+                                myPoint = new Point(0, (row + 25 * i) - 25);
+                            }
+                            else if (row + (25 * j) - 25 < 0)
+                            {
+                                myPoint = new Point((column + (25 * j) - 25), 0);
+                            }
+                            else
+                            {
+                                myPoint = new Point((column + (25 * j) - 25), (row + 25 * i) - 25);
+                            }
+                        }
                         unitMap[y, x] = object_id;
                         Console.WriteLine("Object id placed on map -- " + object_id);
                         myUnits[y, x] = object_id;
@@ -497,6 +570,21 @@ namespace GamePlayer
                                     }
                                 }
                                 break;
+                            case 8:
+                                update_label.BorderStyle = BorderStyle.None;
+                                update_label.Image = Image.FromFile("../../../GameModels/Textures//Explosion/explosion1.png");
+                                update_label.BackColor = Color.Black;
+                                break;
+                            case 9:
+                                update_label.BorderStyle = BorderStyle.None;
+                                update_label.Image = Image.FromFile("../../../GameModels/Textures//Explosion/explosion2/explosion2-"+counter.ToString()+".png");
+                                update_label.BackColor = Color.Black;
+                                break;
+                            case 10:
+                                update_label.BorderStyle = BorderStyle.None;
+                                update_label.Image = Image.FromFile("../../../GameModels/Textures//Explosion/explosion3/explosion3-" + counter.ToString() + ".png");
+                                update_label.BackColor = Color.Black;
+                                break;
                             default:
                                 break;
 
@@ -557,7 +645,7 @@ namespace GamePlayer
             // flowLayoutPanel2.Size = new Size(1239, 64 * 25);
             this.AutoScroll = true;
             this.username.Text = "User: " + username;
-            this.lifepoints.Text = "LifePoints: " + 19.ToString();
+            this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
             _clientSocket = socket;
 
             handleRequest("username: " + username);

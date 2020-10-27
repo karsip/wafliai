@@ -8,23 +8,25 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\Modestas\\.nuget\\packages\\": {}
+    "C:\\Users\\ignbar1\\.nuget\\packages\\": {},
+    "F:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Modestas\\Desktop\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\BattleShipPlayer.csproj",
+      "projectUniqueName": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\BattleShipPlayer.csproj",
       "projectName": "BattleShipPlayer",
-      "projectPath": "C:\\Users\\Modestas\\Desktop\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\BattleShipPlayer.csproj",
-      "packagesPath": "C:\\Users\\Modestas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Modestas\\Desktop\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\obj\\",
+      "projectPath": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\BattleShipPlayer.csproj",
+      "packagesPath": "C:\\Users\\ignbar1\\.nuget\\packages\\",
+      "outputPath": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "F:\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\Modestas\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\ignbar1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
@@ -61,7 +63,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
       }
     }
   }

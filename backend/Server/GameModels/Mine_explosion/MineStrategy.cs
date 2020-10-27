@@ -16,9 +16,9 @@ namespace GameModels.Mine_explosion
         {
             this._mineStrategy = mineStrategy;
         }
-        public void ExplodeMine(int a) 
+        public int [,] ExplodeMine( int[,] map, int Y, int X) 
         {
-            this._mineStrategy.CalculateArea(a);
+            return this._mineStrategy.CalculateArea(map, Y, X);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace GameModels.Checker
                 {
                     int newx = (x + j);
                     int newy = (y + i);
-                    if (map[newy, newx] != 0)
+                    if (map[newy, newx] != 0 && map[newy, newx] != 7 && map[newy, newx] != 8 && map[newy, newx] != 9 && map[newy, newx] != 10)
                         return false;
                 }
             }

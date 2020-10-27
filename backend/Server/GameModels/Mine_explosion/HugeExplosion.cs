@@ -6,10 +6,19 @@ namespace GameModels.Mine_explosion
 {
     public class HugeExplosion : IMineStrategy
     {
-        public void CalculateArea(int size)
+        public int[,] CalculateArea(int[,] map, int Y, int X)
         {
-            int[] explosion_damage = new int[] { 3, 3 };
-            Console.WriteLine("Huge");
+            Y--;
+            X--;
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if(Y + i >= 0 && X + j >= 0 && Y + i < 64 && X + j <64)
+                    map[Y+i, X+j] = 10;
+                }
+            }
+            return map;
         }
     }
 }
