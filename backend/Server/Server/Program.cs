@@ -241,7 +241,7 @@ namespace Server
             {
                 for (int j = 0; j < unitMap.GetLength(1); j++)
                 {
-                    if(unitMap[i,j] == 0 && updateMap[i,j] != 0)
+                    if(updateMap[i, j] != unitMap[i,j])
                     {
                         unitMap[i, j] = updateMap[i, j];
                     }

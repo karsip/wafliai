@@ -31,26 +31,27 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Battle));
             this.button2 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label8 = new System.Windows.Forms.Label();
+            this.button10 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.username = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.refresh = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
             this.lifepoints = new System.Windows.Forms.TextBox();
-            this.button10 = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
+            this.undo = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.refresh = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,6 +88,26 @@
             this.panel1.Size = new System.Drawing.Size(181, 692);
             this.panel1.TabIndex = 4;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.label8.Location = new System.Drawing.Point(101, 446);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(51, 20);
+            this.label8.TabIndex = 13;
+            this.label8.Text = "label8";
+            // 
+            // button10
+            // 
+            this.button10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button10.Location = new System.Drawing.Point(23, 418);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(61, 62);
+            this.button10.TabIndex = 12;
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // label6
             // 
@@ -154,6 +175,95 @@
             this.label1.TabIndex = 6;
             this.label1.Text = "label1";
             // 
+            // button6
+            // 
+            this.button6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button6.Location = new System.Drawing.Point(31, 339);
+            this.button6.Margin = new System.Windows.Forms.Padding(0);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(64, 50);
+            this.button6.TabIndex = 3;
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // username
+            // 
+            this.username.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.username.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.username.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.username.Location = new System.Drawing.Point(12, 12);
+            this.username.Name = "username";
+            this.username.ReadOnly = true;
+            this.username.Size = new System.Drawing.Size(152, 25);
+            this.username.TabIndex = 0;
+            this.username.WordWrap = false;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(118, 596);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(51, 20);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "label7";
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(12, 50);
+            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(1239, 705);
+            this.flowLayoutPanel2.TabIndex = 0;
+            this.flowLayoutPanel2.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel2_Paint);
+            // 
+            // lifepoints
+            // 
+            this.lifepoints.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.lifepoints.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lifepoints.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lifepoints.Location = new System.Drawing.Point(199, 12);
+            this.lifepoints.Name = "lifepoints";
+            this.lifepoints.ReadOnly = true;
+            this.lifepoints.Size = new System.Drawing.Size(152, 25);
+            this.lifepoints.TabIndex = 0;
+            this.lifepoints.WordWrap = false;
+            // 
+            // undo
+            // 
+            this.undo.BackgroundImage = global::GamePlayer.Properties.Resources.undo__2_;
+            this.undo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.undo.Location = new System.Drawing.Point(506, 12);
+            this.undo.Name = "undo";
+            this.undo.Size = new System.Drawing.Size(35, 33);
+            this.undo.TabIndex = 6;
+            this.undo.UseVisualStyleBackColor = true;
+            this.undo.Click += new System.EventHandler(this.undo_Click);
+            // 
+            // button9
+            // 
+            this.button9.BackColor = System.Drawing.Color.LightSkyBlue;
+            this.button9.BackgroundImage = global::GamePlayer.Properties.Resources.close;
+            this.button9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button9.Location = new System.Drawing.Point(1378, 12);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(59, 33);
+            this.button9.TabIndex = 5;
+            this.button9.UseVisualStyleBackColor = false;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // refresh
+            // 
+            this.refresh.BackgroundImage = global::GamePlayer.Properties.Resources.refresh;
+            this.refresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.refresh.Location = new System.Drawing.Point(4, 642);
+            this.refresh.Name = "refresh";
+            this.refresh.Size = new System.Drawing.Size(73, 47);
+            this.refresh.TabIndex = 6;
+            this.refresh.UseVisualStyleBackColor = true;
+            this.refresh.Click += new System.EventHandler(this.refresh_Click);
+            // 
             // button8
             // 
             this.button8.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button8.BackgroundImage")));
@@ -177,17 +287,6 @@
             this.button7.TabIndex = 4;
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
-            // button6
-            // 
-            this.button6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button6.Location = new System.Drawing.Point(31, 339);
-            this.button6.Margin = new System.Windows.Forms.Padding(0);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(64, 50);
-            this.button6.TabIndex = 3;
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button5
             // 
@@ -227,99 +326,13 @@
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // username
-            // 
-            this.username.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.username.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.username.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.username.Location = new System.Drawing.Point(12, 12);
-            this.username.Name = "username";
-            this.username.ReadOnly = true;
-            this.username.Size = new System.Drawing.Size(152, 25);
-            this.username.TabIndex = 0;
-            this.username.WordWrap = false;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(118, 596);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(51, 20);
-            this.label7.TabIndex = 13;
-            this.label7.Text = "label7";
-            // 
-            // flowLayoutPanel2
-            // 
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(12, 50);
-            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(1239, 705);
-            this.flowLayoutPanel2.TabIndex = 0;
-            this.flowLayoutPanel2.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel2_Paint);
-            // 
-            // refresh
-            // 
-            this.refresh.BackgroundImage = global::GamePlayer.Properties.Resources.refresh;
-            this.refresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.refresh.Location = new System.Drawing.Point(4, 642);
-            this.refresh.Name = "refresh";
-            this.refresh.Size = new System.Drawing.Size(73, 47);
-            this.refresh.TabIndex = 6;
-            this.refresh.UseVisualStyleBackColor = true;
-            this.refresh.Click += new System.EventHandler(this.refresh_Click);
-            // 
-            // button9
-            // 
-            this.button9.BackColor = System.Drawing.Color.LightSkyBlue;
-            this.button9.BackgroundImage = global::GamePlayer.Properties.Resources.close;
-            this.button9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button9.Location = new System.Drawing.Point(1378, 12);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(59, 33);
-            this.button9.TabIndex = 5;
-            this.button9.UseVisualStyleBackColor = false;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
-            // 
-            // lifepoints
-            // 
-            this.lifepoints.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.lifepoints.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lifepoints.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lifepoints.Location = new System.Drawing.Point(199, 12);
-            this.lifepoints.Name = "lifepoints";
-            this.lifepoints.ReadOnly = true;
-            this.lifepoints.Size = new System.Drawing.Size(152, 25);
-            this.lifepoints.TabIndex = 0;
-            this.lifepoints.WordWrap = false;
-            // 
-            // button10
-            // 
-            this.button10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button10.Location = new System.Drawing.Point(23, 418);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(61, 62);
-            this.button10.TabIndex = 12;
-            this.button10.UseVisualStyleBackColor = true;
-            this.button10.Click += new System.EventHandler(this.button10_Click);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.label8.Location = new System.Drawing.Point(101, 446);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(51, 20);
-            this.label8.TabIndex = 13;
-            this.label8.Text = "label8";
-            // 
             // Battle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1443, 857);
+            this.Controls.Add(this.undo);
             this.Controls.Add(this.button9);
             this.Controls.Add(this.lifepoints);
             this.Controls.Add(this.flowLayoutPanel2);
@@ -360,5 +373,6 @@
         private System.Windows.Forms.TextBox lifepoints;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button undo;
     }
 }
