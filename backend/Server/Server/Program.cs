@@ -18,11 +18,8 @@ namespace Server
         private static List<Socket> _clientSockets = new List<Socket>();
         private static List<PlayerData> _gamePlayerList = new List<PlayerData>();
         private static byte[] _buffer = new byte[10000];
-
         private static int[,] unitArray = new int[64, 64];
         private static MapCell[][] gameCells;
-
-
         static void Main(string[] args)
         {
             Map gameMap = new Map();
