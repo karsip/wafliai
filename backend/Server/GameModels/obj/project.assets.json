@@ -270,19 +270,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\tomas\\.nuget\\packages\\": {}
+    "C:\\Users\\Modestas\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj",
+      "projectUniqueName": "C:\\Users\\Modestas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj",
       "projectName": "GameModels",
-      "projectPath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj",
-      "packagesPath": "C:\\Users\\tomas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\obj\\",
+      "projectPath": "C:\\Users\\Modestas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj",
+      "packagesPath": "C:\\Users\\Modestas\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Modestas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\tomas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Modestas\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -331,7 +331,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
       }
     }
   }
