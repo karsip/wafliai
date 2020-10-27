@@ -21,7 +21,6 @@ namespace GameModels.Singleton
         public void LogException(string messagge)
         {
             string fileName = string.Format("{0}_{1}.log", "Exception", DateTime.Now.ToShortDateString());
-            // string logFilePath = string.Format(@"{0}\{1}", AppDomain.CurrentDomain.BaseDirectory, fileName);
             string logFilePath = Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName, fileName);
             StringBuilder sb = new StringBuilder();
             string line = new string('-', 25);

@@ -15,23 +15,6 @@ C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer
 C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\bin\Debug\Newtonsoft.Json.dll
 C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\bin\Debug\System.Drawing.Common.dll
 C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\bin\Debug\Newtonsoft.Json.xml
-F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\bin\Debug\GamePlayer.exe.config
-F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\bin\Debug\GamePlayer.exe
-F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\bin\Debug\GamePlayer.pdb
-F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\bin\Debug\GameModels.dll
-F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\bin\Debug\Newtonsoft.Json.dll
-F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\bin\Debug\System.Drawing.Common.dll
-F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\bin\Debug\GameModels.pdb
-F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\bin\Debug\Newtonsoft.Json.xml
-F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.csprojAssemblyReference.cache
-F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.Battle.resources
-F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.Form1.resources
-F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.Properties.Resources.resources
-F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.csproj.GenerateResource.cache
-F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.csproj.CoreCompileInputs.cache
-F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.csproj.CopyComplete
-F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.exe
-F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.pdb
 C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\bin\Debug\GamePlayer.exe.config
 C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\bin\Debug\GamePlayer.exe
 C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\bin\Debug\GamePlayer.pdb
@@ -49,11 +32,5 @@ C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePla
 C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.csproj.CopyComplete
 C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.exe
 C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.pdb
-<<<<<<< HEAD
 C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.EndGame.resources
 C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.EndGame.resources
-=======
-C:\Users\Modestas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.Form2.resources
-C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.optional.resources
-C:\Users\tomas\Desktop\BattleShip\backend\Server\GamePlayer\obj\Debug\GamePlayer.Form2.resources
->>>>>>> 45b08ceecdb9864b12bddc01e706a6d3884a065a

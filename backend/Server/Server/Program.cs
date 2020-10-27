@@ -18,11 +18,8 @@ namespace Server
         private static List<Socket> _clientSockets = new List<Socket>();
         private static List<PlayerData> _gamePlayerList = new List<PlayerData>();
         private static byte[] _buffer = new byte[10000];
-
         private static int[,] unitArray = new int[64, 64];
         private static MapCell[][] gameCells;
-
-
         static void Main(string[] args)
         {
             Map gameMap = new Map();
@@ -241,7 +238,7 @@ namespace Server
             {
                 for (int j = 0; j < unitMap.GetLength(1); j++)
                 {
-                    if(unitMap[i,j] == 0 && updateMap[i,j] != 0)
+                    if(updateMap[i, j] != unitMap[i,j])
                     {
                         unitMap[i, j] = updateMap[i, j];
                     }
