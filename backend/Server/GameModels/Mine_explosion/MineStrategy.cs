@@ -4,28 +4,21 @@ using System.Text;
 
 namespace GameModels.Mine_explosion
 {
-    public class SmallExplosion : IMineStrategy
+    public class MineStrategy
     {
-        public int[] CalculateArea(int size, int damage)
+        private IMineStrategy _mineStrategy;
+        public MineStrategy() { }
+        public MineStrategy(IMineStrategy mineStrategy) 
         {
-            int[] explosion_damage = new int[] { 1, 1};
-            return explosion_damage;
+            this._mineStrategy = mineStrategy;
         }
-    }
-    public class MediumExplosion : IMineStrategy
-    {
-        public int[] CalculateArea(int size, int damage)
+        public void SetMineStrategy(IMineStrategy mineStrategy)
         {
-            int[] explosion_damage = new int[] { 2, 2 };
-            return explosion_damage;
+            this._mineStrategy = mineStrategy;
         }
-    }
-    public class HugeExplosion : IMineStrategy
-    {
-        public int[] CalculateArea(int size, int damage)
+        public void ExplodeMine(int a) 
         {
-            int[] explosion_damage = new int[] { 3, 3 };
-            return explosion_damage;
+            this._mineStrategy.CalculateArea(a);
         }
     }
 }
