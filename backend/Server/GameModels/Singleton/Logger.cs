@@ -27,11 +27,11 @@ namespace GameModels.Singleton
             sb.AppendLine(line);
             sb.AppendLine(DateTime.Now.ToString());
             sb.AppendLine(messagge);
-            using (StreamWriter sw = new StreamWriter(logFilePath, true))
-            {
-                sw.Write(sb.ToString());
-                sw.Flush();
-            }
+//            using (StreamWriter sw = new StreamWriter(logFilePath, true))
+//            {
+//                sw.Write(sb.ToString());
+//                sw.Flush();
+//            }
         }
     }
 }

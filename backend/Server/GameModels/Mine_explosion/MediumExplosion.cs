@@ -6,10 +6,17 @@ namespace GameModels.Mine_explosion
 {
     public class MediumExplosion : IMineStrategy
     {
-        public void CalculateArea(int size)
+        public int [,] CalculateArea(int[,] map, int Y, int X)
         {
-            int[] explosion_damage = new int[] { 2, 2 };
-            Console.WriteLine("Medium");
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    if(Y+i<64 && X+j<64)
+                    map[Y+i, X+j] = 9;
+                }
+            }
+            return map;
         }
     }
 }

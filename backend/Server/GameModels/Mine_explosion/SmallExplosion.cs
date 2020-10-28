@@ -6,10 +6,10 @@ namespace GameModels.Mine_explosion
 {
     public class SmallExplosion : IMineStrategy
     {
-        public void CalculateArea(int size)
+        public int[,] CalculateArea(int[,] map, int Y, int X)
         {
-            int[] explosion_damage = new int[] { 1, 1 };
-            Console.WriteLine("Small");
+            map[Y, X] = 8;
+            return map;
         }
     }
 }
