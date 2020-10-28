@@ -158,22 +158,23 @@ namespace GamePlayer
                         unitMap = mineStrategy.ExplodeMine(unitMap, coordinates[1], coordinates[0]);
                         myUnits = mineStrategy.ExplodeMine(myUnits, coordinates[1], coordinates[0]);
                         objectChecked = false;
-                        //RenderGroundAfterChange();
+                        RenderGroundAfterChange();
                         lifepointsLeft--;
                         this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
-                        //MoveReceiver receiver = new MoveReceiver(myUnits, currentSelectedObject, row / 25, column / 25, currentSelected);
-                        //MoveReceiver server_receiver = new MoveReceiver(unitMap, currentSelectedObject, row / 25, column / 25, currentSelected);
-                        //MoveCommand command = new MoveToCommand(receiver);
-                        //MoveCommand server_command = new MoveToCommand(server_receiver);
-                        //MoveInvoker invoker = new MoveInvoker();
-                        //MoveInvoker server_invoker = new MoveInvoker();
-                        //invoker.SetCommand(command);
-                        //server_invoker.SetCommand(server_command);
-                        //myUnits = invoker.ExecuteCommand();
-                        //unitMap = server_invoker.ExecuteCommand();
+                        MoveReceiver explode_receiver = new MoveReceiver(myUnits, currentSelectedObject, row / 25, column / 25, currentSelected);
+                        MoveReceiver server_explode_receiver = new MoveReceiver(unitMap, currentSelectedObject, row / 25, column / 25, currentSelected);
+                        MoveCommand command = new ExplosionCommand(explode_receiver);
+                        MoveCommand server_command = new ExplosionCommand(server_explode_receiver);
+                        MoveInvoker invoker = new MoveInvoker();
+                        MoveInvoker server_invoker = new MoveInvoker();
+                        invoker.SetCommand(command);
+                        server_invoker.SetCommand(server_command);
+                        myUnits = invoker.ExecuteCommand();
+                        unitMap = server_invoker.ExecuteCommand();
 
-                        //string arrayString = string.Join(",", unitMap.Cast<int>());
-                        //handleRequest(arrayString);
+                        string arrayString = string.Join(",", unitMap.Cast<int>());
+                        handleRequest(arrayString);
+
                         Console.WriteLine("After Explosion");
                         Print2DArray(unitMap);
                     }
@@ -288,7 +289,6 @@ namespace GamePlayer
         private int[,] ConvertStringToArray(string Cordinates, int object_id)
         {
             Cordinates = Cordinates.Remove(Cordinates.Length - 1);
-            Console.WriteLine("coordinates after remove " + Cordinates);
             var numbers = Cordinates.Split(',').Select(Int32.Parse).ToList();
 
             int[,] newArr = ReturnAreaSize(object_id);
@@ -457,7 +457,6 @@ namespace GamePlayer
                             }
                         }
                         unitMap[y, x] = object_id;
-                        Console.WriteLine("Object id placed on map -- " + object_id);
                         myUnits[y, x] = object_id;
                         Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
                         switch (object_id)
@@ -593,8 +592,6 @@ namespace GamePlayer
                     }
                 }
                 string arrayString = string.Join(",", unitMap.Cast<int>());
-                Console.WriteLine("before request send: ");
-                Console.WriteLine(arrayString);
                 handleRequest(arrayString);
             }
             else
@@ -652,9 +649,8 @@ namespace GamePlayer
         }
         private void handleRequest(string request)
         {
-            Console.WriteLine("request ----> ", request);
             byte[] buffer = Encoding.ASCII.GetBytes(request);
-            Console.WriteLine("Buffer --- " + System.Text.Encoding.UTF8.GetString(buffer));
+
             _clientSocket.Send(buffer);
 
             byte[] responseBuffer = new byte[300000];
@@ -663,8 +659,6 @@ namespace GamePlayer
             byte[] data = new byte[rec];
             Array.Copy(responseBuffer, data, rec);
 
-
-            Console.WriteLine("Full encoded data", Encoding.ASCII.GetString(data));
             if (request.Length < 10)
             {
                 switch (request)
@@ -680,7 +674,6 @@ namespace GamePlayer
                         break;
                     case "start":
                         var playerDataString = System.Text.Encoding.Default.GetString(data);
-                        Console.WriteLine("Player String " + playerDataString);
                         playerDataOnStart = JsonConvert.DeserializeObject<PlayerData>(playerDataString, new JsonSerializerSettings()
                         {
                             TypeNameHandling = TypeNameHandling.Auto
@@ -720,7 +713,6 @@ namespace GamePlayer
             int[] array = query.Split(V).Select(n => Convert.ToInt32(n)).ToArray();
             int[,] arrayToReturn = new int[64, 64];
             int counter = 0;
-            Console.WriteLine("int length " + array.Length);
             for (int i = 0; i < Math.Sqrt(array.Length); i++)
             {
                 for (int j = 0; j < Math.Sqrt(array.Length); j++)
@@ -875,8 +867,7 @@ namespace GamePlayer
             }
             int column_number = ReturnbjectColumnNumber(currentSelectedObject);
             int row_number = ReturnObjectRowNumber(currentSelectedObject);
-            Console.WriteLine("PREV X POS " + prev_x_loc);
-            Console.WriteLine("PREV Y POS " + prev_y_loc);
+
             renderObject(prev_y_loc * 25, prev_x_loc * 25, column_number, row_number, currentSelectedObject);
         }
         private void undo_Click(object sender, EventArgs e)
