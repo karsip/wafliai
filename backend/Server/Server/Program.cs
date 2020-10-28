@@ -31,29 +31,6 @@ namespace Server
             SetupServer();
             Console.ReadLine();
         }
-        /*
-        private static void updateUnitArray(int row, int column, int object_id, int rows, int columns)
-        {
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < columns; j++)
-                {
-                    unitArray[i, j] = object_id;
-                }
-            }
-            PrintArray();
-        } */
-        private static void PrintArray()
-        {
-            for (var i = 0; i < unitArray.GetLength(0); i++)
-            {
-                for (var j = 0; j < unitArray.GetLength(1); j++)
-                {
-                    Console.Write(unitArray[i, j]);
-                }
-                Console.WriteLine();
-            }
-        }
         private static void SetupServer()
         {
             _logger = Logger.GetInstance;
@@ -72,7 +49,6 @@ namespace Server
             PlayerData playerToAdd = new PlayerData(socket);
 
             _gamePlayerList.Add(playerToAdd);
-            Console.WriteLine("user arr length " + _gamePlayerList.Count);
             socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReveiveCallback), socket);
             _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
@@ -92,7 +68,6 @@ namespace Server
                 IAdapterInrterface target = new RequestAdapter(adaptee);
                 int[,] queryArr = target.getRequest();
                 // ----------------------------------------------------------
-                Console.WriteLine(queryArr[0, 0]);
                 if (queryArr[0, 0] != -1)
                 {
                     UpdateUnitMap(unitArray, queryArr);
@@ -229,7 +204,6 @@ namespace Server
             int[] array = query.Split(',').Select(n => Convert.ToInt32(n)).ToArray();
             int[,] arrayToReturn = new int[64, 64];
             int counter = 0;
-            Console.WriteLine("int length " + array.Length);
             for (int i = 0; i < Math.Sqrt(array.Length); i++)
             {
                 for (int j = 0; j < Math.Sqrt(array.Length); j++)

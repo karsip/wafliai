@@ -457,7 +457,6 @@ namespace GamePlayer
                             }
                         }
                         unitMap[y, x] = object_id;
-                        Console.WriteLine("Object id placed on map -- " + object_id);
                         myUnits[y, x] = object_id;
                         Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
                         switch (object_id)
@@ -593,8 +592,6 @@ namespace GamePlayer
                     }
                 }
                 string arrayString = string.Join(",", unitMap.Cast<int>());
-                Console.WriteLine("before request send: ");
-                Console.WriteLine(arrayString);
                 handleRequest(arrayString);
             }
             else
@@ -652,9 +649,8 @@ namespace GamePlayer
         }
         private void handleRequest(string request)
         {
-            Console.WriteLine("request ----> ", request);
             byte[] buffer = Encoding.ASCII.GetBytes(request);
-            Console.WriteLine("Buffer --- " + System.Text.Encoding.UTF8.GetString(buffer));
+
             _clientSocket.Send(buffer);
 
             byte[] responseBuffer = new byte[300000];
@@ -663,8 +659,6 @@ namespace GamePlayer
             byte[] data = new byte[rec];
             Array.Copy(responseBuffer, data, rec);
 
-
-            Console.WriteLine("Full encoded data", Encoding.ASCII.GetString(data));
             if (request.Length < 10)
             {
                 switch (request)
@@ -680,7 +674,6 @@ namespace GamePlayer
                         break;
                     case "start":
                         var playerDataString = System.Text.Encoding.Default.GetString(data);
-                        Console.WriteLine("Player String " + playerDataString);
                         playerDataOnStart = JsonConvert.DeserializeObject<PlayerData>(playerDataString, new JsonSerializerSettings()
                         {
                             TypeNameHandling = TypeNameHandling.Auto
@@ -720,7 +713,6 @@ namespace GamePlayer
             int[] array = query.Split(V).Select(n => Convert.ToInt32(n)).ToArray();
             int[,] arrayToReturn = new int[64, 64];
             int counter = 0;
-            Console.WriteLine("int length " + array.Length);
             for (int i = 0; i < Math.Sqrt(array.Length); i++)
             {
                 for (int j = 0; j < Math.Sqrt(array.Length); j++)
@@ -875,8 +867,7 @@ namespace GamePlayer
             }
             int column_number = ReturnbjectColumnNumber(currentSelectedObject);
             int row_number = ReturnObjectRowNumber(currentSelectedObject);
-            Console.WriteLine("PREV X POS " + prev_x_loc);
-            Console.WriteLine("PREV Y POS " + prev_y_loc);
+
             renderObject(prev_y_loc * 25, prev_x_loc * 25, column_number, row_number, currentSelectedObject);
         }
         private void undo_Click(object sender, EventArgs e)
