@@ -1,25 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\Server\\Server\\Server.csproj": {}
+    "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\Server\\Server.csproj": {}
   },
   "projects": {
-    "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj": {
+    "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj",
+        "projectUniqueName": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj",
         "projectName": "GameModels",
-        "projectPath": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj",
-        "packagesPath": "C:\\Users\\ignbar1\\.nuget\\packages\\",
-        "outputPath": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\Server\\GameModels\\obj\\",
+        "projectPath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj",
+        "packagesPath": "C:\\Users\\tomas\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "F:\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\ignbar1\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\tomas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.0"
@@ -71,22 +67,18 @@
         }
       }
     },
-    "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\Server\\Server\\Server.csproj": {
+    "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\Server\\Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\Server\\Server\\Server.csproj",
+        "projectUniqueName": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\Server\\Server.csproj",
         "projectName": "Server",
-        "projectPath": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\Server\\Server\\Server.csproj",
-        "packagesPath": "C:\\Users\\ignbar1\\.nuget\\packages\\",
-        "outputPath": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\Server\\Server\\obj\\",
+        "projectPath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\Server\\Server.csproj",
+        "packagesPath": "C:\\Users\\tomas\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\Server\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "F:\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\ignbar1\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\tomas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -98,8 +90,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj": {
-                "projectPath": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj"
+              "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj": {
+                "projectPath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj"
               }
             }
           }

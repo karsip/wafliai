@@ -158,22 +158,23 @@ namespace GamePlayer
                         unitMap = mineStrategy.ExplodeMine(unitMap, coordinates[1], coordinates[0]);
                         myUnits = mineStrategy.ExplodeMine(myUnits, coordinates[1], coordinates[0]);
                         objectChecked = false;
-                        //RenderGroundAfterChange();
+                        RenderGroundAfterChange();
                         lifepointsLeft--;
                         this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
-                        //MoveReceiver receiver = new MoveReceiver(myUnits, currentSelectedObject, row / 25, column / 25, currentSelected);
-                        //MoveReceiver server_receiver = new MoveReceiver(unitMap, currentSelectedObject, row / 25, column / 25, currentSelected);
-                        //MoveCommand command = new MoveToCommand(receiver);
-                        //MoveCommand server_command = new MoveToCommand(server_receiver);
-                        //MoveInvoker invoker = new MoveInvoker();
-                        //MoveInvoker server_invoker = new MoveInvoker();
-                        //invoker.SetCommand(command);
-                        //server_invoker.SetCommand(server_command);
-                        //myUnits = invoker.ExecuteCommand();
-                        //unitMap = server_invoker.ExecuteCommand();
+                        MoveReceiver explode_receiver = new MoveReceiver(myUnits, currentSelectedObject, row / 25, column / 25, currentSelected);
+                        MoveReceiver server_explode_receiver = new MoveReceiver(unitMap, currentSelectedObject, row / 25, column / 25, currentSelected);
+                        MoveCommand command = new ExplosionCommand(explode_receiver);
+                        MoveCommand server_command = new ExplosionCommand(server_explode_receiver);
+                        MoveInvoker invoker = new MoveInvoker();
+                        MoveInvoker server_invoker = new MoveInvoker();
+                        invoker.SetCommand(command);
+                        server_invoker.SetCommand(server_command);
+                        myUnits = invoker.ExecuteCommand();
+                        unitMap = server_invoker.ExecuteCommand();
 
-                        //string arrayString = string.Join(",", unitMap.Cast<int>());
-                        //handleRequest(arrayString);
+                        string arrayString = string.Join(",", unitMap.Cast<int>());
+                        handleRequest(arrayString);
+
                         Console.WriteLine("After Explosion");
                         Print2DArray(unitMap);
                     }
@@ -288,7 +289,6 @@ namespace GamePlayer
         private int[,] ConvertStringToArray(string Cordinates, int object_id)
         {
             Cordinates = Cordinates.Remove(Cordinates.Length - 1);
-            Console.WriteLine("coordinates after remove " + Cordinates);
             var numbers = Cordinates.Split(',').Select(Int32.Parse).ToList();
 
             int[,] newArr = ReturnAreaSize(object_id);

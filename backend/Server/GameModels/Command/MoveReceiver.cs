@@ -53,6 +53,18 @@ namespace GameModels.Command
             }
             return map;
         }
+        public int [,] Explode()
+        {
+            try
+            {
+                ClearNowEmptySpace(map, selectedArea);
+            } catch (Exception e)
+            {
+                String errrMessage = String.Format("Something went wrong :( -> {0} " , e.Message);
+                Console.WriteLine(errrMessage);
+            }
+            return map;
+        }
         private void ClearNowEmptySpace(int[,] map, int[,] selectedArea)
         {
             for (int i = 0; i < selectedArea.GetLength(0); i++)
