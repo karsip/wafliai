@@ -10,7 +10,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Sockets;
 using System.Text;
-
+using GameModels.Iterator;
 namespace Server
 {
     class Program
@@ -21,7 +21,7 @@ namespace Server
         private static List<PlayerData> _gamePlayerList = new List<PlayerData>();
         private static byte[] _buffer = new byte[10000];
         private static int[,] unitArray = new int[64, 64];
-        private static MapCell[][] gameCells;
+        private static Matrix gameCells;
         static void Main(string[] args)
         {
             Map gameMap = new Map();
@@ -115,7 +115,7 @@ namespace Server
                             case "map":
                                 Map gameMap = new Map();
                                 string val = JsonConvert.SerializeObject(gameMap.GetMapObjects(),
-                                            typeof(MapCell), new JsonSerializerSettings
+                                            typeof(Matrix), new JsonSerializerSettings
                                             { TypeNameHandling = TypeNameHandling.Auto });
                                 data = Encoding.ASCII.GetBytes(val);
                                 break;
