@@ -205,7 +205,6 @@ namespace Server
         private static void Print2DArray()
         {
             string line = new string('-', 70);
-            Console.WriteLine("Server arr");
             Console.WriteLine(line);
             for (int i = 0; i < unitArray.GetLength(0); i++)
             {
@@ -238,9 +237,13 @@ namespace Server
             {
                 for (int j = 0; j < unitMap.GetLength(1); j++)
                 {
-                    if(updateMap[i, j] != unitMap[i,j])
+                    if(updateMap[i, j] != unitMap[i,j] && updateMap[i, j] != -1)
                     {
                         unitMap[i, j] = updateMap[i, j];
+                    } 
+                    if(updateMap[i, j] == -1)
+                    {
+                        unitMap[i, j] = 0;
                     }
                 }
             }

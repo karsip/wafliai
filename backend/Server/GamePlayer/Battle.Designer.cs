@@ -46,6 +46,7 @@
             this.lifepoints = new System.Windows.Forms.TextBox();
             this.undo = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
+            this.shoot = new System.Windows.Forms.Button();
             this.refresh = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
@@ -67,6 +68,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.shoot);
             this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.button10);
             this.panel1.Controls.Add(this.refresh);
@@ -253,6 +255,18 @@
             this.button9.UseVisualStyleBackColor = false;
             this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
+            // shoot
+            // 
+            this.shoot.BackColor = System.Drawing.Color.Red;
+            this.shoot.BackgroundImage = global::GamePlayer.Properties.Resources.shooting__1_;
+            this.shoot.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.shoot.Location = new System.Drawing.Point(91, 642);
+            this.shoot.Name = "shoot";
+            this.shoot.Size = new System.Drawing.Size(46, 47);
+            this.shoot.TabIndex = 14;
+            this.shoot.UseVisualStyleBackColor = false;
+            this.shoot.Click += new System.EventHandler(this.shoot_Click);
+            // 
             // refresh
             // 
             this.refresh.BackgroundImage = global::GamePlayer.Properties.Resources.refresh;
@@ -374,5 +388,6 @@
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button undo;
+        private System.Windows.Forms.Button shoot;
     }
 }

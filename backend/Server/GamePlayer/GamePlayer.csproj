@@ -126,5 +126,8 @@
   <ItemGroup>
     <None Include="Resources\undo %282%291.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shooting %281%291.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
