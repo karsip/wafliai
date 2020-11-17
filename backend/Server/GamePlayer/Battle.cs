@@ -38,6 +38,12 @@ namespace GamePlayer
         private int timer_counter = 0;
         private bool afterShotWasClicked = false;
 
+        // highlight area
+        private int min_x = 0;
+        private int max_x = 63;
+        private int min_y = 3;
+        private int max_y = 63;
+ 
         private int prev_x_loc;
         private int prev_y_loc;
 
@@ -252,6 +258,7 @@ namespace GamePlayer
                                 myTimer.Start();                              
                                 toBlowMap = ConvertStringToArray(coordinates, unitMap[x, y]);
                                 HighlightShootingObject(currentSelected);
+                                HighlightPlaneShootingArea(currentSelected);
                             });
                             Thread.Sleep(1500);
                             this.BeginInvoke((Action)delegate ()
@@ -261,10 +268,10 @@ namespace GamePlayer
                                 lifepointsLeft--;
                                 this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
                                 RemoveHighlight(currentSelected);
+                                RemovePlaneHighlightArea();
                             });
                         });
                         newThread.Start();
-                        Console.WriteLine("if it's ok?");
                         string arrayString = string.Join(",", unitMap.Cast<int>());
                         handleRequest(arrayString);
 
@@ -276,6 +283,7 @@ namespace GamePlayer
                             {
                                 myTimer.Start();                              
                                 HighlightShootingObject(currentSelected);
+                                HighlightPlaneShootingArea(currentSelected);
                             });
                             Thread.Sleep(1500);
                             this.BeginInvoke((Action)delegate ()
@@ -283,6 +291,7 @@ namespace GamePlayer
                                 myTimer.Start();
                                 renderObject(column, row, 1, 1, 8);
                                 RemoveHighlight(currentSelected);
+                                RemovePlaneHighlightArea();
                             });
                         });
                         newThread.Start();
@@ -299,9 +308,55 @@ namespace GamePlayer
                 clickedObject = 0;
             }
         }
-        private void timer_tick(object sender, EventArgs e)
+        private void HighlightPlaneShootingArea(int [,] planePosition)
         {
-            timer_counter++;
+            int[,] endPoint = ReturnEndCoordinate(planePosition);
+            min_x = 0;
+            max_x = 63;
+            min_y = endPoint[0, 1] + 1;
+            max_y = 63;
+
+            if (endPoint[0, 0] > 8) min_x = endPoint[0, 0] - 8;
+            if (endPoint[0, 0] < 55) max_x = endPoint[0, 0] + 8;
+            if (endPoint[0, 1] < 48) max_y = endPoint[0, 1] + 15;
+            this.flowLayoutPanel2.BackColor = Color.Red;
+            for(int i = min_x; i < max_x; i++)
+            {
+                for(int j = min_y; j < max_y; j++)
+                {
+                    Point myPoint = new Point(25 * j, 25 * i);
+                    Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
+                    update_label.BorderStyle = BorderStyle.Fixed3D;
+                }
+            }
+        }
+        private void RemovePlaneHighlightArea()
+        {
+            this.flowLayoutPanel2.BackColor = Color.Transparent;
+            for (int i = min_x; i < max_x; i++)
+            {
+                for (int j = min_y; j < max_y; j++)
+                {
+                    Point myPoint = new Point(25 * j, 25 * i);
+                    Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
+                    update_label.BorderStyle = BorderStyle.FixedSingle;
+                }
+            }
+        }
+        private int[,] ReturnEndCoordinate(int [,] arr)
+        {
+            int[,] endCoordinate = new int[1, 2];
+            int max = arr[0, 0] + arr[0, 1];
+            for(int i = 1; i < arr.GetLength(0); i++)
+            {
+                if(arr[i, 0] + arr[i, 1] > max)
+                {
+                    max = arr[i, 0] + arr[i, 1];
+                    endCoordinate[0, 0] = arr[i, 0];
+                    endCoordinate[0, 1] = arr[i, 1];
+                }
+            }
+            return endCoordinate;
         }
         private void BlowObject(int [,] blowArr, int id)
         {
@@ -328,7 +383,7 @@ namespace GamePlayer
             {
                 Point myPoint = new Point(25 * currentSelected[i, 1], 25 * currentSelected[i, 0]);
                 Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
-                update_label.BorderStyle = BorderStyle.None;
+                // update_label.BorderStyle = BorderStyle.None;
                 update_label.BorderStyle = BorderStyle.FixedSingle;
                 if (map[currentSelected[i, 0]][currentSelected[i, 1]].mapObject is Sand)
                 {
