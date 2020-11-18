@@ -1,46 +1,37 @@
 ﻿using GameModels.GroundTypes;
 using GameModels.ObjectObserver;
 using System;
+using GameModels.Iterator;
 
 namespace GameModels
 {
     public class Map : Subject
     {
-        private Int32 colNumber = 64;
-        private Int32 rowNumber = 64;
-        private MapCell[][] MapObjects { get; set; }
+        private static int colNumber = 64;
+        private static int rowNumber = 64;
+        private Matrix MapObjects = new Matrix(rowNumber, colNumber);
         public Map()
         {
-            MapObjects = new MapCell[rowNumber][];
-            for (int i = 0; i < rowNumber; i++)
-            {
-                MapObjects[i] = new MapCell[colNumber];
-                for (int j = 0; j < colNumber; j++)
-                {
-                    MapObjects[i][j] = new MapCell();
-                }
-            }
             FillMap();
         }
-        public MapCell[][] GetMapObjects()
+        public Matrix GetMapObjects()
         {
             return MapObjects;
         }
         private void FillMap()
         {
+            Iterate iterator = MapObjects.CreateIterator();
             var groundFactory = new GroundFactory();
 
-            for (int i = 0; i < 64; i++)
+            for (iterator.First(); !iterator.IsDone; iterator.Next())
             {
-                for (int j = 0; j < 64; j++)
-                {
                     int groundType;
-                    if (i >= 0 && i < 10 || i >= 52 && i < 64)
+                    if (iterator.Row >= 0 && iterator.Row < 10 || iterator.Row >= 52 && iterator.Row < 64)
                     {
                         // grass
                         groundType = 2;
                     }
-                    else if (i >= 10 && i < 20 || i >= 42 && i < 52)
+                    else if (iterator.Row >= 10 && iterator.Row < 20 || iterator.Row >= 42 && iterator.Row < 52)
                     {
                         // sand
                         groundType = 3;
@@ -50,8 +41,7 @@ namespace GameModels
                         // water
                         groundType = 1;
                     }
-                    MapObjects[i][j].mapObject = groundFactory.CreateGround(groundType);
-                }
+                    iterator.CurrentItem = groundFactory.CreateGround(groundType);
             }
         }
     }

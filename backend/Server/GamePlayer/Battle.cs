@@ -14,6 +14,8 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
+using GameModels.Iterator;
+using GameModels.FlyWeight;
 
 namespace GamePlayer
 {
@@ -29,7 +31,7 @@ namespace GamePlayer
         private int x_loc;
         private int y_loc;
         private int[,] pointsArr = new int[19, 2];
-
+        private FlyWeightGroundFactory factory = new FlyWeightGroundFactory();
         private int prev_x_loc;
         private int prev_y_loc;
 
@@ -45,17 +47,18 @@ namespace GamePlayer
         int soldier = 3;
         int mine = 5;//5
 
-        private MapCell[][] map;
+        private Matrix map;
         private PlayerData playerDataOnStart;
 
 
         private void renderLabels()
         {
+            Console.WriteLine(map.RowCount);
             Random rnd = new Random();
             var lableArray = new Label[64, 64];
-            for (int i = 0; i < lableArray.GetLength(0); i++)
+            for (int i = 0; i < map.RowCount; i++)
             {
-                for (int j = 0; j < lableArray.GetLength(1); j++)
+                for (int j = 0; j < map.ColumnCount; j++)
                 {
                     var label_to_add = new Label();
                     label_to_add.Size = new Size(25, 25);
@@ -68,20 +71,23 @@ namespace GamePlayer
 
                     label_to_add.Click += new EventHandler(HandleClickLabel);
 
-                    if (map[i][j].mapObject is Sand)
+                    if (map[i,j] is Sand)
                     {
                         label_to_add.BackColor = Color.SandyBrown;
-                        label_to_add.Image = Image.FromFile("../../../GameModels/Textures/sandTile.png");
+                        GroundImage image = factory.GetGround("Sand");
+                        label_to_add.Image = image.GiveImage();
                     }
-                    else if (map[i][j].mapObject is Grass)
+                    else if (map[i,j] is Grass)
                     {
                         label_to_add.BackColor = Color.LawnGreen;
-                        label_to_add.Image = Image.FromFile("../../../GameModels/Textures/grassTile.png");
+                        GroundImage image = factory.GetGround("Grass");
+                        label_to_add.Image = image.GiveImage();
                     }
                     else
                     {
                         label_to_add.BackColor = Color.DarkCyan;
-                        label_to_add.Image = Image.FromFile("../../../GameModels/Textures/waterTile.png");
+                        GroundImage image = factory.GetGround("Water");
+                        label_to_add.Image = image.GiveImage();
                     }
                     flowLayoutPanel2.Controls.Add(label_to_add);
                 }
@@ -251,20 +257,23 @@ namespace GamePlayer
                     Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
                     update_label.BorderStyle = BorderStyle.None;
                     update_label.BorderStyle = BorderStyle.FixedSingle;
-                    if (map[currentSelected[i, 0]][currentSelected[i, 1]].mapObject is Sand)
+                    if (map[currentSelected[i, 0], currentSelected[i, 1]] is Sand)
                     {
                         update_label.BackColor = Color.SandyBrown;
-                        update_label.Image = Image.FromFile("../../../GameModels/Textures/sandTile.png");
+                        GroundImage image = factory.GetGround("Sand");
+                        update_label.Image = image.GiveImage();
                     }
-                    else if (map[currentSelected[i, 0]][currentSelected[i, 1]].mapObject is Grass)
+                    else if (map[currentSelected[i, 0], currentSelected[i, 1]] is Grass)
                     {
                         update_label.BackColor = Color.LawnGreen;
-                        update_label.Image = Image.FromFile("../../../GameModels/Textures/grassTile.png");
+                        GroundImage image = factory.GetGround("Grass");
+                        update_label.Image = image.GiveImage();
                     }
                     else
                     {
                         update_label.BackColor = Color.DarkCyan;
-                        update_label.Image = Image.FromFile("../../../GameModels/Textures/waterTile.png");
+                        GroundImage image = factory.GetGround("Water");
+                        update_label.Image = image.GiveImage();
                     }
                 }
             }
@@ -636,9 +645,7 @@ namespace GamePlayer
             label8.Text = "Left: " + jet.ToString();
             label5.Text = "Left: " + soldier.ToString();
             label6.Text = "Left: " + mine.ToString();
-
             undo.Enabled = false;
-
             // flowLayoutPanel2.Size = new Size(1239, 64 * 25);
             this.AutoScroll = true;
             this.username.Text = "User: " + username;
@@ -665,7 +672,7 @@ namespace GamePlayer
                 {
                     case "map":
                         var mapString = System.Text.Encoding.Default.GetString(data);
-                        map = JsonConvert.DeserializeObject<MapCell[][]>(mapString, new JsonSerializerSettings()
+                        map = JsonConvert.DeserializeObject<Matrix>(mapString, new JsonSerializerSettings()
                         {
                             TypeNameHandling = TypeNameHandling.Auto
                         });
@@ -848,20 +855,23 @@ namespace GamePlayer
                     Point myPoint = new Point((y + i) * 25, (x + j) * 25);
                     Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
                     update_label.BorderStyle = BorderStyle.FixedSingle;
-                    if (map[x + j][y + i].mapObject is Grass)
+                    if (map[x + j, y + i] is Grass)
                     {
                         update_label.BackColor = Color.LawnGreen;
-                        update_label.Image = Image.FromFile("../../../GameModels/Textures/grassTile.png");
+                        GroundImage image = factory.GetGround("Grass");
+                        update_label.Image = image.GiveImage();
                     }
-                    else if (map[x + j][y + i].mapObject is Sand)
+                    else if (map[x + j, y + i] is Sand)
                     {
                         update_label.BackColor = Color.SandyBrown;
-                        update_label.Image = Image.FromFile("../../../GameModels/Textures/sandTile.png");
+                        GroundImage image = factory.GetGround("Sand");
+                        update_label.Image = image.GiveImage();
                     }
                     else
                     {
                         update_label.BackColor = Color.DarkCyan;
-                        update_label.Image = Image.FromFile("../../../GameModels/Textures/waterTile.png");
+                        GroundImage image = factory.GetGround("Water");
+                        update_label.Image = image.GiveImage();
                     }
                 }
             }

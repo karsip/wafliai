@@ -5602,20 +5602,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\tomas\\.nuget\\packages\\": {}
+    "C:\\Users\\ignbar1\\.nuget\\packages\\": {},
+    "F:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\Server\\Server.csproj",
+      "projectUniqueName": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\Server\\Server\\Server.csproj",
       "projectName": "Server",
-      "projectPath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\Server\\Server.csproj",
-      "packagesPath": "C:\\Users\\tomas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\Server\\obj\\",
+      "projectPath": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\Server\\Server\\Server.csproj",
+      "packagesPath": "C:\\Users\\ignbar1\\.nuget\\packages\\",
+      "outputPath": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\Server\\Server\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "F:\\Microsoft\\Xamarin\\NuGet\\"
+      ],
       "configFilePaths": [
-        "C:\\Users\\tomas\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\ignbar1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
@@ -5626,9 +5631,10 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj": {
-              "projectPath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj"
+            "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj": {
+              "projectPath": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\Server\\GameModels\\GameModels.csproj"
             }
           }
         }
@@ -5641,6 +5647,7 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
         "dependencies": {
           "Nancy": {
             "target": "Package",
@@ -5662,7 +5669,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }
