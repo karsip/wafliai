@@ -28,3 +28,16 @@ C:\Users\Modestas\Desktop\BattleShip\backend\Server\GameModels\obj\Debug\netstan
 =======
 F:\University\2020-2021\OPP\BattleShips\BattleShip\backend\Server\GameModels\obj\Debug\netstandard2.0\GameModels.csproj.CoreCompileInputs.cache
 >>>>>>> f42a3f5be8c0bedaa07e1177f757ea20c273b71c
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GameModels\bin\Debug\netstandard2.0\System.Windows.Forms.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GameModels\bin\Debug\netstandard2.0\System.Security.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GameModels\bin\Debug\netstandard2.0\System.Configuration.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GameModels\bin\Debug\netstandard2.0\Accessibility.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GameModels\bin\Debug\netstandard2.0\System.Deployment.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GameModels\bin\Debug\netstandard2.0\System.Runtime.Serialization.Formatters.Soap.dll
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GameModels\bin\Debug\netstandard2.0\System.Windows.Forms.xml
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GameModels\bin\Debug\netstandard2.0\System.Security.xml
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GameModels\bin\Debug\netstandard2.0\System.Configuration.xml
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GameModels\bin\Debug\netstandard2.0\Accessibility.xml
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GameModels\bin\Debug\netstandard2.0\System.Deployment.xml
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GameModels\bin\Debug\netstandard2.0\System.Runtime.Serialization.Formatters.Soap.xml
+C:\Users\tomas\Desktop\BattleShip\backend\Server\GameModels\obj\Debug\netstandard2.0\GameModels.csproj.CopyComplete

@@ -19,28 +19,13 @@ namespace Server
         private static List<PlayerData> _gamePlayerList = new List<PlayerData>();
         private static byte[] _buffer = new byte[10000];
         private static int[,] unitArray = new int[64, 64];
-        private static MapCell[][] gameCells;
         static void Main(string[] args)
         {
-            Map gameMap = new Map();
-            gameCells = gameMap.GetMapObjects();
-
             Console.Title = "BattleShip Server";
             SetupServer();
             Console.ReadLine();
         }
         /*
-        private static void updateUnitArray(int row, int column, int object_id, int rows, int columns)
-        {
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < columns; j++)
-                {
-                    unitArray[i, j] = object_id;
-                }
-            }
-            PrintArray();
-        } */
         private static void PrintArray()
         {
             for (var i = 0; i < unitArray.GetLength(0); i++)
@@ -52,6 +37,7 @@ namespace Server
                 Console.WriteLine();
             }
         }
+        */
         private static void SetupServer()
         {
             _logger = Logger.GetInstance;
@@ -62,7 +48,6 @@ namespace Server
             _serverSocket.Listen(10);
             _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
-
         private static void AcceptCallback(IAsyncResult AR)
         {
             Socket socket = _serverSocket.EndAccept(AR);
@@ -74,7 +59,6 @@ namespace Server
             socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReveiveCallback), socket);
             _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
-
         private static void ReveiveCallback(IAsyncResult AR)
         {
             try
