@@ -14,6 +14,9 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.Threading;
+using GameModels.Template;
 using GameModels.Iterator;
 using GameModels.FlyWeight;
 
@@ -27,10 +30,25 @@ namespace GamePlayer
         private int clickedObject = 0;
         private bool isInCreationStage = false;
         private bool objectChecked = false;
+        private bool shootIsClicked = false;
         private int currentSelectedObject = 0;
+
         private int x_loc;
         private int y_loc;
         private int[,] pointsArr = new int[19, 2];
+        
+        System.Windows.Forms.Timer myTimer;
+        private int timer_counter = 0;
+        private bool afterShotWasClicked = false;
+
+        // highlight area
+        private int min_x = 0;
+        private int max_x = 63;
+        private int min_y = 3;
+        private int max_y = 63;
+
+       
+ 
         private FlyWeightGroundFactory factory = new FlyWeightGroundFactory();
         private int prev_x_loc;
         private int prev_y_loc;
@@ -45,7 +63,7 @@ namespace GamePlayer
         int plane = 2;
         int jet = 2;
         int soldier = 3;
-        int mine = 5;//5
+        int mine = 5;
 
         private Matrix map;
         private PlayerData playerDataOnStart;
@@ -93,7 +111,7 @@ namespace GamePlayer
                 }
             }
         }
-        private bool LandedOnMine(int[,] map, int x, int y, int row, int column) 
+        private bool LandedOnMine(int[,] map, int x, int y, int row, int column)
         {
             for (int i = 0; i < row; i++)
             {
@@ -132,7 +150,8 @@ namespace GamePlayer
             int column = button.Left;
 
             bool isOK = true;
-            if (objectChecked && currentSelectedObject != -1)
+            // shoot is clicked
+            if (objectChecked && currentSelectedObject != -1 && shootIsClicked == false)
             {
                 int column_number = ReturnbjectColumnNumber(currentSelectedObject);
                 int row_number = ReturnObjectRowNumber(currentSelectedObject);
@@ -150,7 +169,7 @@ namespace GamePlayer
                         {
                             case 0:
                                 mineStrategy.SetMineStrategy(new SmallExplosion());
-                                renderObject(coordinates[0]*25, coordinates[1] * 25, 1, 1, 8);
+                                renderObject(coordinates[0] * 25, coordinates[1] * 25, 1, 1, 8);
                                 break;
                             case 1:
                                 mineStrategy.SetMineStrategy(new MediumExplosion());
@@ -163,10 +182,16 @@ namespace GamePlayer
                         }
                         unitMap = mineStrategy.ExplodeMine(unitMap, coordinates[1], coordinates[0]);
                         myUnits = mineStrategy.ExplodeMine(myUnits, coordinates[1], coordinates[0]);
+                        // CONFLICTS
                         objectChecked = false;
-                        RenderGroundAfterChange();
+                        this.shoot.Visible = false;
+                        //RenderGroundAfterChange();
                         lifepointsLeft--;
                         this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
+                        // Print2DArray(unitMap);
+                        // RenderGroundAfterChange();
+                        // lifepointsLeft--;
+                        // this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
                         MoveReceiver explode_receiver = new MoveReceiver(myUnits, currentSelectedObject, row / 25, column / 25, currentSelected);
                         MoveReceiver server_explode_receiver = new MoveReceiver(unitMap, currentSelectedObject, row / 25, column / 25, currentSelected);
                         MoveCommand command = new ExplosionCommand(explode_receiver);
@@ -181,8 +206,8 @@ namespace GamePlayer
                         string arrayString = string.Join(",", unitMap.Cast<int>());
                         handleRequest(arrayString);
 
-                        Console.WriteLine("After Explosion");
-                        Print2DArray(unitMap);
+                        // Console.WriteLine("After Explosion");
+                        Print2DArray(unitMap, "2D ARR");
                     }
                     else
                     {
@@ -191,16 +216,16 @@ namespace GamePlayer
                         renderObject(column, row, column_number, row_number, currentSelectedObject);
                         RenderGroundAfterChange();
                         // Command design pattern for player map and server map
-                        MoveReceiver receiver = new MoveReceiver(myUnits, currentSelectedObject, row / 25, column / 25, currentSelected);
-                        MoveReceiver server_receiver = new MoveReceiver(unitMap, currentSelectedObject, row / 25, column / 25, currentSelected);
+                        MoveReceiver receiver = new MoveReceiver(myUnits, currentSelectedObject, x_loc, y_loc, currentSelected);
+                        MoveReceiver server_receiver = new MoveReceiver(unitMap, currentSelectedObject, x_loc, y_loc, currentSelected);
                         MoveCommand command = new MoveToCommand(receiver);
                         MoveCommand server_command = new MoveToCommand(server_receiver);
                         MoveInvoker invoker = new MoveInvoker();
                         MoveInvoker server_invoker = new MoveInvoker();
                         invoker.SetCommand(command);
                         server_invoker.SetCommand(server_command);
-                        Console.WriteLine("Before command --------------------------------------------");
-                        Print2DArray(unitMap);
+                        // Console.WriteLine("Before command --------------------------------------------");
+                        // (unitMap);
                         myUnits = invoker.ExecuteCommand();
                         unitMap = server_invoker.ExecuteCommand();
 
@@ -208,43 +233,227 @@ namespace GamePlayer
                         handleRequest(arrayString);
 
                         undo.Enabled = true;
-                        Console.WriteLine("After command --------------------------------------------");
-                        Print2DArray(unitMap);
+                        // Console.WriteLine("After command --------------------------------------------");
+                        // Print2DArray(unitMap);
 
                         // should set currentSelected to main value
                         objectChecked = false;
+                        this.shoot.Visible = false;
                     }
                 }
                 else
                 {
                     isOK = false;
-                    //String err_Message = String.Format("User tried to place object on another object or on a wrong tile");
-                    //_logger.LogException(err_Message);
+
                     MessageBox.Show("You can't place object here", "Game error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                if (CheckIfClickOnAnObject(row, column))
+                if (CheckIfClickOnAnObject(row, column) && objectChecked == false)
                 {
-                        objectChecked = true;
-                        prev_x_loc = row / 25;
-                        prev_y_loc = column / 25;
-    
-                        currentSelectedObject = myUnits[row / 25, column / 25];
-                        string Cordinates = "";
-                        BasicFill(myUnits, column / 25, row / 25, currentSelectedObject, ref Cordinates);
-    
-                        currentSelected = ConvertStringToArray(Cordinates, currentSelectedObject);
-                        Print2DArray(currentSelected);
-                        HighlightObject(currentSelected);
+                    this.shoot.Visible = true;
+                    string Cordinates = "";
+
+                    prev_x_loc = row / 25;
+                    prev_y_loc = column / 25;
+                    currentSelectedObject = unitMap[row / 25, column / 25];
+
+                    BasicFill(unitMap, prev_y_loc, prev_x_loc, currentSelectedObject, ref Cordinates, ReturnAreaSize(currentSelectedObject).GetLength(0));
+
+                    currentSelected = ConvertStringToArray(Cordinates, currentSelectedObject);
+                    Print2DArray(currentSelected, "current selected");
+                    HighlightObject(currentSelected);
+                    afterShotWasClicked = false;
+                    objectChecked = true;
+                } 
+                else if (shootIsClicked && objectChecked)
+                {
+                    Console.WriteLine("Shoot is clicked. ");
+                    RemoveHighlight(currentSelected);
+                    int obj_x = prev_x_loc;
+                    int obj_y = prev_y_loc;
+                    MineStrategy mineStrategy = new MineStrategy();
+                    mineStrategy.SetMineStrategy(new SmallExplosion());
+                    if (CheckIfClickOnAnObject(row, column))
+                    {
+                        string coordinates = "";
+                        int[] areaPoints = new int[3];
+                        BasicFill(unitMap, column / 25, row / 25, unitMap[row / 25, column / 25], ref coordinates, ReturnAreaSize(unitMap[row/ 25, column / 25 ]).GetLength(0));
+                        int[,] toBlowMap = new int[coordinates.Split(',').Length/2, 2];
+                        Thread newThread = new Thread(() =>
+                        {
+                            this.BeginInvoke((Action)delegate ()
+                            {
+                                myTimer.Start();                              
+                                toBlowMap = ConvertStringToArray(coordinates, unitMap[row / 25, column / 25]);
+                                areaPoints = CalculatePoints(currentSelected);
+                                HighlightShootingObject(currentSelected);                        
+                            });
+                            Thread.Sleep(1500);
+                            this.BeginInvoke((Action)delegate ()
+                            {                                
+                                myTimer.Start();
+                                int[] pointsBounds = new int[] { min_x, max_x, min_y, max_y };
+                                if (!CheckIfNotOutOfBounds(pointsBounds, row / 25, row / 25) && unitMap[obj_x, obj_y] == 4)
+                                {
+                                    BlowObject(toBlowMap, unitMap[row / 25 , column / 25]);
+                                    lifepointsLeft--;
+                                    this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
+                                    RemovePlaneHighlightArea(areaPoints);
+                                    RemoveHighlight(currentSelected);
+                                } else
+                                {
+                                    BlowObject(toBlowMap, unitMap[row / 25, column / 25]);
+                                    lifepointsLeft--;
+                                    this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
+                                    RemoveHighlight(currentSelected);
+                                }
+                            });
+                        });
+                        newThread.Start();
+                        string arrayString = string.Join(",", unitMap.Cast<int>());
+                        handleRequest(arrayString);
+
+                    } else
+                    {
+                        ShootingObject shootingObject = new PlaneTemplate();
+                        ShootingObject shootingShip = new ShipTemplate();
+                        int[] areaPoints = new int[3];
+                        Thread newThread = new Thread(() =>
+                        {
+                            this.BeginInvoke((Action)delegate ()
+                            {
+                                myTimer.Start();
+                                switch (unitMap[obj_x, obj_y])
+                                {
+                                    case 4:
+                                        shootingObject.RunFirstPart(this.flowLayoutPanel2, currentSelected, obj_x, obj_y, unitMap[obj_x, obj_y]);
+                                        areaPoints = CalculatePoints(currentSelected);
+                                        break;
+                                    case 2:
+                                        shootingShip.RunFirstPart(this.flowLayoutPanel2, currentSelected, obj_x, obj_y, unitMap[obj_x, obj_y]);
+                                        break;
+                                    default:
+                                        HighlightShootingObject(currentSelected);
+                                        break;
+                                }
+                            });
+                            Thread.Sleep(1500);
+                            this.BeginInvoke((Action)delegate ()
+                            {                            
+                                myTimer.Start();
+                                int[] pointsBounds = new int[] { min_x, max_x, min_y, max_y };
+                                if(!CheckIfNotOutOfBounds(pointsBounds, obj_x, obj_y) && unitMap[obj_x, obj_y] == 4)
+                                {
+                                    renderObject(column, row, 1, 1, 8);
+                                    shootingObject.RunSecondPart(this.flowLayoutPanel2, areaPoints, map, currentSelected);
+                                }
+                                else if (CheckIfNotOutOfBounds(pointsBounds, obj_x, obj_y) && unitMap[obj_x, obj_y] == 4)
+                                {
+                                    RemoveHighlight(currentSelected);
+                                }
+                                else
+                                {
+                                    renderObject(column, row, 1, 1, 8);
+                                    switch (unitMap[obj_x, obj_y])
+                                    {
+                                        case 2:
+                                            shootingShip.RunSecondPart(this.flowLayoutPanel2, new int[] { 0, 63, 0, 63 }, map, currentSelected);
+                                            break;
+                                        default:
+                                            RemoveHighlight(currentSelected);
+                                            break;
+                                    }
+                                }
+                            });
+                        });
+                        newThread.Start();
+                    }
+                    Console.WriteLine("Removed current focus. ");
+                    objectChecked = false;
+                    this.shoot.Visible = false;
+                    shootIsClicked = false;
                 }
             }
             if (isOK)
             {
                 UpdateMap(row, column);
                 clickedObject = 0;
+            }
+        }
+        private int[] CalculatePoints(int[,] planePosition)
+        {
+            int[,] endPoint = ReturnEndCoordinate(planePosition);
+            min_x = 0;
+            max_x = 63;
+            min_y = endPoint[0, 1] + 1;
+            max_y = 63;
+
+            if (endPoint[0, 0] > 8) min_x = endPoint[0, 0] - 8;
+            if (endPoint[0, 0] < 55) max_x = endPoint[0, 0] + 8;
+            if (endPoint[0, 1] < 48) max_y = endPoint[0, 1] + 15;
+            return new int[] { min_x, max_x, min_y, max_y };
+        }
+        private bool CheckIfNotOutOfBounds(int[] arr, int x, int y)
+        {
+            int counter = 0;
+            for(int i = arr[0]; i < arr[1]; i++)
+            {
+                for(int j = arr[2]; j < arr[3]; j++)
+                {
+                    if (i == x && j == y) counter++;
+                }
+            }
+            if (counter > 0) return true;
+            else return false;
+        }
+        private void RemovePlaneHighlightArea(int [] areaPoints)
+        {
+            this.flowLayoutPanel2.BackColor = Color.Transparent;
+            for (int i = areaPoints[0]; i < areaPoints[1]; i++)
+            {
+                for (int j = areaPoints[2]; j < areaPoints[3]; j++)
+                {
+                    Point myPoint = new Point(25 * j, 25 * i);
+                    Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
+                    update_label.BorderStyle = BorderStyle.FixedSingle;
+                }
+            }
+        }
+        private int[,] ReturnEndCoordinate(int [,] arr)
+        {
+            int[,] endCoordinate = new int[1, 2];
+            int max = arr[0, 0] + arr[0, 1];
+            for(int i = 1; i < arr.GetLength(0); i++)
+            {
+                if(arr[i, 0] + arr[i, 1] > max)
+                {
+                    max = arr[i, 0] + arr[i, 1];
+                    endCoordinate[0, 0] = arr[i, 0];
+                    endCoordinate[0, 1] = arr[i, 1];
+                }
+            }
+            return endCoordinate;
+        }
+        private void BlowObject(int [,] blowArr, int id)
+        {
+            MineStrategy mineStrategy = new MineStrategy();
+            if(id == 5)
+            {
+                mineStrategy.SetMineStrategy(new MediumExplosion());
+                DestroyObject(blowArr[0, 1] * 25, blowArr[0, 0] * 25, 2, 2, 9);
+            }
+            for (int i = 0; i < blowArr.GetLength(0); i++)
+            {
+                if(id != 5)
+                {
+                    unitMap[blowArr[i, 0], blowArr[i, 1]] = 8;
+                    myUnits[blowArr[i, 0], blowArr[i, 1]] = 8;
+                    mineStrategy.SetMineStrategy(new SmallExplosion());
+                    DestroyObject(blowArr[i, 1] * 25, blowArr[i, 0] * 25, 1, 1, 8);
+                }
             }
         }
         private void RenderGroundAfterChange()
@@ -288,23 +497,23 @@ namespace GamePlayer
             }
             else return false;
         }
-        private static void BasicFill(int[,] array, int x, int y, int object_id, ref string coordinates)
+        private static void BasicFill(int[,] array, int x, int y, int object_id, ref string coordinates, int length)
         {
+            // switched x and y 
             if (array[y, x] == object_id)
             {
-                BasicFill(array, x, y, array.GetLength(1), array.GetLength(0), object_id, ref coordinates);
+                BasicFill(array, x, y, array.GetLength(1), array.GetLength(0), object_id, ref coordinates, length);
             }
         }
         private int[,] ConvertStringToArray(string Cordinates, int object_id)
         {
             Cordinates = Cordinates.Remove(Cordinates.Length - 1);
             var numbers = Cordinates.Split(',').Select(Int32.Parse).ToList();
-
             int[,] newArr = ReturnAreaSize(object_id);
             for (int i = 0; i < newArr.GetLength(0); i++)
             {
-                newArr[i, 0] = numbers[i * 2 + 1];
-                newArr[i, 1] = numbers[i * 2];
+                newArr[i, 0] = numbers[i * 2];
+                newArr[i, 1] = numbers[i * 2 + 1];
             }
             return newArr;
         }
@@ -318,29 +527,78 @@ namespace GamePlayer
                 update_label.ForeColor = Color.Red;
             }
         }
-        static void BasicFill(int[,] array, int x, int y, int width, int height, int object_id, ref string coordinates)
+        private void HighlightShootingObject(int[,] arr)
         {
-            array[y, x] = 2;
-            coordinates += x.ToString() + "," + y.ToString() + ",";
-            if (y > 0 && array[y - 1, x] == object_id)
+            for (int i = 0; i < arr.GetLength(0); i++)
             {
-                BasicFill(array, x, y - 1, width, height, object_id, ref coordinates);
+                Point myPoint = new Point(25 * arr[i, 1], 25 * arr[i, 0]);
+                Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
+                update_label.BorderStyle = BorderStyle.Fixed3D;
+                update_label.BackColor = Color.Red;
             }
+        }
+        private void RemoveHighlight(int[,] arr)
+        {
+            for (int i = 0; i < arr.GetLength(0); i++)
+            {
+                Point myPoint = new Point(25 * arr[i, 1], 25 * arr[i, 0]);
+                Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
+                update_label.BorderStyle = BorderStyle.None;
+                if (map[arr[i, 1], arr[i, 0]] is Sand)
+                {
+                    update_label.BackColor = Color.SandyBrown;
+                }
+                else if (map[arr[i, 1], arr[i, 0]] is Grass)
+                {
+                    update_label.BackColor = Color.LawnGreen;
+                }
+                else
+                {
+                    update_label.BackColor = Color.DarkCyan;
+                }
+            }
+        }
+        static void BasicFill(int[,] array, int x, int y, int width, int height, int object_id, ref string coordinates, int length)
+        {
+            // array[y, x] = 2;
+            coordinates += y.ToString() + "," + x.ToString() + ",";
+            int newLength = SimpleStringToIntArr(coordinates).GetLength(0);
+            if (newLength != length)
+            {
+                if (y > 0 && array[y - 1, x] == object_id && DifferentValues(coordinates, y - 1, x))
+                {
+                    BasicFill(array, x, y - 1, width, height, object_id, ref coordinates, length);
+                }
 
-            if (x > 0 && array[y, x - 1] == object_id)
-            {
-                BasicFill(array, x - 1, y, width, height, object_id, ref coordinates);
-            }
+                if (x > 0 && array[y, x - 1] == object_id && DifferentValues(coordinates, y, x - 1))
+                {
+                    BasicFill(array, x - 1, y, width, height, object_id, ref coordinates, length);
+                }
 
-            if (x < width - 1 && array[y, x + 1] == object_id)
-            {
-                BasicFill(array, x + 1, y, width, height, object_id, ref coordinates);
-            }
+                if (x < width - 1 && array[y, x + 1] == object_id && DifferentValues(coordinates, y, x + 1))
+                {
+                    BasicFill(array, x + 1, y, width, height, object_id, ref coordinates, length);
+                }
 
-            if (y < height - 1 && array[y + 1, x] == object_id)
-            {
-                BasicFill(array, x, y + 1, width, height, object_id, ref coordinates);
+                if (y < height - 1 && array[y + 1, x] == object_id && DifferentValues(coordinates, y + 1, x))
+                {
+                    BasicFill(array, x, y + 1, width, height, object_id, ref coordinates, length);
+                }
             }
+        }
+        private static bool DifferentValues(string coordinates, int x, int y)
+        {
+            // 2, 2   2, 3   2, 4   3, 2    3, 3   3, 4 
+            int[,] arr = SimpleStringToIntArr(coordinates);
+            int counter = 0;
+            for (int i = 0; i < arr.GetLength(0); i++)
+            {
+                if (arr[i, 0] == x && arr[i, 1] == y) counter++;
+            }
+            if(counter > 0)
+            {
+                return false;
+            } else return true;
         }
         private int[,] ReturnAreaSize(int object_id)
         {
@@ -421,6 +679,38 @@ namespace GamePlayer
                     break;
             }
         }
+        private void DestroyObject(int column, int row, int columnNumber, int rowNumber, int object_id)
+        {
+            int counter = 1;
+            for (int i = 0; i < rowNumber; i++)
+            {
+                for (int j = 0; j < columnNumber; j++)
+                {
+                    Point myPoint = new Point((column + (25 * j)), (row + 25 * i));
+                    int x = (column + (25 * j)) / 25;
+                    int y = (row + (25 * i)) / 25;
+                    unitMap[y, x] = object_id;
+                    myUnits[y, x] = object_id;
+                    Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
+                    switch (object_id)
+                    {
+                        case 8:
+                            update_label.BorderStyle = BorderStyle.None;
+                            update_label.Image = Image.FromFile("../../../GameModels/Textures//Explosion/explosion1.png");
+                            update_label.BackColor = Color.Black;
+                            break;
+                        case 9:
+                            update_label.BorderStyle = BorderStyle.None;
+                            update_label.Image = Image.FromFile("../../../GameModels/Textures//Explosion/explosion2/explosion2-" + counter.ToString() + ".png");
+                            update_label.BackColor = Color.Black;
+                            break;
+                    }
+                    counter++;
+                }
+            }
+            string arrayString = string.Join(",", unitMap.Cast<int>());
+            handleRequest(arrayString);
+        }
         private void renderObject(int column, int row, int columnNumber, int rowNumber, int object_id)
         {
             AirCraftBuilder builder;
@@ -440,13 +730,11 @@ namespace GamePlayer
                 {
                     for (int j = 0; j < columnNumber; j++)
                     {
-                        // Point myPoint = new Point((column + (25 * j)), (row + 25 * i));
-                        // Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
 
                         Point myPoint = new Point((column + (25 * j)), (row + 25 * i));
                         int x = (column + (25 * j)) / 25;
                         int y = (row + (25 * i)) / 25;
-                        if (object_id == 10) 
+                        if (object_id == 10)
                         {
                             if (column + (25 * j) - 25 < 0 && row + (25 * j) - 25 < 0)
                             {
@@ -585,7 +873,7 @@ namespace GamePlayer
                                 break;
                             case 9:
                                 update_label.BorderStyle = BorderStyle.None;
-                                update_label.Image = Image.FromFile("../../../GameModels/Textures//Explosion/explosion2/explosion2-"+counter.ToString()+".png");
+                                update_label.Image = Image.FromFile("../../../GameModels/Textures//Explosion/explosion2/explosion2-" + counter.ToString() + ".png");
                                 update_label.BackColor = Color.Black;
                                 break;
                             case 10:
@@ -628,15 +916,18 @@ namespace GamePlayer
 
             byte[] data = new byte[rec];
             Array.Copy(responseBuffer, data, rec);
-            Console.WriteLine("Received: " + Encoding.ASCII.GetString(data));
             MessageBox.Show("Received: " + Encoding.ASCII.GetString(data), "Recieve info",
             MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         public Battle(string username, Socket socket)
         {
             _logger = Logger.GetInstance;
-            // refresh.Visible = false;
             InitializeComponent();
+
+            myTimer = new System.Windows.Forms.Timer();
+            myTimer.Interval = 250;
+
+            this.shoot.Visible = false;
 
             label1.Text = "Left: " + shipCarrier.ToString();
             label2.Text = "Left: " + shipDestroyer.ToString();
@@ -657,7 +948,6 @@ namespace GamePlayer
         private void handleRequest(string request)
         {
             byte[] buffer = Encoding.ASCII.GetBytes(request);
-
             _clientSocket.Send(buffer);
 
             byte[] responseBuffer = new byte[300000];
@@ -685,7 +975,6 @@ namespace GamePlayer
                         {
                             TypeNameHandling = TypeNameHandling.Auto
                         });
-                        Console.WriteLine("player data  " + playerDataOnStart.ToString());
                         break;
                     case "reload":
                         var unitArrayString = System.Text.Encoding.Default.GetString(data);
@@ -702,10 +991,12 @@ namespace GamePlayer
                 Console.WriteLine(System.Text.Encoding.Default.GetString(data));
             }
         }
-        private void Print2DArray(int[,] arr)
+        private void Print2DArray(int[,] arr, string title)
         {
             string line = new string('-', 70);
+            string gaps = new string(' ', 25);
             Console.WriteLine(line);
+            Console.WriteLine(gaps + " " + title + " " + gaps);
             for (int i = 0; i < arr.GetLength(0); i++)
             {
                 for (int j = 0; j < arr.GetLength(1); j++)
@@ -715,7 +1006,27 @@ namespace GamePlayer
                 Console.WriteLine();
             }
         }
-        private int[,] StringTo2DArray(string query)
+        private static int [,] SimpleStringToIntArr(string query)
+        {
+            query = query.TrimEnd(',');
+            string[] numbers = query.Split(',');
+            if(numbers == null)
+            {
+                return new int[0, 0];
+            } else
+            {
+                int[,] arr = new int[numbers.Length / 2, 2];
+                int counter = 0;
+                for(int i = 0; i < numbers.Length; i+=2)
+                {
+                    arr[counter, 0] = int.Parse(numbers[i]);
+                    arr[counter, 1] = int.Parse(numbers[i+1]);
+                    counter++;
+                }
+                return arr;
+            }
+        }
+        private static int[,] StringTo2DArray(string query)
         {
             int[] array = query.Split(V).Select(n => Convert.ToInt32(n)).ToArray();
             int[,] arrayToReturn = new int[64, 64];
@@ -750,6 +1061,7 @@ namespace GamePlayer
             handleRequest("map");
             renderLabels();
             refresh.Visible = true;
+            this.button2.Visible = false;
         }
 
         private void grid_Paint(object sender, PaintEventArgs e)
@@ -883,7 +1195,7 @@ namespace GamePlayer
         private void undo_Click(object sender, EventArgs e)
         {
 
-            Print2DArray(currentSelected);
+            Print2DArray(currentSelected, "before undo");
             // Command design pattern for player map and server map
             MoveReceiver receiver = new MoveReceiver(myUnits, currentSelectedObject, x_loc, y_loc, currentSelected);
             MoveReceiver server_receiver = new MoveReceiver(unitMap, currentSelectedObject, x_loc, y_loc, currentSelected);
@@ -894,7 +1206,7 @@ namespace GamePlayer
             MoveInvoker server_invoker = new MoveInvoker();
             String line = new String('-', 50);
             Console.WriteLine(line);
-            Print2DArray(unitMap);
+            Print2DArray(unitMap, "unit map before undo");
 
             invoker.SetCommand(command);
             server_invoker.SetCommand(server_command);
@@ -903,7 +1215,7 @@ namespace GamePlayer
             myUnits = invoker.ExecuteCommand();
 
             Console.WriteLine(line);
-            Print2DArray(unitMap);
+            Print2DArray(unitMap, "unit map after undo");
             unitMap = server_invoker.ExecuteCommand();
 
             string arrayString = string.Join(",", unitMap.Cast<int>());
@@ -911,6 +1223,11 @@ namespace GamePlayer
 
             undo.Enabled = false;
             currentSelectedObject = -1;
+        }
+
+        private void shoot_Click(object sender, EventArgs e)
+        {
+            shootIsClicked = true;
         }
     }
 }

@@ -1,8 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "j+aw8yJQY8QgT222tuiiProdywBXr5Z5A3SHCPkvsHU6+rhWW34gWfBBF9DmIbIXum5Z8xlwL7Av0bPadZc2MA==",
+  "dgSpecHash": "9kWcgKxX4idgNkrAqypwNYswJTaKHpPbw+k6R882eRQqN4N5R8FWtwmTxFr718HEAFr6+rTJAp7q4qUjTuKq+g==",
   "success": true,
-  "projectFilePath": "F:\\University\\2020-2021\\OPP\\BattleShips\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\BattleShipPlayer.csproj",
+  "projectFilePath": "C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\BattleShipPlayer.csproj",
   "expectedPackageFiles": [],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Users\\tomas\\Desktop\\BattleShip\\backend\\BattleShipPlayer\\BattleShipPlayer\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

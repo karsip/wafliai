@@ -21,16 +21,25 @@ namespace Server
         private static List<PlayerData> _gamePlayerList = new List<PlayerData>();
         private static byte[] _buffer = new byte[10000];
         private static int[,] unitArray = new int[64, 64];
-        private static Matrix gameCells;
         static void Main(string[] args)
         {
-            Map gameMap = new Map();
-            gameCells = gameMap.GetMapObjects();
-
             Console.Title = "BattleShip Server";
             SetupServer();
             Console.ReadLine();
         }
+        /*
+        private static void PrintArray()
+        {
+            for (var i = 0; i < unitArray.GetLength(0); i++)
+            {
+                for (var j = 0; j < unitArray.GetLength(1); j++)
+                {
+                    Console.Write(unitArray[i, j]);
+                }
+                Console.WriteLine();
+            }
+        }
+        */
         private static void SetupServer()
         {
             _logger = Logger.GetInstance;
@@ -41,7 +50,6 @@ namespace Server
             _serverSocket.Listen(10);
             _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
-
         private static void AcceptCallback(IAsyncResult AR)
         {
             Socket socket = _serverSocket.EndAccept(AR);
@@ -52,7 +60,6 @@ namespace Server
             socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReveiveCallback), socket);
             _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
-
         private static void ReveiveCallback(IAsyncResult AR)
         {
             try
@@ -188,7 +195,6 @@ namespace Server
         private static void Print2DArray()
         {
             string line = new string('-', 70);
-            Console.WriteLine("Server arr");
             Console.WriteLine(line);
             for (int i = 0; i < unitArray.GetLength(0); i++)
             {
@@ -220,9 +226,13 @@ namespace Server
             {
                 for (int j = 0; j < unitMap.GetLength(1); j++)
                 {
-                    if(updateMap[i, j] != unitMap[i,j])
+                    if(updateMap[i, j] != unitMap[i,j] && updateMap[i, j] != -1)
                     {
                         unitMap[i, j] = updateMap[i, j];
+                    } 
+                    if(updateMap[i, j] == -1)
+                    {
+                        unitMap[i, j] = 0;
                     }
                 }
             }
