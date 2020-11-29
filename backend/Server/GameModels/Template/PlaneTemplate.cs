@@ -12,11 +12,7 @@ namespace GameModels.Template
         private int max_x = 0;
         private int min_y = 0;
         private int max_y = 0;
-        public override void RenderAfterShot()
-        {
-            Console.WriteLine("Plane After shot");
-        }
-
+        // highlights area
         public override void RenderBeforeShot(FlowLayoutPanel e, int [,] planePosition, int x, int y, int id)
         {
             int[,] endPoint = ReturnEndCoordinate(planePosition);
@@ -75,11 +71,6 @@ namespace GameModels.Template
                 }
             }
             return endCoordinate;
-        }
-
-        public override void Shoot()
-        {
-            Console.WriteLine("Plane Shot");
         }
     }
 }

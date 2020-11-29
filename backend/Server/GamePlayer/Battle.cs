@@ -46,6 +46,8 @@ namespace GamePlayer
         private int max_x = 63;
         private int min_y = 3;
         private int max_y = 63;
+
+       
  
         private FlyWeightGroundFactory factory = new FlyWeightGroundFactory();
         private int prev_x_loc;
@@ -205,7 +207,7 @@ namespace GamePlayer
                         handleRequest(arrayString);
 
                         // Console.WriteLine("After Explosion");
-                        Print2DArray(unitMap);
+                        Print2DArray(unitMap, "2D ARR");
                     }
                     else
                     {
@@ -270,47 +272,44 @@ namespace GamePlayer
                 {
                     Console.WriteLine("Shoot is clicked. ");
                     RemoveHighlight(currentSelected);
-                    int x = row / 25;
-                    int y = column / 25;
+                    int obj_x = prev_x_loc;
+                    int obj_y = prev_y_loc;
                     MineStrategy mineStrategy = new MineStrategy();
                     mineStrategy.SetMineStrategy(new SmallExplosion());
                     if (CheckIfClickOnAnObject(row, column))
                     {
                         string coordinates = "";
-                        BasicFill(unitMap, y, x, unitMap[x, y], ref coordinates, ReturnAreaSize(unitMap[x,y]).GetLength(0));
+                        int[] areaPoints = new int[3];
+                        BasicFill(unitMap, column / 25, row / 25, unitMap[row / 25, column / 25], ref coordinates, ReturnAreaSize(unitMap[row/ 25, column / 25 ]).GetLength(0));
                         int[,] toBlowMap = new int[coordinates.Split(',').Length/2, 2];
                         Thread newThread = new Thread(() =>
                         {
                             this.BeginInvoke((Action)delegate ()
                             {
                                 myTimer.Start();                              
-                                toBlowMap = ConvertStringToArray(coordinates, unitMap[x, y]);
-                                HighlightShootingObject(currentSelected);
-                                /*switch (unitMap[x,y])
-                                {
-                                    case 4:
-                                        ShootingObject shootingObject = new PlaneTemplate();
-                                        shootingObject.RunFirstPart(this.flowLayoutPanel2, currentSelected, x,y, unitMap[x, y]);
-                                        break;
-                                    default:
-                                        Console.WriteLine("Default case");
-                                        break;
-                                } */
-                                HighlightPlaneShootingArea(currentSelected,x,y, currentSelectedObject);
+                                toBlowMap = ConvertStringToArray(coordinates, unitMap[row / 25, column / 25]);
+                                areaPoints = CalculatePoints(currentSelected);
+                                HighlightShootingObject(currentSelected);                        
                             });
                             Thread.Sleep(1500);
                             this.BeginInvoke((Action)delegate ()
                             {                                
                                 myTimer.Start();
                                 int[] pointsBounds = new int[] { min_x, max_x, min_y, max_y };
-                                if (CheckIfNotOutOfBounds(pointsBounds, x, y))
+                                if (!CheckIfNotOutOfBounds(pointsBounds, row / 25, row / 25) && unitMap[obj_x, obj_y] == 4)
                                 {
-                                    BlowObject(toBlowMap, unitMap[x, y]);
+                                    BlowObject(toBlowMap, unitMap[row / 25 , column / 25]);
                                     lifepointsLeft--;
                                     this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
-                                    RemovePlaneHighlightArea();
+                                    RemovePlaneHighlightArea(areaPoints);
+                                    RemoveHighlight(currentSelected);
+                                } else
+                                {
+                                    BlowObject(toBlowMap, unitMap[row / 25, column / 25]);
+                                    lifepointsLeft--;
+                                    this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
+                                    RemoveHighlight(currentSelected);
                                 }
-                                RemoveHighlight(currentSelected);
                             });
                         });
                         newThread.Start();
@@ -319,36 +318,55 @@ namespace GamePlayer
 
                     } else
                     {
+                        ShootingObject shootingObject = new PlaneTemplate();
+                        ShootingObject shootingShip = new ShipTemplate();
+                        int[] areaPoints = new int[3];
                         Thread newThread = new Thread(() =>
                         {
                             this.BeginInvoke((Action)delegate ()
                             {
-                                myTimer.Start();                              
-                                HighlightShootingObject(currentSelected);
-                                /* if (unitMap[x,y] == 4)
+                                myTimer.Start();
+                                switch (unitMap[obj_x, obj_y])
                                 {
-                                    ShootingObject shootingObject = new PlaneTemplate();
-                                    shootingObject.RunFirstPart(this.flowLayoutPanel2, currentSelected, x,y, unitMap[x, y]);
-                                } else if (unitMap[x, y] == 2)
-                                {
-                                    Console.WriteLine("Unit map 2");
-                                } else
-                                {
-                                    Console.WriteLine("Unit map all others");
-                                } */
-                                HighlightPlaneShootingArea(currentSelected,x,y, currentSelectedObject);
+                                    case 4:
+                                        shootingObject.RunFirstPart(this.flowLayoutPanel2, currentSelected, obj_x, obj_y, unitMap[obj_x, obj_y]);
+                                        areaPoints = CalculatePoints(currentSelected);
+                                        break;
+                                    case 2:
+                                        shootingShip.RunFirstPart(this.flowLayoutPanel2, currentSelected, obj_x, obj_y, unitMap[obj_x, obj_y]);
+                                        break;
+                                    default:
+                                        HighlightShootingObject(currentSelected);
+                                        break;
+                                }
                             });
                             Thread.Sleep(1500);
                             this.BeginInvoke((Action)delegate ()
                             {                            
                                 myTimer.Start();
                                 int[] pointsBounds = new int[] { min_x, max_x, min_y, max_y };
-                                if(CheckIfNotOutOfBounds(pointsBounds, x, y))
+                                if(!CheckIfNotOutOfBounds(pointsBounds, obj_x, obj_y) && unitMap[obj_x, obj_y] == 4)
                                 {
-                                    renderObject(column, row, 1, 1, 8);                                  
-                                    RemovePlaneHighlightArea();
+                                    renderObject(column, row, 1, 1, 8);
+                                    shootingObject.RunSecondPart(this.flowLayoutPanel2, areaPoints, map, currentSelected);
                                 }
-                                RemoveHighlight(currentSelected);
+                                else if (CheckIfNotOutOfBounds(pointsBounds, obj_x, obj_y) && unitMap[obj_x, obj_y] == 4)
+                                {
+                                    RemoveHighlight(currentSelected);
+                                }
+                                else
+                                {
+                                    renderObject(column, row, 1, 1, 8);
+                                    switch (unitMap[obj_x, obj_y])
+                                    {
+                                        case 2:
+                                            shootingShip.RunSecondPart(this.flowLayoutPanel2, new int[] { 0, 63, 0, 63 }, map, currentSelected);
+                                            break;
+                                        default:
+                                            RemoveHighlight(currentSelected);
+                                            break;
+                                    }
+                                }
                             });
                         });
                         newThread.Start();
@@ -365,8 +383,7 @@ namespace GamePlayer
                 clickedObject = 0;
             }
         }
-        // moved to template folder
-        private void HighlightPlaneShootingArea(int [,] planePosition, int x, int y, int id)
+        private int[] CalculatePoints(int[,] planePosition)
         {
             int[,] endPoint = ReturnEndCoordinate(planePosition);
             min_x = 0;
@@ -377,45 +394,7 @@ namespace GamePlayer
             if (endPoint[0, 0] > 8) min_x = endPoint[0, 0] - 8;
             if (endPoint[0, 0] < 55) max_x = endPoint[0, 0] + 8;
             if (endPoint[0, 1] < 48) max_y = endPoint[0, 1] + 15;
-            int[] areaPoints = new int[] { min_x, max_x, min_y, max_y };
-            if (!CheckIfNotOutOfBounds(areaPoints, x, y) && id == 4)
-            {
-                MessageBox.Show("Object can't reach this far", "Shooting error",
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
-            } else
-            {
-                this.flowLayoutPanel2.BackColor = Color.Red;
-                for (int i = min_x; i < max_x; i++)
-                {
-                    for (int j = min_y; j < max_y; j++)
-                    {
-                        Point myPoint = new Point(25 * j, 25 * i);
-                        Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
-                        update_label.BorderStyle = BorderStyle.Fixed3D;
-                        // Point myPoint = new Point(25 * currentSelected[i, 1], 25 * currentSelected[i, 0]);
-                        // Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
-                        // update_label.BorderStyle = BorderStyle.None;
-                        // update_label.BorderStyle = BorderStyle.FixedSingle;
-                        // if (map[currentSelected[i, 0], currentSelected[i, 1]] is Sand)
-                        // {
-                        //     update_label.BackColor = Color.SandyBrown;
-                        //     GroundImage image = factory.GetGround("Sand");
-                        //     update_label.Image = image.GiveImage();
-                        // }
-                        // else if (map[currentSelected[i, 0], currentSelected[i, 1]] is Grass)
-                        // {
-                        //     update_label.BackColor = Color.LawnGreen;
-                        //     GroundImage image = factory.GetGround("Grass");
-                        //     update_label.Image = image.GiveImage();
-                        // }
-                        // else
-                        // {
-                        //     update_label.BackColor = Color.DarkCyan;
-                        //     GroundImage image = factory.GetGround("Water");
-                        //     update_label.Image = image.GiveImage();
-                    }
-                }
-            }      
+            return new int[] { min_x, max_x, min_y, max_y };
         }
         private bool CheckIfNotOutOfBounds(int[] arr, int x, int y)
         {
@@ -430,12 +409,12 @@ namespace GamePlayer
             if (counter > 0) return true;
             else return false;
         }
-        private void RemovePlaneHighlightArea()
+        private void RemovePlaneHighlightArea(int [] areaPoints)
         {
             this.flowLayoutPanel2.BackColor = Color.Transparent;
-            for (int i = min_x; i < max_x; i++)
+            for (int i = areaPoints[0]; i < areaPoints[1]; i++)
             {
-                for (int j = min_y; j < max_y; j++)
+                for (int j = areaPoints[2]; j < areaPoints[3]; j++)
                 {
                     Point myPoint = new Point(25 * j, 25 * i);
                     Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
@@ -481,24 +460,30 @@ namespace GamePlayer
         {
             for (int i = 0; i < currentSelected.GetLength(0); i++)
             {
-                Point myPoint = new Point(25 * currentSelected[i, 1], 25 * currentSelected[i, 0]);
-                Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
-                // update_label.BorderStyle = BorderStyle.None;
-                update_label.BorderStyle = BorderStyle.FixedSingle;
-                if (map[currentSelected[i, 0]][currentSelected[i, 1]].mapObject is Sand)
+                for (int j = 0; j < currentSelected.GetLength(0); j++)
                 {
-                    update_label.BackColor = Color.SandyBrown;
-                    update_label.Image = Image.FromFile("../../../GameModels/Textures/sandTile.png");
-                }
-                else if (map[currentSelected[i, 0]][currentSelected[i, 1]].mapObject is Grass)
-                {
-                    update_label.BackColor = Color.LawnGreen;
-                    update_label.Image = Image.FromFile("../../../GameModels/Textures/grassTile.png");
-                }
-                else
-                {
-                    update_label.BackColor = Color.DarkCyan;
-                    update_label.Image = Image.FromFile("../../../GameModels/Textures/waterTile.png");
+                    Point myPoint = new Point(25 * currentSelected[i, 1], 25 * currentSelected[i, 0]);
+                    Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
+                    update_label.BorderStyle = BorderStyle.None;
+                    update_label.BorderStyle = BorderStyle.FixedSingle;
+                    if (map[currentSelected[i, 0], currentSelected[i, 1]] is Sand)
+                    {
+                        update_label.BackColor = Color.SandyBrown;
+                        GroundImage image = factory.GetGround("Sand");
+                        update_label.Image = image.GiveImage();
+                    }
+                    else if (map[currentSelected[i, 0], currentSelected[i, 1]] is Grass)
+                    {
+                        update_label.BackColor = Color.LawnGreen;
+                        GroundImage image = factory.GetGround("Grass");
+                        update_label.Image = image.GiveImage();
+                    }
+                    else
+                    {
+                        update_label.BackColor = Color.DarkCyan;
+                        GroundImage image = factory.GetGround("Water");
+                        update_label.Image = image.GiveImage();
+                    }
                 }
             }
         }
@@ -559,11 +544,11 @@ namespace GamePlayer
                 Point myPoint = new Point(25 * arr[i, 1], 25 * arr[i, 0]);
                 Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
                 update_label.BorderStyle = BorderStyle.None;
-                if (map[arr[i, 1]][arr[i, 0]].mapObject is Sand)
+                if (map[arr[i, 1], arr[i, 0]] is Sand)
                 {
                     update_label.BackColor = Color.SandyBrown;
                 }
-                else if (map[arr[i, 1]][arr[i, 0]].mapObject is Grass)
+                else if (map[arr[i, 1], arr[i, 0]] is Grass)
                 {
                     update_label.BackColor = Color.LawnGreen;
                 }
