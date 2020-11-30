@@ -19,6 +19,7 @@ using System.Threading;
 using GameModels.Template;
 using GameModels.Iterator;
 using GameModels.FlyWeight;
+using GameModels.Memento;
 
 namespace GamePlayer
 {
@@ -40,6 +41,12 @@ namespace GamePlayer
         System.Windows.Forms.Timer myTimer;
         private int timer_counter = 0;
         private bool afterShotWasClicked = false;
+
+
+        // MEMENTO
+        private MapOriginator mapOriginator = new MapOriginator();
+        private MapMemory mapMemory = new MapMemory();
+        private bool isMapLocked = false;
 
         // highlight area
         private int min_x = 0;
@@ -72,7 +79,6 @@ namespace GamePlayer
         private void renderLabels()
         {
             Console.WriteLine(map.RowCount);
-            Random rnd = new Random();
             var lableArray = new Label[64, 64];
             for (int i = 0; i < map.RowCount; i++)
             {
@@ -169,15 +175,15 @@ namespace GamePlayer
                         {
                             case 0:
                                 mineStrategy.SetMineStrategy(new SmallExplosion());
-                                renderObject(coordinates[0] * 25, coordinates[1] * 25, 1, 1, 8);
+                                renderObject(coordinates[0] * 25, coordinates[1] * 25, 1, 1, 8, unitMap);
                                 break;
                             case 1:
                                 mineStrategy.SetMineStrategy(new MediumExplosion());
-                                renderObject(coordinates[0] * 25, coordinates[1] * 25, 2, 2, 9);
+                                renderObject(coordinates[0] * 25, coordinates[1] * 25, 2, 2, 9, unitMap);
                                 break;
                             case 2:
                                 mineStrategy.SetMineStrategy(new HugeExplosion());
-                                renderObject(coordinates[0] * 25, coordinates[1] * 25, 3, 3, 10);
+                                renderObject(coordinates[0] * 25, coordinates[1] * 25, 3, 3, 10, unitMap);
                                 break;
                         }
                         unitMap = mineStrategy.ExplodeMine(unitMap, coordinates[1], coordinates[0]);
@@ -213,7 +219,7 @@ namespace GamePlayer
                     {
                         x_loc = row / 25;
                         y_loc = column / 25;
-                        renderObject(column, row, column_number, row_number, currentSelectedObject);
+                        renderObject(column, row, column_number, row_number, currentSelectedObject, unitMap);
                         RenderGroundAfterChange();
                         // Command design pattern for player map and server map
                         MoveReceiver receiver = new MoveReceiver(myUnits, currentSelectedObject, x_loc, y_loc, currentSelected);
@@ -347,7 +353,7 @@ namespace GamePlayer
                                 int[] pointsBounds = new int[] { min_x, max_x, min_y, max_y };
                                 if(!CheckIfNotOutOfBounds(pointsBounds, obj_x, obj_y) && unitMap[obj_x, obj_y] == 4)
                                 {
-                                    renderObject(column, row, 1, 1, 8);
+                                    renderObject(column, row, 1, 1, 8, unitMap);
                                     shootingObject.RunSecondPart(this.flowLayoutPanel2, areaPoints, map, currentSelected);
                                 }
                                 else if (CheckIfNotOutOfBounds(pointsBounds, obj_x, obj_y) && unitMap[obj_x, obj_y] == 4)
@@ -356,7 +362,7 @@ namespace GamePlayer
                                 }
                                 else
                                 {
-                                    renderObject(column, row, 1, 1, 8);
+                                    renderObject(column, row, 1, 1, 8, unitMap);
                                     switch (unitMap[obj_x, obj_y])
                                     {
                                         case 2:
@@ -655,25 +661,25 @@ namespace GamePlayer
             {
                 case 1:
                     // render shipCarrier
-                    renderObject(column, row, 2, 4, clickedObject);
+                    renderObject(column, row, 2, 4, clickedObject, unitMap);
                     break;
                 case 2:
-                    renderObject(column, row, 1, 4, clickedObject);
+                    renderObject(column, row, 1, 4, clickedObject, unitMap);
                     break;
                 case 3:
-                    renderObject(column, row, 1, 5, clickedObject);
+                    renderObject(column, row, 1, 5, clickedObject, unitMap);
                     break;
                 case 4:
-                    renderObject(column, row, 3, 2, clickedObject);
+                    renderObject(column, row, 3, 2, clickedObject, unitMap);
                     break;
                 case 5:
-                    renderObject(column, row, 2, 2, clickedObject);
+                    renderObject(column, row, 2, 2, clickedObject, unitMap);
                     break;
                 case 6:
-                    renderObject(column, row, 1, 2, clickedObject);
+                    renderObject(column, row, 1, 2, clickedObject, unitMap);
                     break;
                 case 7:
-                    renderObject(column, row, 1, 1, clickedObject);
+                    renderObject(column, row, 1, 1, clickedObject, unitMap);
                     break;
                 default:
                     break;
@@ -711,7 +717,7 @@ namespace GamePlayer
             string arrayString = string.Join(",", unitMap.Cast<int>());
             handleRequest(arrayString);
         }
-        private void renderObject(int column, int row, int columnNumber, int rowNumber, int object_id)
+        private void renderObject(int column, int row, int columnNumber, int rowNumber, int object_id, int [,] checkingMap)
         {
             AirCraftBuilder builder;
             AirCraftDirector airCraftDirector = new AirCraftDirector();
@@ -722,7 +728,7 @@ namespace GamePlayer
             airCraftDirector.Construct(builder);
             Image[] planeImg = builder.AirCraft.ForMap();
             CanBePlaced canBePlaced = new CanBePlaced();
-            bool eligible = canBePlaced.IsEligible(unitMap, (column / 25), (row / 25), rowNumber, columnNumber, object_id);
+            bool eligible = canBePlaced.IsEligible(checkingMap, (column / 25), (row / 25), rowNumber, columnNumber, object_id);
             int counter = 1;
             if (eligible)
             {
@@ -1190,7 +1196,7 @@ namespace GamePlayer
             int column_number = ReturnbjectColumnNumber(currentSelectedObject);
             int row_number = ReturnObjectRowNumber(currentSelectedObject);
 
-            renderObject(prev_y_loc * 25, prev_x_loc * 25, column_number, row_number, currentSelectedObject);
+            renderObject(prev_y_loc * 25, prev_x_loc * 25, column_number, row_number, currentSelectedObject, unitMap);
         }
         private void undo_Click(object sender, EventArgs e)
         {
@@ -1228,6 +1234,78 @@ namespace GamePlayer
         private void shoot_Click(object sender, EventArgs e)
         {
             shootIsClicked = true;
+        }
+
+        private void lock_btn_Click(object sender, EventArgs e)
+        {
+            isMapLocked = !isMapLocked;
+            if (isMapLocked)
+            {
+                this.lock_btn.BackgroundImage = Image.FromFile("../../../GameModels/Textures/icons8-lock-30.png");
+                mapOriginator.Status = isMapLocked;
+                int[,] currentUnitMapState = MakeACopy(unitMap);
+                mapOriginator.GameMap = currentUnitMapState;
+                mapOriginator.LifePoints = lifepointsLeft;
+                mapMemory.Memento = mapOriginator.SaveMemento();
+                Console.WriteLine(" mapMemory.Memento  " + mapMemory.Memento);
+
+            }
+            else
+            {
+                this.lock_btn.BackgroundImage = Image.FromFile("../../../GameModels/Textures/icons8-unlock-30.png");
+                mapOriginator.RestoreMemento(mapMemory.Memento);
+                unitMap = mapOriginator.GameMap;
+
+                string arrayString = string.Join(",", unitMap.Cast<int>());
+                handleRequest(arrayString);
+                renderLabels();
+                RerenderMap();
+                lifepointsLeft = mapOriginator.LifePoints;
+                this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
+            }
+        }
+        private int [,] MakeACopy(int [,] arr)
+        {
+            int[,] arrToReturn = new int[arr.GetLength(0), arr.GetLength(1)];
+            for(int i = 0; i < arr.GetLength(0); i++)
+            {
+                for(int j  = 0; j < unitMap.GetLength(1); j++)
+                {
+                    arrToReturn[i, j] = arr[i, j];
+                }
+            }
+
+            return arrToReturn;
+        }
+        private void RerenderMap()
+        {
+            bool stop = false;
+            for(int i = 0;  i < unitMap.GetLength(0);  i++)
+            {
+                for (int j = 0; j < unitMap.GetLength(1); j++)
+                {
+                    if(unitMap[i,j] != 0 && stop == false)
+                    {
+                        int column_number = ReturnbjectColumnNumber(unitMap[i, j]);
+                        int row_number = ReturnObjectRowNumber(unitMap[i, j]);
+
+                        renderObject(j * 25, i * 25, column_number, row_number, unitMap[i, j], GereateEmptyMap(unitMap.GetLength(0), unitMap.GetLength(1)));
+                        stop = true;
+                    }
+                }
+            }
+        }
+        private int [,] GereateEmptyMap (int xSize, int ySize)
+        {
+            int[,] arr = new int[xSize, ySize];
+            for (int i = 0; i < xSize; i++)
+            {
+                for (int j = 0; j < ySize; j++)
+                {
+                    arr[i, j] = 0;
+                }
+            }
+            return arr;
         }
     }
 }
