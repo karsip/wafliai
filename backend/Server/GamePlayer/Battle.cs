@@ -20,6 +20,7 @@ using GameModels.Template;
 using GameModels.Iterator;
 using GameModels.FlyWeight;
 using GameModels.Memento;
+using GameModels.ChainOfResp;
 
 namespace GamePlayer
 {
@@ -47,6 +48,14 @@ namespace GamePlayer
         private MapOriginator mapOriginator = new MapOriginator();
         private MapMemory mapMemory = new MapMemory();
         private bool isMapLocked = false;
+
+
+        // Chains
+
+        private Badge lowBadge = new LowBadge();
+        private Badge mediumBadge = new MidBadge();
+        private Badge highBadge = new HighBadge();
+
 
         // highlight area
         private int min_x = 0;
@@ -929,6 +938,13 @@ namespace GamePlayer
         {
             _logger = Logger.GetInstance;
             InitializeComponent();
+
+            // chain of resp
+            // badge set
+            highBadge.SetSuccessor(mediumBadge);
+            mediumBadge.SetSuccessor(lowBadge);
+
+            highBadge.SetBadge(this.badge_btn, lifepointsLeft);
 
             myTimer = new System.Windows.Forms.Timer();
             myTimer.Interval = 250;
