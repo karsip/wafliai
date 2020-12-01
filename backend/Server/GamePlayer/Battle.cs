@@ -1258,10 +1258,39 @@ namespace GamePlayer
 
                 string arrayString = string.Join(",", unitMap.Cast<int>());
                 handleRequest(arrayString);
-                renderLabels();
+                ClearSector();
                 RerenderMap();
                 lifepointsLeft = mapOriginator.LifePoints;
                 this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
+            }
+        }
+        private void ClearSector()
+        {
+            for(int i = 0; i < 15; i++)
+            {
+                for (int j = 0; j < 15; j++)
+                {
+                    Point myPoint = new Point(25 * j, 25 * i);
+                    Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
+                    if (map[i, j] is Grass)
+                    {
+                        update_label.BackColor = Color.LawnGreen;
+                        GroundImage image = factory.GetGround("Grass");
+                        update_label.Image = image.GiveImage();
+                    }
+                    else if (map[i, j] is Sand)
+                    {
+                        update_label.BackColor = Color.SandyBrown;
+                        GroundImage image = factory.GetGround("Sand");
+                        update_label.Image = image.GiveImage();
+                    }
+                    else
+                    {
+                        update_label.BackColor = Color.DarkCyan;
+                        GroundImage image = factory.GetGround("Water");
+                        update_label.Image = image.GiveImage();
+                    }
+                }
             }
         }
         private int [,] MakeACopy(int [,] arr)
