@@ -10,6 +10,7 @@ namespace GameModels.ChainOfResp
     {
         public override void SetBadge(Button BadgePlace, int lifePoints)
         {
+            /*
             if (lifePoints == 14)
             {
                 BadgePlace.BackgroundImage = Image.FromFile("../../../GameModels/Textures/Badges/HighBadge.png");
@@ -18,6 +19,7 @@ namespace GameModels.ChainOfResp
             {
                 successor.SetBadge(BadgePlace, lifePoints);
             }
+            */
         }
     }
 }

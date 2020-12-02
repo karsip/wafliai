@@ -21,6 +21,7 @@ using GameModels.Iterator;
 using GameModels.FlyWeight;
 using GameModels.Memento;
 using GameModels.ChainOfResp;
+using GameModels.State;
 
 namespace GamePlayer
 {
@@ -51,10 +52,14 @@ namespace GamePlayer
 
 
         // Chains
-
+        /*
         private Badge lowBadge = new LowBadge();
         private Badge mediumBadge = new MidBadge();
         private Badge highBadge = new HighBadge();
+        */
+
+        // State
+        private PlayerContext playerContext = new PlayerContext(new NewbieState("Newbie"), 0);
 
 
         // highlight area
@@ -197,6 +202,9 @@ namespace GamePlayer
                         }
                         unitMap = mineStrategy.ExplodeMine(unitMap, coordinates[1], coordinates[0]);
                         myUnits = mineStrategy.ExplodeMine(myUnits, coordinates[1], coordinates[0]);
+                        playerContext.Request(-1);
+
+                        this.state_label.Text = playerContext.StateReturner();
                         // CONFLICTS
                         objectChecked = false;
                         this.shoot.Visible = false;
@@ -297,6 +305,9 @@ namespace GamePlayer
                         int[] areaPoints = new int[3];
                         BasicFill(unitMap, column / 25, row / 25, unitMap[row / 25, column / 25], ref coordinates, ReturnAreaSize(unitMap[row/ 25, column / 25 ]).GetLength(0));
                         int[,] toBlowMap = new int[coordinates.Split(',').Length/2, 2];
+
+                        playerContext.Request(1);
+                        this.state_label.Text = playerContext.StateReturner();
                         Thread newThread = new Thread(() =>
                         {
                             this.BeginInvoke((Action)delegate ()
@@ -720,6 +731,7 @@ namespace GamePlayer
                             update_label.BackColor = Color.Black;
                             break;
                     }
+                    playerContext.Request(-1);
                     counter++;
                 }
             }
@@ -941,10 +953,13 @@ namespace GamePlayer
 
             // chain of resp
             // badge set
-            highBadge.SetSuccessor(mediumBadge);
-            mediumBadge.SetSuccessor(lowBadge);
+            // highBadge.SetSuccessor(mediumBadge);
+            // mediumBadge.SetSuccessor(lowBadge);
 
-            highBadge.SetBadge(this.badge_btn, lifepointsLeft);
+            // highBadge.SetBadge(this.badge_btn, lifepointsLeft);
+
+            this.state_label.Text = "Newbie";
+
 
             myTimer = new System.Windows.Forms.Timer();
             myTimer.Interval = 250;
@@ -1351,6 +1366,11 @@ namespace GamePlayer
                 }
             }
             return arr;
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

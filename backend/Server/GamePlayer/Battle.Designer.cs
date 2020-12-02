@@ -56,6 +56,7 @@
             this.button9 = new System.Windows.Forms.Button();
             this.badge_label = new System.Windows.Forms.Label();
             this.badge_btn = new System.Windows.Forms.Button();
+            this.state_label = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -373,12 +374,24 @@
             this.badge_btn.TabIndex = 9;
             this.badge_btn.UseVisualStyleBackColor = false;
             // 
+            // state_label
+            // 
+            this.state_label.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.state_label.Font = new System.Drawing.Font("Forte", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.state_label.Location = new System.Drawing.Point(785, 6);
+            this.state_label.Multiline = true;
+            this.state_label.Name = "state_label";
+            this.state_label.Size = new System.Drawing.Size(127, 39);
+            this.state_label.TabIndex = 10;
+            this.state_label.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
             // Battle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.ClientSize = new System.Drawing.Size(1443, 857);
+            this.Controls.Add(this.state_label);
             this.Controls.Add(this.badge_btn);
             this.Controls.Add(this.badge_label);
             this.Controls.Add(this.lock_btn);
@@ -427,5 +440,6 @@
         private System.Windows.Forms.Button lock_btn;
         private System.Windows.Forms.Label badge_label;
         private System.Windows.Forms.Button badge_btn;
+        private System.Windows.Forms.TextBox state_label;
     }
 }
