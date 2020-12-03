@@ -203,17 +203,13 @@ namespace GamePlayer
                         playerContext.Request(-1);
 
                         this.state_label.Text = playerContext.StateReturner();
-                        // CONFLICTS
+ 
                         objectChecked = false;
                         this.shoot.Visible = false;
-                        //RenderGroundAfterChange();
+                        RenderGroundAfterChange();
                         lifepointsLeft--;
                         this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
                         badgeSetter();
-                        // Print2DArray(unitMap);
-                        // RenderGroundAfterChange();
-                        // lifepointsLeft--;
-                        // this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
                         MoveReceiver explode_receiver = new MoveReceiver(myUnits, currentSelectedObject, row / 25, column / 25, currentSelected);
                         MoveReceiver server_explode_receiver = new MoveReceiver(unitMap, currentSelectedObject, row / 25, column / 25, currentSelected);
                         MoveCommand command = new ExplosionCommand(explode_receiver);
@@ -419,8 +415,6 @@ namespace GamePlayer
             highBadge.SetBadge(ref path, lifepointsLeft);
 
             this.badge_btn.BackgroundImage = Image.FromFile(path);
-            // if()
-
         }
         private int[] CalculatePoints(int[,] planePosition)
         {
@@ -744,7 +738,7 @@ namespace GamePlayer
                             update_label.BackColor = Color.Black;
                             break;
                     }
-                    playerContext.Request(-1);
+                    // playerContext.Request(-1);
                     counter++;
                 }
             }

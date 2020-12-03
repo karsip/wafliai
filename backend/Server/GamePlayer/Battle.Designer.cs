@@ -382,7 +382,7 @@
             this.state_label.Location = new System.Drawing.Point(785, 6);
             this.state_label.Multiline = true;
             this.state_label.Name = "state_label";
-            this.state_label.Size = new System.Drawing.Size(127, 39);
+            this.state_label.Size = new System.Drawing.Size(368, 39);
             this.state_label.TabIndex = 10;
             this.state_label.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
