@@ -8,18 +8,29 @@ namespace GameModels.ChainOfResp
 {
     public class MidBadge : Badge
     {
-        public override void SetBadge(Button BadgePlace, int lifePoints)
+        //public override void SetBadge(Button BadgePlace, int lifePoints)
+        // {
+        /*
+        if (lifePoints > 10 && lifePoints < 14)
         {
-            /*
+            BadgePlace.BackgroundImage = Image.FromFile("../../../GameModels/Textures/Badges/MidBadge.png");
+        }
+        else if (successor != null)
+        {
+            successor.SetBadge(BadgePlace, lifePoints);
+        }
+        */
+        // }
+        public override void SetBadge(ref string badgeImg, int lifePoints)
+        {
             if (lifePoints > 10 && lifePoints < 14)
             {
-                BadgePlace.BackgroundImage = Image.FromFile("../../../GameModels/Textures/Badges/MidBadge.png");
+                badgeImg = "../../../GameModels/Textures/Badges/MidBadge.png";
             }
             else if (successor != null)
             {
-                successor.SetBadge(BadgePlace, lifePoints);
+                successor.SetBadge(ref badgeImg, lifePoints);
             }
-            */
         }
     }
 }

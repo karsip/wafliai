@@ -8,8 +8,8 @@ namespace GameModels.ChainOfResp
 {
     public class HighBadge : Badge
     {
-        public override void SetBadge(Button BadgePlace, int lifePoints)
-        {
+       // public override void SetBadge(Button BadgePlace, int lifePoints)
+       // {
             /*
             if (lifePoints == 14)
             {
@@ -20,6 +20,18 @@ namespace GameModels.ChainOfResp
                 successor.SetBadge(BadgePlace, lifePoints);
             }
             */
+      //  }
+
+        public override void SetBadge(ref string badgeImg, int lifePoints)
+        {
+            if (lifePoints >= 14)
+            {
+                badgeImg = "../../../GameModels/Textures/Badges/HighBadge.png";
+            }
+            else if (successor != null)
+            {
+                successor.SetBadge(ref badgeImg, lifePoints);
+            }
         }
     }
 }

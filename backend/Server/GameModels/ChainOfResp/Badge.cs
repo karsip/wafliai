@@ -12,6 +12,6 @@ namespace GameModels.ChainOfResp
         {
             this.successor = successor;
         }
-        public abstract void SetBadge(Button BadgeLabel, int LifePoints);
+        public abstract void SetBadge(ref String badgeImg, int LifePoints);
     }
 }

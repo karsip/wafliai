@@ -368,6 +368,7 @@
             // badge_btn
             // 
             this.badge_btn.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.badge_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.badge_btn.Location = new System.Drawing.Point(697, 0);
             this.badge_btn.Name = "badge_btn";
             this.badge_btn.Size = new System.Drawing.Size(63, 45);

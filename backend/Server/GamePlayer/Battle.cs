@@ -52,11 +52,9 @@ namespace GamePlayer
 
 
         // Chains
-        /*
         private Badge lowBadge = new LowBadge();
         private Badge mediumBadge = new MidBadge();
         private Badge highBadge = new HighBadge();
-        */
 
         // State
         private PlayerContext playerContext = new PlayerContext(new NewbieState("Newbie"), 0);
@@ -211,6 +209,7 @@ namespace GamePlayer
                         //RenderGroundAfterChange();
                         lifepointsLeft--;
                         this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
+                        badgeSetter();
                         // Print2DArray(unitMap);
                         // RenderGroundAfterChange();
                         // lifepointsLeft--;
@@ -326,13 +325,17 @@ namespace GamePlayer
                                 {
                                     BlowObject(toBlowMap, unitMap[row / 25 , column / 25]);
                                     lifepointsLeft--;
+                                    // update badge
+                                    badgeSetter();
                                     this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
                                     RemovePlaneHighlightArea(areaPoints);
                                     RemoveHighlight(currentSelected);
                                 } else
                                 {
                                     BlowObject(toBlowMap, unitMap[row / 25, column / 25]);
+                                    // update badge
                                     lifepointsLeft--;
+                                    badgeSetter();
                                     this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
                                     RemoveHighlight(currentSelected);
                                 }
@@ -408,6 +411,16 @@ namespace GamePlayer
                 UpdateMap(row, column);
                 clickedObject = 0;
             }
+        }
+            
+        private void badgeSetter()
+        {
+            string path = "";
+            highBadge.SetBadge(ref path, lifepointsLeft);
+
+            this.badge_btn.BackgroundImage = Image.FromFile(path);
+            // if()
+
         }
         private int[] CalculatePoints(int[,] planePosition)
         {
@@ -953,10 +966,14 @@ namespace GamePlayer
 
             // chain of resp
             // badge set
-            // highBadge.SetSuccessor(mediumBadge);
-            // mediumBadge.SetSuccessor(lowBadge);
+            highBadge.SetSuccessor(mediumBadge);
+            mediumBadge.SetSuccessor(lowBadge);
 
-            // highBadge.SetBadge(this.badge_btn, lifepointsLeft);
+            string result = "";
+            highBadge.SetBadge(ref result, lifepointsLeft);
+            Console.WriteLine("ref badge image path " + result);
+
+            this.badge_btn.BackgroundImage = Image.FromFile(result);
 
             this.state_label.Text = "Newbie";
 
