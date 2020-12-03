@@ -51,8 +51,12 @@
             this.label7 = new System.Windows.Forms.Label();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.lifepoints = new System.Windows.Forms.TextBox();
+            this.lock_btn = new System.Windows.Forms.Button();
             this.undo = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
+            this.badge_label = new System.Windows.Forms.Label();
+            this.badge_btn = new System.Windows.Forms.Button();
+            this.state_label = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -318,6 +322,18 @@
             this.lifepoints.TabIndex = 0;
             this.lifepoints.WordWrap = false;
             // 
+            // lock_btn
+            // 
+            this.lock_btn.BackColor = System.Drawing.Color.DarkRed;
+            this.lock_btn.BackgroundImage = global::GamePlayer.Properties.Resources.icons8_unlock_30;
+            this.lock_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.lock_btn.Location = new System.Drawing.Point(561, 6);
+            this.lock_btn.Name = "lock_btn";
+            this.lock_btn.Size = new System.Drawing.Size(49, 39);
+            this.lock_btn.TabIndex = 7;
+            this.lock_btn.UseVisualStyleBackColor = false;
+            this.lock_btn.Click += new System.EventHandler(this.lock_btn_Click);
+            // 
             // undo
             // 
             this.undo.BackgroundImage = global::GamePlayer.Properties.Resources.undo__2_;
@@ -341,12 +357,45 @@
             this.button9.UseVisualStyleBackColor = false;
             this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
+            // badge_label
+            // 
+            this.badge_label.BackColor = System.Drawing.Color.Orange;
+            this.badge_label.Location = new System.Drawing.Point(627, 6);
+            this.badge_label.Name = "badge_label";
+            this.badge_label.Size = new System.Drawing.Size(54, 39);
+            this.badge_label.TabIndex = 8;
+            // 
+            // badge_btn
+            // 
+            this.badge_btn.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.badge_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.badge_btn.Location = new System.Drawing.Point(697, 0);
+            this.badge_btn.Name = "badge_btn";
+            this.badge_btn.Size = new System.Drawing.Size(63, 45);
+            this.badge_btn.TabIndex = 9;
+            this.badge_btn.UseVisualStyleBackColor = false;
+            // 
+            // state_label
+            // 
+            this.state_label.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.state_label.Font = new System.Drawing.Font("Forte", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.state_label.Location = new System.Drawing.Point(785, 6);
+            this.state_label.Multiline = true;
+            this.state_label.Name = "state_label";
+            this.state_label.Size = new System.Drawing.Size(368, 39);
+            this.state_label.TabIndex = 10;
+            this.state_label.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
             // Battle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.ClientSize = new System.Drawing.Size(1443, 857);
+            this.Controls.Add(this.state_label);
+            this.Controls.Add(this.badge_btn);
+            this.Controls.Add(this.badge_label);
+            this.Controls.Add(this.lock_btn);
             this.Controls.Add(this.undo);
             this.Controls.Add(this.button9);
             this.Controls.Add(this.lifepoints);
@@ -389,5 +438,9 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button undo;
         private System.Windows.Forms.Button shoot;
+        private System.Windows.Forms.Button lock_btn;
+        private System.Windows.Forms.Label badge_label;
+        private System.Windows.Forms.Button badge_btn;
+        private System.Windows.Forms.TextBox state_label;
     }
 }

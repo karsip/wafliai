@@ -121,6 +121,9 @@
   <data name="close" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\close.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="shooting (1)" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\shooting (1)1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="undo (2)" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\undo (2).jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -130,7 +133,10 @@
   <data name="refresh" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\refresh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="shooting (1)" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\shooting (1)1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="icons8-lock-30" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8-lock-30.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icons8-unlock-30" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8-unlock-30.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

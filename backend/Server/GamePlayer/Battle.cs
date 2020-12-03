@@ -19,6 +19,9 @@ using System.Threading;
 using GameModels.Template;
 using GameModels.Iterator;
 using GameModels.FlyWeight;
+using GameModels.Memento;
+using GameModels.ChainOfResp;
+using GameModels.State;
 
 namespace GamePlayer
 {
@@ -40,6 +43,22 @@ namespace GamePlayer
         System.Windows.Forms.Timer myTimer;
         private int timer_counter = 0;
         private bool afterShotWasClicked = false;
+
+
+        // MEMENTO
+        private MapOriginator mapOriginator = new MapOriginator();
+        private MapMemory mapMemory = new MapMemory();
+        private bool isMapLocked = false;
+
+
+        // Chains
+        private Badge lowBadge = new LowBadge();
+        private Badge mediumBadge = new MidBadge();
+        private Badge highBadge = new HighBadge();
+
+        // State
+        private PlayerContext playerContext = new PlayerContext(new NewbieState("Newbie"), 0);
+
 
         // highlight area
         private int min_x = 0;
@@ -72,7 +91,6 @@ namespace GamePlayer
         private void renderLabels()
         {
             Console.WriteLine(map.RowCount);
-            Random rnd = new Random();
             var lableArray = new Label[64, 64];
             for (int i = 0; i < map.RowCount; i++)
             {
@@ -169,29 +187,29 @@ namespace GamePlayer
                         {
                             case 0:
                                 mineStrategy.SetMineStrategy(new SmallExplosion());
-                                renderObject(coordinates[0] * 25, coordinates[1] * 25, 1, 1, 8);
+                                renderObject(coordinates[0] * 25, coordinates[1] * 25, 1, 1, 8, unitMap);
                                 break;
                             case 1:
                                 mineStrategy.SetMineStrategy(new MediumExplosion());
-                                renderObject(coordinates[0] * 25, coordinates[1] * 25, 2, 2, 9);
+                                renderObject(coordinates[0] * 25, coordinates[1] * 25, 2, 2, 9, unitMap);
                                 break;
                             case 2:
                                 mineStrategy.SetMineStrategy(new HugeExplosion());
-                                renderObject(coordinates[0] * 25, coordinates[1] * 25, 3, 3, 10);
+                                renderObject(coordinates[0] * 25, coordinates[1] * 25, 3, 3, 10, unitMap);
                                 break;
                         }
                         unitMap = mineStrategy.ExplodeMine(unitMap, coordinates[1], coordinates[0]);
                         myUnits = mineStrategy.ExplodeMine(myUnits, coordinates[1], coordinates[0]);
-                        // CONFLICTS
+                        playerContext.Request(-1);
+
+                        this.state_label.Text = playerContext.StateReturner();
+ 
                         objectChecked = false;
                         this.shoot.Visible = false;
-                        //RenderGroundAfterChange();
+                        RenderGroundAfterChange();
                         lifepointsLeft--;
                         this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
-                        // Print2DArray(unitMap);
-                        // RenderGroundAfterChange();
-                        // lifepointsLeft--;
-                        // this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
+                        badgeSetter();
                         MoveReceiver explode_receiver = new MoveReceiver(myUnits, currentSelectedObject, row / 25, column / 25, currentSelected);
                         MoveReceiver server_explode_receiver = new MoveReceiver(unitMap, currentSelectedObject, row / 25, column / 25, currentSelected);
                         MoveCommand command = new ExplosionCommand(explode_receiver);
@@ -213,7 +231,7 @@ namespace GamePlayer
                     {
                         x_loc = row / 25;
                         y_loc = column / 25;
-                        renderObject(column, row, column_number, row_number, currentSelectedObject);
+                        renderObject(column, row, column_number, row_number, currentSelectedObject, unitMap);
                         RenderGroundAfterChange();
                         // Command design pattern for player map and server map
                         MoveReceiver receiver = new MoveReceiver(myUnits, currentSelectedObject, x_loc, y_loc, currentSelected);
@@ -282,6 +300,9 @@ namespace GamePlayer
                         int[] areaPoints = new int[3];
                         BasicFill(unitMap, column / 25, row / 25, unitMap[row / 25, column / 25], ref coordinates, ReturnAreaSize(unitMap[row/ 25, column / 25 ]).GetLength(0));
                         int[,] toBlowMap = new int[coordinates.Split(',').Length/2, 2];
+
+                        playerContext.Request(1);
+                        this.state_label.Text = playerContext.StateReturner();
                         Thread newThread = new Thread(() =>
                         {
                             this.BeginInvoke((Action)delegate ()
@@ -300,13 +321,17 @@ namespace GamePlayer
                                 {
                                     BlowObject(toBlowMap, unitMap[row / 25 , column / 25]);
                                     lifepointsLeft--;
+                                    // update badge
+                                    badgeSetter();
                                     this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
                                     RemovePlaneHighlightArea(areaPoints);
                                     RemoveHighlight(currentSelected);
                                 } else
                                 {
                                     BlowObject(toBlowMap, unitMap[row / 25, column / 25]);
+                                    // update badge
                                     lifepointsLeft--;
+                                    badgeSetter();
                                     this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
                                     RemoveHighlight(currentSelected);
                                 }
@@ -347,7 +372,7 @@ namespace GamePlayer
                                 int[] pointsBounds = new int[] { min_x, max_x, min_y, max_y };
                                 if(!CheckIfNotOutOfBounds(pointsBounds, obj_x, obj_y) && unitMap[obj_x, obj_y] == 4)
                                 {
-                                    renderObject(column, row, 1, 1, 8);
+                                    renderObject(column, row, 1, 1, 8, unitMap);
                                     shootingObject.RunSecondPart(this.flowLayoutPanel2, areaPoints, map, currentSelected);
                                 }
                                 else if (CheckIfNotOutOfBounds(pointsBounds, obj_x, obj_y) && unitMap[obj_x, obj_y] == 4)
@@ -356,7 +381,7 @@ namespace GamePlayer
                                 }
                                 else
                                 {
-                                    renderObject(column, row, 1, 1, 8);
+                                    renderObject(column, row, 1, 1, 8, unitMap);
                                     switch (unitMap[obj_x, obj_y])
                                     {
                                         case 2:
@@ -382,6 +407,14 @@ namespace GamePlayer
                 UpdateMap(row, column);
                 clickedObject = 0;
             }
+        }
+            
+        private void badgeSetter()
+        {
+            string path = "";
+            highBadge.SetBadge(ref path, lifepointsLeft);
+
+            this.badge_btn.BackgroundImage = Image.FromFile(path);
         }
         private int[] CalculatePoints(int[,] planePosition)
         {
@@ -655,25 +688,25 @@ namespace GamePlayer
             {
                 case 1:
                     // render shipCarrier
-                    renderObject(column, row, 2, 4, clickedObject);
+                    renderObject(column, row, 2, 4, clickedObject, unitMap);
                     break;
                 case 2:
-                    renderObject(column, row, 1, 4, clickedObject);
+                    renderObject(column, row, 1, 4, clickedObject, unitMap);
                     break;
                 case 3:
-                    renderObject(column, row, 1, 5, clickedObject);
+                    renderObject(column, row, 1, 5, clickedObject, unitMap);
                     break;
                 case 4:
-                    renderObject(column, row, 3, 2, clickedObject);
+                    renderObject(column, row, 3, 2, clickedObject, unitMap);
                     break;
                 case 5:
-                    renderObject(column, row, 2, 2, clickedObject);
+                    renderObject(column, row, 2, 2, clickedObject, unitMap);
                     break;
                 case 6:
-                    renderObject(column, row, 1, 2, clickedObject);
+                    renderObject(column, row, 1, 2, clickedObject, unitMap);
                     break;
                 case 7:
-                    renderObject(column, row, 1, 1, clickedObject);
+                    renderObject(column, row, 1, 1, clickedObject, unitMap);
                     break;
                 default:
                     break;
@@ -705,13 +738,14 @@ namespace GamePlayer
                             update_label.BackColor = Color.Black;
                             break;
                     }
+                    // playerContext.Request(-1);
                     counter++;
                 }
             }
             string arrayString = string.Join(",", unitMap.Cast<int>());
             handleRequest(arrayString);
         }
-        private void renderObject(int column, int row, int columnNumber, int rowNumber, int object_id)
+        private void renderObject(int column, int row, int columnNumber, int rowNumber, int object_id, int [,] checkingMap)
         {
             AirCraftBuilder builder;
             AirCraftDirector airCraftDirector = new AirCraftDirector();
@@ -722,7 +756,7 @@ namespace GamePlayer
             airCraftDirector.Construct(builder);
             Image[] planeImg = builder.AirCraft.ForMap();
             CanBePlaced canBePlaced = new CanBePlaced();
-            bool eligible = canBePlaced.IsEligible(unitMap, (column / 25), (row / 25), rowNumber, columnNumber, object_id);
+            bool eligible = canBePlaced.IsEligible(checkingMap, (column / 25), (row / 25), rowNumber, columnNumber, object_id);
             int counter = 1;
             if (eligible)
             {
@@ -923,6 +957,20 @@ namespace GamePlayer
         {
             _logger = Logger.GetInstance;
             InitializeComponent();
+
+            // chain of resp
+            // badge set
+            highBadge.SetSuccessor(mediumBadge);
+            mediumBadge.SetSuccessor(lowBadge);
+
+            string result = "";
+            highBadge.SetBadge(ref result, lifepointsLeft);
+            Console.WriteLine("ref badge image path " + result);
+
+            this.badge_btn.BackgroundImage = Image.FromFile(result);
+
+            this.state_label.Text = "Newbie";
+
 
             myTimer = new System.Windows.Forms.Timer();
             myTimer.Interval = 250;
@@ -1190,7 +1238,7 @@ namespace GamePlayer
             int column_number = ReturnbjectColumnNumber(currentSelectedObject);
             int row_number = ReturnObjectRowNumber(currentSelectedObject);
 
-            renderObject(prev_y_loc * 25, prev_x_loc * 25, column_number, row_number, currentSelectedObject);
+            renderObject(prev_y_loc * 25, prev_x_loc * 25, column_number, row_number, currentSelectedObject, unitMap);
         }
         private void undo_Click(object sender, EventArgs e)
         {
@@ -1228,6 +1276,112 @@ namespace GamePlayer
         private void shoot_Click(object sender, EventArgs e)
         {
             shootIsClicked = true;
+        }
+
+        private void lock_btn_Click(object sender, EventArgs e)
+        {
+            isMapLocked = !isMapLocked;
+            if (isMapLocked)
+            {
+                this.lock_btn.BackgroundImage = Image.FromFile("../../../GameModels/Textures/icons8-lock-30.png");
+                mapOriginator.Status = isMapLocked;
+                int[,] currentUnitMapState = MakeACopy(unitMap);
+                mapOriginator.GameMap = currentUnitMapState;
+                mapOriginator.LifePoints = lifepointsLeft;
+                mapMemory.Memento = mapOriginator.SaveMemento();
+                Console.WriteLine(" mapMemory.Memento  " + mapMemory.Memento);
+
+            }
+            else
+            {
+                this.lock_btn.BackgroundImage = Image.FromFile("../../../GameModels/Textures/icons8-unlock-30.png");
+                mapOriginator.RestoreMemento(mapMemory.Memento);
+                unitMap = mapOriginator.GameMap;
+
+                string arrayString = string.Join(",", unitMap.Cast<int>());
+                handleRequest(arrayString);
+                ClearSector();
+                RerenderMap();
+                lifepointsLeft = mapOriginator.LifePoints;
+                this.lifepoints.Text = "LifePoints: " + lifepointsLeft;
+            }
+        }
+        private void ClearSector()
+        {
+            for(int i = 0; i < 15; i++)
+            {
+                for (int j = 0; j < 15; j++)
+                {
+                    Point myPoint = new Point(25 * j, 25 * i);
+                    Label update_label = flowLayoutPanel2.GetChildAtPoint(myPoint) as Label;
+                    if (map[i, j] is Grass)
+                    {
+                        update_label.BackColor = Color.LawnGreen;
+                        GroundImage image = factory.GetGround("Grass");
+                        update_label.Image = image.GiveImage();
+                    }
+                    else if (map[i, j] is Sand)
+                    {
+                        update_label.BackColor = Color.SandyBrown;
+                        GroundImage image = factory.GetGround("Sand");
+                        update_label.Image = image.GiveImage();
+                    }
+                    else
+                    {
+                        update_label.BackColor = Color.DarkCyan;
+                        GroundImage image = factory.GetGround("Water");
+                        update_label.Image = image.GiveImage();
+                    }
+                }
+            }
+        }
+        private int [,] MakeACopy(int [,] arr)
+        {
+            int[,] arrToReturn = new int[arr.GetLength(0), arr.GetLength(1)];
+            for(int i = 0; i < arr.GetLength(0); i++)
+            {
+                for(int j  = 0; j < unitMap.GetLength(1); j++)
+                {
+                    arrToReturn[i, j] = arr[i, j];
+                }
+            }
+
+            return arrToReturn;
+        }
+        private void RerenderMap()
+        {
+            bool stop = false;
+            for(int i = 0;  i < unitMap.GetLength(0);  i++)
+            {
+                for (int j = 0; j < unitMap.GetLength(1); j++)
+                {
+                    if(unitMap[i,j] != 0 && stop == false)
+                    {
+                        int column_number = ReturnbjectColumnNumber(unitMap[i, j]);
+                        int row_number = ReturnObjectRowNumber(unitMap[i, j]);
+
+                        renderObject(j * 25, i * 25, column_number, row_number, unitMap[i, j], GereateEmptyMap(unitMap.GetLength(0), unitMap.GetLength(1)));
+                        stop = true;
+                    }
+                }
+            }
+        }
+        private int [,] GereateEmptyMap (int xSize, int ySize)
+        {
+            int[,] arr = new int[xSize, ySize];
+            for (int i = 0; i < xSize; i++)
+            {
+                for (int j = 0; j < ySize; j++)
+                {
+                    arr[i, j] = 0;
+                }
+            }
+            return arr;
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
